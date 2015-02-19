@@ -17,6 +17,11 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
+            new Tracker\UserBundle\TrackerUserBundle(),
+            new Tracker\ProjectBundle\TrackerProjectBundle(),
+            new Tracker\IssueBundle\TrackerIssueBundle(),
+            new Tracker\ActivitiesBundle\TrackerActivitiesBundle(),
+            new Tracker\HomeBundle\TrackerHomeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -1,3 +1,28 @@
+tracker_home:
+    resource: "@TrackerHomeBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+tracker_activities:
+    resource: "@TrackerActivitiesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+tracker_issue:
+    resource: "@TrackerIssueBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+tracker_project:
+    resource: "@TrackerProjectBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+tracker_user:
+    resource: "@TrackerUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: @AppBundle/Controller/
     type:     annotation
