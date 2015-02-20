@@ -1,0 +1,129 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: root
+ * Date: 19.02.15
+ * Time: 18:22
+ */
+
+namespace Tracker\IssueBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Class Issue
+ * @package Tracker\IssueBundle\Entity
+ * @ORM\Entity
+ * @ORM\Table(name="issue")
+ */
+class Issue
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $summary;
+
+    /**
+     * @ORM\Column(type="string", length=50, unique=true)
+     */
+    protected $code;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $description;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     **/
+    protected $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Priority")
+     * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
+     **/
+    protected $priority;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Status")
+     * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
+     **/
+    protected $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Resolution")
+     * @ORM\JoinColumn(name="resolution_id", referencedColumnName="id")
+     **/
+    protected $resolution;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
+     **/
+    protected $reporter;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
+     **/
+    protected $assignee;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\JoinTable(name="issue_collaborator",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")}
+     *      )
+     **/
+    protected $collaborators;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     **/
+    protected $children;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     **/
+    protected $parent;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\ProjectBundle\Project")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     **/
+    protected $project;
+
+    /**
+     * @ORM\Column(type="date")
+     **/
+    protected $created;
+
+    /**
+     * @ORM\Column(type="date")
+     **/
+    protected $updated;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="issue")
+     **/
+    protected $commet;
+
+    public function __construct()
+    {
+        $this->collaborators = new ArrayCollection();
+        $this->children = new ArrayCollection();
+    }
+}
