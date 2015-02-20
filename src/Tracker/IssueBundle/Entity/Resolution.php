@@ -19,6 +19,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Resolution
 {
+    const RESOLUTION_FIXED = "Fixed";
+    const RESOLUTION_WONT_FIX = "Won`t fix";
+    const RESOLUTION_DONE = "Done";
+    const RESOLUTION_WONT_DO = "Won`t done";
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

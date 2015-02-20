@@ -19,6 +19,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Status
 {
+    const STATUS_OPEN = "Open";
+    const STATUS_IN_PROGRESS = "In progress";
+    const STATUS_CLOSED = "Closed";
+
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
