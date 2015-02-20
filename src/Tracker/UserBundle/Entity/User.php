@@ -17,10 +17,25 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User
 {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string", length=50, unique=true)
+     */
     protected $email;
+
     protected $username;
+
     protected $fulName;
+
     protected $avatar;
+
     protected $password;
+
     protected $roles;
 }

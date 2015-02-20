@@ -69,19 +69,19 @@ class Issue
     protected $resolution;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
      **/
     protected $reporter;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
      **/
     protected $assignee;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinTable(name="issue_collaborator",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")}
@@ -103,7 +103,7 @@ class Issue
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Tracker\ProjectBundle\Project")
+     * @ORM\ManyToOne(targetEntity="\Tracker\ProjectBundle\Entity\Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      **/
     protected $project;

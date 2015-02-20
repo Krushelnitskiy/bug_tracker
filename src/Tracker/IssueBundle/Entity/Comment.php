@@ -19,8 +19,16 @@ use Tracker\UserBundle\Entity\User;
  */
 class Comment
 {
+
     /**
-     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      **/
     protected $author;

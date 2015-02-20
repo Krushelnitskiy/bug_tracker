@@ -16,7 +16,7 @@ use Tracker\UserBundle\Entity\User;
  * Class Project
  * @package Tracker\ProjectBundle\Entity
  * @ORM\Entity
- * @ORM\Table(name="product")
+ * @ORM\Table(name="project")
  */
 class Project
 {
@@ -39,12 +39,12 @@ class Project
 
     /**
      *
-     * @ORM\Column(type="text", length=100, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     protected $code;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinTable(name="projects_users",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")}
