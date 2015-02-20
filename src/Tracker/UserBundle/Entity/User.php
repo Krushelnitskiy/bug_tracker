@@ -8,6 +8,7 @@
 namespace Tracker\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * Class Project
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @ORM\Column(type="integer")
@@ -24,18 +25,9 @@ class User
      */
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=50, unique=true)
-     */
-    protected $email;
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-    protected $username;
-
-    protected $fulName;
-
-    protected $avatar;
-
-    protected $password;
-
-    protected $roles;
 }

@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Tracker\IssueBundle\TrackerIssueBundle(),
             new Tracker\ActivitiesBundle\TrackerActivitiesBundle(),
             new Tracker\HomeBundle\TrackerHomeBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
