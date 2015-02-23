@@ -23,6 +23,8 @@ class LoadUserData extends AbstractFixture implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $password = 'test';
+
         $userAdmin = new User();
         $userAdmin->setUsername('admin');
         $userAdmin->setEmail('test@test.test');
