@@ -42,10 +42,10 @@ class LoadPriorityData extends AbstractFixture implements FixtureInterface
 
         $manager->flush();
 
-        $this->addReference("trivial", $priorityTrivial);
-        $this->addReference("minor", $priorityMinor);
-        $this->addReference("major", $priorityMajor);
-        $this->addReference("critical", $priorityCritical);
-        $this->addReference("blocker", $priorityBlocker);
+        $this->addReference("priority.trivial", $priorityTrivial);
+        $this->addReference("priority.minor", $priorityMinor);
+        $this->addReference("priority.major", $priorityMajor);
+        $this->addReference("priority.critical", $priorityCritical);
+        $this->addReference("priority.blocker", $priorityBlocker);
     }
 }

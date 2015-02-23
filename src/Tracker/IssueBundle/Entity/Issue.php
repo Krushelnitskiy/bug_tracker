@@ -58,7 +58,7 @@ class Issue
 
     /**
      * @ORM\ManyToOne(targetEntity="Status")
-     * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
      **/
     protected $status;
 
@@ -97,7 +97,7 @@ class Issue
 
     /**
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     protected $parent;
 
