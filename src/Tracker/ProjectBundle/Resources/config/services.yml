@@ -1,5 +1,5 @@
 services:
-    security.access.project_voter:
+    tracker.project.security.voter:
         class:      Tracker\ProjectBundle\Security\Authorization\Voter\ProjectVoter
         public:     false
         tags:

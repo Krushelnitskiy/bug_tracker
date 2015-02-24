@@ -104,7 +104,7 @@ class ProjectVoter implements VoterInterface
 
     public function userCanEdit(User $user)
     {
-        if ($user->hasRole('ROLE_ADMIN')) {
+        if ($user->hasRole('ROLE_ADMINISTRATOR')) {
             return true;
         }
         if ($user->hasRole('ROLE_MANAGER')) {
@@ -115,7 +115,7 @@ class ProjectVoter implements VoterInterface
 
     public function userCanCreate(User $user)
     {
-        if ($user->hasRole('ROLE_ADMIN')) {
+        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_ADMINISTRATOR')) {
             return true;
         }
         if ($user->hasRole('ROLE_MANAGER')) {

@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\ProjectBundle\Form\ProjectType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * Project controller.
  *
@@ -97,7 +98,8 @@ class DefaultController extends Controller
      */
     public function newAction()
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('create')) {
+//        var_dump($this->get('security.authorization_checker'));exit;
+        if (false === $this->get('security.authorization_checker')->isGranted('create', new Project())) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
