@@ -30,6 +30,25 @@ class Activity
      */
     protected $event;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    protected $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\IssueBundle\Entity\Issue")
+     * @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
+     **/
+    protected $issue;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\ProjectBundle\Entity\Project")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     **/
+    protected $project;
+
     /**
      * Get id
      *
@@ -61,5 +80,74 @@ class Activity
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Tracker\UserBundle\Entity\User $user
+     * @return Activity
+     */
+    public function setUser(\Tracker\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Tracker\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set issue
+     *
+     * @param \Tracker\IssueBundle\Entity\Issue $issue
+     * @return Activity
+     */
+    public function setIssue(\Tracker\IssueBundle\Entity\Issue $issue = null)
+    {
+        $this->issue = $issue;
+
+        return $this;
+    }
+
+    /**
+     * Get issue
+     *
+     * @return \Tracker\IssueBundle\Entity\Issue 
+     */
+    public function getIssue()
+    {
+        return $this->issue;
+    }
+
+    /**
+     * Set project
+     *
+     * @param \Tracker\ProjectBundle\Entity\Project $project
+     * @return Activity
+     */
+    public function setProject(\Tracker\ProjectBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Tracker\ProjectBundle\Entity\Project 
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }
