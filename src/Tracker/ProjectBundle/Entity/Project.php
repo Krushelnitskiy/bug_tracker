@@ -170,4 +170,9 @@ class Project
     {
         return $this->members;
     }
+
+    public function __toString()
+    {
+        return $this->label;
+    }
 }

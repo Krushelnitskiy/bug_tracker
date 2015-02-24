@@ -6,7 +6,7 @@
  * Time: 18:58
  */
 
-namespace Tracker\ProjectBundle\Security\Authorization\Voter;
+namespace Tracker\IssueBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\UserBundle\Entity\User;
 
-class ProjectVoter implements VoterInterface
+class IssueVoter implements VoterInterface
 {
     const VIEW = 'view';
     const EDIT = 'edit';
@@ -32,7 +32,7 @@ class ProjectVoter implements VoterInterface
 
     public function supportsClass($class)
     {
-        $supportedClass = 'Tracker\ProjectBundle\Entity\Project';
+        $supportedClass = 'Tracker\IssueBundle\Entity\Issue';
 
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
     }
@@ -42,6 +42,7 @@ class ProjectVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $issue, array $attributes)
     {
+
         if (!$this->supportsClass(get_class($issue))) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
@@ -82,12 +83,12 @@ class ProjectVoter implements VoterInterface
                 break;
         }
 
-        return VoterInterface::ACCESS_DENIED;
+        return  VoterInterface::ACCESS_DENIED;
     }
 
-    public function userCanView(User $user, $project)
+    public function userCanView(User $user, $issue)
     {
-        if ($user->hasRole("ROLE_ADMINISTRATOR")) {
+        if ($user->hasRole("ROLE_ADMIN") || $user->hasRole('ROLE_ADMINISTRATOR')) {
             return true;
         }
 
@@ -95,25 +96,14 @@ class ProjectVoter implements VoterInterface
             return true;
         }
 
-        if ($user->hasRole("ROLE_OPERATOR") && $project->getMembers()->contains($user)) {
+        if ($user->hasRole("ROLE_OPERATOR") && $issue->getProject()->getMembers()->contains($user)) {
             return true;
         }
 
         return false;
     }
 
-    public function userCanEdit(User $user)
-    {
-        if ($user->hasRole('ROLE_ADMINISTRATOR')) {
-            return true;
-        }
-        if ($user->hasRole('ROLE_MANAGER')) {
-            return true;
-        }
-        return false;
-    }
-
-    public function userCanCreate(User $user)
+    public function userCanEdit(User $user, $issue)
     {
         if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_ADMINISTRATOR')) {
             return true;
@@ -121,6 +111,29 @@ class ProjectVoter implements VoterInterface
         if ($user->hasRole('ROLE_MANAGER')) {
             return true;
         }
+
+        if ($user->hasRole("ROLE_OPERATOR") && $issue->getProject()->getMembers()->contains($user)) {
+            return true;
+        }
+
+
+        return false;
+    }
+
+    public function userCanCreate(User $user, $issue)
+    {
+        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_ADMINISTRATOR')) {
+            return true;
+        }
+        if ($user->hasRole('ROLE_MANAGER')) {
+            return true;
+        }
+
+        if ($user->hasRole("ROLE_OPERATOR") && $issue->getProject()->getMembers()->contains($user)) {
+            return true;
+        }
+
+
         return false;
     }
 }

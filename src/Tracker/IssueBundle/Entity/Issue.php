@@ -537,4 +537,9 @@ class Issue
     {
         return $this->comment;
     }
+
+    public function __toString()
+    {
+        return $this->getSummary();
+    }
 }

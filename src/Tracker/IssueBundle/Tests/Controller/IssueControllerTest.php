@@ -4,10 +4,8 @@ namespace Tracker\IssueBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class IssueControllerTest extends WebTestCase
 {
-
-
     /*
     public function testCompleteScenario()
     {
