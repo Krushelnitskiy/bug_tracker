@@ -3,11 +3,55 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+
+        {% block stylesheets %}
+            <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
+        {% endblock %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <nav class="container">
+            <div class="row">
+                <div class="pull-left">
+                    {% block logo %}
+                        <h1><a href="/">Tracker</a></h1>
+                    {% endblock logo %}
+                </div>
+
+
+                {% block menu %}
+                {% endblock menu%}
+
+                <div class="pull-right">
+                {% block auth %}
+                    <div>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <p> Username: <a href="{{ path("fos_user_profile_edit") }}">{{ app.user.username }}</a></p>
+
+                            <a href="{{ path("fos_user_security_logout") }}">Log out</a>
+                        {% else %}
+                            {% render url('fos_user_security_login') %}
+                            <a href="{{ path("fos_user_registration_register") }}">Sign up</a>
+                        {% endif %}
+                    </div>
+                {% endblock auth %}
+                </div>
+            </div>
+        </nav>
+
+        {% block body %}
+            {% block header %}
+            {% endblock %}
+
+            {% block content %}
+            {% endblock %}
+
+            {% block footer %}
+            {% endblock %}
+        {% endblock %}
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>

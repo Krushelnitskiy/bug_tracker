@@ -19,6 +19,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Priority
 {
+    const PRIORITY_TRIVIAL = "Trivial";
+    const PRIORITY_MINOR = "Minor";
+    const PRIORITY_MAJOR = "Major";
+    const PRIORITY_CRITICAL = "Critical";
+    const PRIORITY_BLOCKER = "Blocker";
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -36,7 +42,7 @@ class Priority
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -59,9 +65,14 @@ class Priority
     /**
      * Get value
      *
-     * @return string 
+     * @return string
      */
     public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function __toString()
     {
         return $this->value;
     }

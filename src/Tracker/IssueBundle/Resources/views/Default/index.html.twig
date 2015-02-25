@@ -2,8 +2,8 @@
 
 {% block body -%}
     <h1>Issue list</h1>
-
-    <table class="records_list">
+    <div class="container">
+    <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -38,7 +38,7 @@
         {% endfor %}
         </tbody>
     </table>
-
+    </div>
         <ul>
         <li>
             <a href="{{ path('issue_new') }}">

@@ -19,6 +19,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Resolution
 {
+    const RESOLUTION_FIXED = "Fixed";
+    const RESOLUTION_WONT_FIX = "Won`t fix";
+    const RESOLUTION_DONE = "Done";
+    const RESOLUTION_WONT_DO = "Won`t done";
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -36,7 +41,7 @@ class Resolution
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -59,9 +64,14 @@ class Resolution
     /**
      * Get value
      *
-     * @return string 
+     * @return string
      */
     public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function __toString()
     {
         return $this->value;
     }

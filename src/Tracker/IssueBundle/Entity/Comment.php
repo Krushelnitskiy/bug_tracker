@@ -111,4 +111,14 @@ class Comment
     {
         return $this->author;
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

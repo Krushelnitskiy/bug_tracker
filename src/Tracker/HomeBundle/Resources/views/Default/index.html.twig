@@ -1,1 +1,39 @@
-Hello {{ name }}!
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    {{ 'layout.title'|trans }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                {% block issues %}
+                    <h2>{{ 'layout.listIssue.title'|trans }}</h2>
+                    <ul>
+                        {% for issue in issues %}
+                            <li>
+                                {% include 'TrackerHomeBundle:Default:issue.html.twig' with { 'issue': issue } %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endblock issues %}
+            </div>
+
+            <div class="col-md-6">
+                <h2>{{ 'layout.listActivities.title'|trans }}</h2>
+                {% block activities %}
+                    <ul>
+                        {% for activity in activities %}
+                            <li>
+                                {% include 'TrackerHomeBundle:Default:activity.html.twig' with { 'activity': activity } %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endblock activities %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

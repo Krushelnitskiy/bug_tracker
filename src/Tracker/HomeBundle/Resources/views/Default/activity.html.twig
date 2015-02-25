@@ -1,1 +1,9 @@
-sss
+<p>
+project <a href="{{ path('project_show', {"id":activity.project.id} ) }}">{{ activity.project.code }} {{ activity.project.label }}</a>
+</p>
+<p>
+issue <a href="{{ path('issue_show', {"id":activity.issue.id} ) }}">{{ activity.issue.code }} {{ activity.issue.summary }}</a>
+</p>
+<p>
+событие {{ activity.event }}
+</p>

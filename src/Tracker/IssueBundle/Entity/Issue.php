@@ -16,7 +16,7 @@ use Tracker\ProjectBundle\Entity\Project;
 /**
  * Class Issue
  * @package Tracker\IssueBundle\Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Tracker\IssueBundle\Entity\IssueRepository")
  * @ORM\Table(name="issue")
  */
 class Issue
