@@ -1,0 +1,6 @@
+{% extends "::base.html.twig" %}
+
+{% block content %}
+    {% include "TrackerUserBundle:Profile:show_content.html.twig" %}
+    <a href="{{ path('fos_user_profile_edit') }}">Edit profile</a>
+{% endblock content %}

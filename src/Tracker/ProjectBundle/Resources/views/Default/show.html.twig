@@ -1,5 +1,9 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}
+  {{ 'project.project'|trans }} - {{ entity.label }}
+{% endblock title %}
+
 {% block body -%}
     <h1>Project</h1>
 

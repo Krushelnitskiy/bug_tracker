@@ -6,6 +6,7 @@
 
         {% block stylesheets %}
             <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css" />
         {% endblock %}
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -13,45 +14,54 @@
     </head>
     <body>
         <nav class="container">
-            <div class="row">
+            <div class="">
                 <div class="pull-left">
                     {% block logo %}
-                        <h1><a href="/">Tracker</a></h1>
+                        <div class="logo">
+                            <a href="/">Tracker</a>
+                        </div>
                     {% endblock logo %}
                 </div>
+                    {% block menu %}
+                        <div class="menu">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <a href="{{ path("project") }}">Projects</a> |
+                                <a href="{{ path("issue") }}">Issues</a>
+                            {% endif %}
+                        </div>
+                    {% endblock menu%}
 
+                    <div class="pull-right">
+                    {% block auth %}
+                        <div class="auth">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                {{ 'layout.logged_in_as'|trans }} <a href="{{ path("fos_user_profile_show") }}">{{ app.user.username }}</a>  |
+                                <a href="{{ path('fos_user_security_logout') }}">
+                                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endblock auth %}
 
-                {% block menu %}
-                {% endblock menu%}
-
-                <div class="pull-right">
-                {% block auth %}
-                    <div>
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <p> Username: <a href="{{ path("fos_user_profile_edit") }}">{{ app.user.username }}</a></p>
-
-                            <a href="{{ path("fos_user_security_logout") }}">Log out</a>
-                        {% else %}
-                            {% render url('fos_user_security_login') %}
-                            <a href="{{ path("fos_user_registration_register") }}">Sign up</a>
-                        {% endif %}
-                    </div>
-                {% endblock auth %}
                 </div>
             </div>
+
+
         </nav>
 
-        {% block body %}
-            {% block header %}
-            {% endblock %}
+        <div class="container">
+            {% block body %}
+                {% block header %}
+                {% endblock %}
 
-            {% block content %}
-            {% endblock %}
+                {% block content %}
 
-            {% block footer %}
-            {% endblock %}
-        {% endblock %}
+                {% endblock %}
 
+                {% block footer %}
+                {% endblock %}
+            {% endblock %}
+        </div>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

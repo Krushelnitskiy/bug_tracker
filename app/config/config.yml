@@ -76,3 +76,6 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: Tracker\UserBundle\Entity\User
+    registration:
+      form:
+        type: acme_user_registration

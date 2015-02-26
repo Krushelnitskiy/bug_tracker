@@ -16,21 +16,24 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $securityContext = $this->container->get('security.context');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            $em = $this->getDoctrine()->getEntityManager();
 
-        $em = $this->getDoctrine()->getEntityManager();
+            $issues = array();
+            $activity = array();
+            if ($user instanceof User) {
+                $issues = $em->getRepository('TrackerIssueBundle:Issue')->findByCollaborator($user);
+                $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByUser($user);
+            }
 
-        $issues = array();
-        $activity = array();
-
-        if ($user instanceof User) {
-            $issues = $em->getRepository('TrackerIssueBundle:Issue')->findByCollaborator($user);
-            $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByUser($user);
+            return array(
+                'issues' => $issues,
+                'activities'=>$activity
+            );
+        } else {
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
-
-        return array(
-            'issues' => $issues,
-            'activities'=>$activity
-        );
     }
 }

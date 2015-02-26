@@ -1,0 +1,5 @@
+services:
+    acme_user.registration.form.type:
+        class: Tracker\UserBundle\Form\RegistrationFormType
+        tags:
+            - { name: form.type, alias: acme_user_registration }

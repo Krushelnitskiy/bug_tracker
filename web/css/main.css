@@ -1,0 +1,43 @@
+nav {
+    background: #3B73AF;
+    color: #ffffff;
+    margin-bottom: 40px;
+}
+
+nav a {
+    color: #ffffff;
+}
+
+nav .logo{
+    margin-right: 15px;
+
+}
+
+nav .logo a{
+    font-size: 40px;
+}
+
+nav .auth {
+    line-height: 65px;
+}
+
+nav .menu {
+    float: left;
+    line-height: 65px;
+    font-size: 18px;
+}
+
+.block-with-title{
+    border: 1px solid #3B73AF;
+    margin: 20px;
+}
+
+.block-with-title h2 {
+    color: #ffffff;
+    background: #3B73AF;
+    margin: 0 0 10px 0;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+
