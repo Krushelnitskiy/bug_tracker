@@ -10,7 +10,7 @@
     <div class="container">
             <div class="row">
                 <div class="home-issue col-md-6">
-                    {% if issues|length > 10 %}
+                    {% if issues|length > 0 %}
                         <div class="block-with-title">
                             {% block issues %}
                                 <h2>{{ 'layout.listIssue.title'|trans }}</h2>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="home-activities col-md-6">
-                    {% if activities|length > 10 %}
+                    {% if activities|length > 0 %}
                         <div class="block-with-title">
                             <h2>{{ 'layout.listActivities.title'|trans }}</h2>
                             {% block activities %}
