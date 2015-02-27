@@ -1,16 +1,50 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Project edit</h1>
+    <h3>Project edit</h3>
 
-    {{ form(edit_form) }}
-
-        <ul class="record_actions">
-    <li>
+    <p>
         <a href="{{ path('project') }}">
             Back to the list
         </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    </p>
+
+    <form action="{{ path('project_update', {'id': entity.id}) }}" {{ form_enctype(edit_form) }} method="post" class="project_edit form-horizontal">
+
+        <input type="hidden" name="_method" value="PUT">
+        <div class="form-group">
+            {{ form_label(edit_form.label, null, {'label_attr': {'class' : 'col-sm-4 control-label'}}) }}
+
+            <div class="col-sm-6">
+                {{ form_widget(edit_form.label, { 'attr':  {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(edit_form.summary, null, {'label_attr': {'class' : 'col-sm-4 control-label'}}) }}
+            <div class="col-sm-6">
+                {{ form_widget(edit_form.summary, { 'attr':  {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(edit_form.code, null, {'label_attr': {'class' : 'col-sm-4 control-label'}}) }}
+            <div class="col-sm-6">
+                {{ form_widget(edit_form.code, { 'attr':  {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(edit_form.members, null, {'label_attr': {'class' : 'col-sm-4 control-label'}}) }}
+            <div class="col-sm-6">
+                {{ form_widget(edit_form.members, { 'attr':  {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-6">
+                <input type="submit" class="btn btn-default" value="{{ 'project.editPage.submit'|trans }}" />
+            </div>
+        </div>
+    </form>
 {% endblock %}

@@ -5,9 +5,19 @@
 {% endblock title %}
 
 {% block body -%}
-    <h1>Project</h1>
+    <h3>{{ "project.project"|trans }} - {{ entity.label }}</h3>
 
-    <table class="record_properties">
+    <p>
+        <a href="{{ path('project') }}">
+            Back to the list
+        </a>
+        |
+        <a href="{{ path('project_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </p>
+
+    <table class="record_properties table">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -28,17 +38,22 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('project') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('project_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <h3>Users</h3>
+    <table class="record_properties table-bordered table">
+        <thead>
+            <tr>
+                <td>{{ "project.view.users.username"|trans }}</td>
+                <td>{{ "project.view.users.email"|trans }}</td>
+            </tr>
+        </thead>
+        <tbody class="table-striped">
+        {% for member in entity.members %}
+            <tr>
+                <td>{{ member.username }}</td>
+                <td>{{ member.email }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

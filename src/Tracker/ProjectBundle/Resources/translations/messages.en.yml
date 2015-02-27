@@ -1,19 +1,43 @@
 project:
   project: 'Project'
+
   page: 'Project code'
+
   list: 'Projects list'
+
   create: 'Create Project'
+
   edit: 'Edit this project'
+
   createIssue: 'Create Issue'
+
   not_activity: 'Not Activity yet!'
+
   not_issues: 'No Issues yet!'
+
   management: 'Project Management'
+
   actions: "Actions"
+
+  grid:
+      code: 'Code'
+      label: 'Label'
+      summary: 'Summary'
+      actions: ""
   view:
     code: 'Code:'
     label: 'Label:'
     summary: 'Summary:'
     issues: 'Project issues:'
     activity: 'Project Activity:'
+    users:
+        username: "User name"
+        email: "Email"
+
+  editPage:
+      submit: "Save"
   validation:
     codde: 'This code is already in use.'
+  action:
+    edit: "Edit"
+    create: "Create a new project"

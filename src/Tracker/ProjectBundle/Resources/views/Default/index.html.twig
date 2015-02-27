@@ -1,46 +1,38 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}
+    {{ "project.list"|trans }}
+{% endblock title %}
+
 {% block body -%}
+    <h3>{{ 'project.list'|trans }}</h3>
 
-    <h1>{{ 'project.list'|trans }}</h1>
+    <ul>
+        <li>
+            <a href="{{ path('project_new') }}">
+                {{ "project.action.create"|trans }}
+            </a>
+        </li>
+    </ul>
 
-    <table class="records_list">
+    <table class="records_list table table-bordered">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>{{ 'project.view.label'|trans }}</th>
-                <th>{{ 'project.view.summary'|trans }}</th>
-                <th>{{ 'project.view.code'|trans }}</th>
-                <th>{{ 'project.actions'|trans }}</th>
+                <th>{{ 'project.grid.label'|trans }}</th>
+                <th>{{ 'project.grid.summary'|trans }}</th>
+                <th>{{ 'project.grid.code'|trans }}</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.label }}</td>
-                <td>{{ entity.summary }}</td>
-                <td>{{ entity.code }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('project_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('project_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
+                <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.label }}</a></td>
+                <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.summary }}</a></td>
+                <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.code }}</a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('project_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+{% endblock %}
