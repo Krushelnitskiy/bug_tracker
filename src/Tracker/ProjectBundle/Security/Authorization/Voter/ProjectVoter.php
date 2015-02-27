@@ -85,7 +85,7 @@ class ProjectVoter implements VoterInterface
         return VoterInterface::ACCESS_DENIED;
     }
 
-    public function userCanView(User $user, $project)
+    public function userCanView(User $user, Project $project)
     {
         if ($user->hasRole("ROLE_ADMINISTRATOR")) {
             return true;

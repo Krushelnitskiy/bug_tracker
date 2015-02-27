@@ -4,34 +4,45 @@ namespace Tracker\ProjectBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+use Doctrine\Common\DataFixtures\Loader;
+use Tracker\ProjectBundle\Tests\DataFixtures\ORM\LoadProjectData;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+
 class DefaultControllerTest extends WebTestCase
 {
-//    public function testIndex()
-//    {
-//        $client = static::createClient();
-//
-//        $crawler = $client->request('GET', '/hello/Fabien');
-//
-//        $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
-//    }
+    protected $referenceRepository;
 
-    public function testCreate()
+    public function setUp()
+    {
+        $client = self::createClient();
+        $container = $client->getKernel()->getContainer();
+        $entityManager = $container->get('doctrine')->getManager();
+
+        // Purge tables
+        $purger = new ORMPurger($entityManager);
+        $executor = new ORMExecutor($entityManager, $purger);
+        $executor->purge();
+
+        $loader = new Loader();
+
+        $fixtures = new LoadProjectData();
+        $loader->addFixture($fixtures);
+
+        $executor->execute($loader->getFixtures());
+        $this->referenceRepository = $executor->getReferenceRepository();
+    }
+
+    protected function getReference($referenceUID)
+    {
+        return $this->referenceRepository->getReference($referenceUID);
+    }
+
+    public function testShow()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/project/new');
-
-        $form = $crawler->selectButton('Create')
-            ->form(array(
-            'tracker_projectbundle_project[label]'  => 'label',
-            'tracker_projectbundle_project[summary]'  => 'summary',
-            'tracker_projectbundle_project[code]'  => 'code'))
-        ;
-
-        $form['tracker_projectbundle_project[members]']->select(array('25'));
-
-        $crawler = $client->submit($form);
-
-        $this->assertContains('label', $crawler->html());
+        $crawler = $client->request('GET', '/project/'.$this->getReference('project.first')->getCode());
+        $this->assertContains($this->getReference('project.first')->getLabel(), $crawler->html());
     }
 
 //    public function testIndex()
