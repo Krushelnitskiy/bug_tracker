@@ -19,6 +19,8 @@ project:
 
   actions: "Actions"
 
+  back: "Back to the list"
+
   grid:
       code: 'Code'
       label: 'Label'

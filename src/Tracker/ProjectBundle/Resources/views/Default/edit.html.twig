@@ -1,50 +1,15 @@
 {% extends '::base.html.twig' %}
 
+{% form_theme edit_form 'TrackerProjectBundle:Form:fields.html.twig' %}
+
 {% block body -%}
-    <h3>Project edit</h3>
+    <h3>{{ "project.edit"|trans }}</h3>
 
     <p>
         <a href="{{ path('project') }}">
-            Back to the list
+            {{ "project.back"|trans }}
         </a>
     </p>
 
-    <form action="{{ path('project_update', {'id': entity.id}) }}" {{ form_enctype(edit_form) }} method="post" class="project_edit form-horizontal">
-
-        <input type="hidden" name="_method" value="PUT">
-        <div class="form-group">
-            {{ form_label(edit_form.label, null, {'label_attr': {'class' : 'col-sm-4 control-label'}}) }}
-
-            <div class="col-sm-6">
-                {{ form_widget(edit_form.label, { 'attr':  {'class': 'form-control'}}) }}
-            </div>
-        </div>
-
-        <div class="form-group">
-            {{ form_label(edit_form.summary, null, {'label_attr': {'class' : 'col-sm-4 control-label'}}) }}
-            <div class="col-sm-6">
-                {{ form_widget(edit_form.summary, { 'attr':  {'class': 'form-control'}}) }}
-            </div>
-        </div>
-
-        <div class="form-group">
-            {{ form_label(edit_form.code, null, {'label_attr': {'class' : 'col-sm-4 control-label'}}) }}
-            <div class="col-sm-6">
-                {{ form_widget(edit_form.code, { 'attr':  {'class': 'form-control'}}) }}
-            </div>
-        </div>
-
-        <div class="form-group">
-            {{ form_label(edit_form.members, null, {'label_attr': {'class' : 'col-sm-4 control-label'}}) }}
-            <div class="col-sm-6">
-                {{ form_widget(edit_form.members, { 'attr':  {'class': 'form-control'}}) }}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-6">
-                <input type="submit" class="btn btn-default" value="{{ 'project.editPage.submit'|trans }}" />
-            </div>
-        </div>
-    </form>
+    {{ form(edit_form, {'attr':{'class':"form-horizontal"}}) }}
 {% endblock %}
