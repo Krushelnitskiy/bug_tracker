@@ -9,12 +9,14 @@
 namespace Tracker\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Tracker\UserBundle\Entity\User;
 
 /**
  * Class Project
  * @package Tracker\ProjectBundle\Entity
- * @ORM\Entity
- * @ORM\Table(name="product")
+ * @ORM\Entity(repositoryClass="Tracker\ProjectBundle\Entity\ProjectRepository")
+ * @ORM\Table(name="project")
  */
 class Project
 {
@@ -37,12 +39,12 @@ class Project
 
     /**
      *
-     * @ORM\Column(type="text", length=100, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     protected $code;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\User")
+     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinTable(name="projects_users",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")}
@@ -54,13 +56,13 @@ class Project
      */
     public function __construct()
     {
-        $this->members = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -83,7 +85,7 @@ class Project
     /**
      * Get label
      *
-     * @return string 
+     * @return string
      */
     public function getLabel()
     {
@@ -106,7 +108,7 @@ class Project
     /**
      * Get summary
      *
-     * @return string 
+     * @return string
      */
     public function getSummary()
     {
@@ -129,7 +131,7 @@ class Project
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -139,10 +141,10 @@ class Project
     /**
      * Add members
      *
-     * @param \Tracker\UserBundle\User $members
+     * @param \Tracker\UserBundle\Entity\User $members
      * @return Project
      */
-    public function addMember(\Tracker\UserBundle\User $members)
+    public function addMember(User $members)
     {
         $this->members[] = $members;
 
@@ -152,9 +154,9 @@ class Project
     /**
      * Remove members
      *
-     * @param \Tracker\UserBundle\User $members
+     * @param \Tracker\UserBundle\Entity\User $members
      */
-    public function removeMember(\Tracker\UserBundle\User $members)
+    public function removeMember(User $members)
     {
         $this->members->removeElement($members);
     }
@@ -162,10 +164,15 @@ class Project
     /**
      * Get members
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMembers()
     {
         return $this->members;
+    }
+
+    public function __toString()
+    {
+        return $this->label;
     }
 }

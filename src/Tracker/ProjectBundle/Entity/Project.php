@@ -15,7 +15,7 @@ use Tracker\UserBundle\Entity\User;
 /**
  * Class Project
  * @package Tracker\ProjectBundle\Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Tracker\ProjectBundle\Entity\ProjectRepository")
  * @ORM\Table(name="project")
  */
 class Project

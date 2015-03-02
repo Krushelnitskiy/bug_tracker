@@ -87,15 +87,15 @@ class ProjectVoter implements VoterInterface
 
     public function userCanView(User $user, Project $project)
     {
-        if ($user->hasRole("ROLE_ADMINISTRATOR")) {
+        if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
 
-        if ($user->hasRole("ROLE_MANAGER")) {
+        if ($user->hasRole(User::ROLE_MANAGER)) {
             return true;
         }
 
-        if ($user->hasRole("ROLE_OPERATOR") && $project->getMembers()->contains($user)) {
+        if ($user->hasRole(User::ROLE_OPERATOR) && $project->getMembers()->contains($user)) {
             return true;
         }
 
@@ -104,10 +104,10 @@ class ProjectVoter implements VoterInterface
 
     public function userCanEdit(User $user)
     {
-        if ($user->hasRole('ROLE_ADMINISTRATOR')) {
+        if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
-        if ($user->hasRole('ROLE_MANAGER')) {
+        if ($user->hasRole(User::ROLE_MANAGER)) {
             return true;
         }
         return false;
@@ -115,10 +115,10 @@ class ProjectVoter implements VoterInterface
 
     public function userCanCreate(User $user)
     {
-        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_ADMINISTRATOR')) {
+        if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
-        if ($user->hasRole('ROLE_MANAGER')) {
+        if ($user->hasRole(User::ROLE_MANAGER)) {
             return true;
         }
         return false;

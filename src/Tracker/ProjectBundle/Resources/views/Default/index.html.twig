@@ -24,11 +24,12 @@
         </thead>
         <tbody>
         {% for entity in entities %}
+            {% set pathProject = path('project_show', { 'projectId': entity.id }) %}
             <tr>
-                <td><a href="{{ path('project_show', { 'projectId': entity.id }) }}">{{ entity.id }}</a></td>
-                <td><a href="{{ path('project_show', { 'projectId': entity.id }) }}">{{ entity.label }}</a></td>
-                <td><a href="{{ path('project_show', { 'projectId': entity.id }) }}">{{ entity.summary }}</a></td>
-                <td><a href="{{ path('project_show', { 'projectId': entity.id }) }}">{{ entity.code }}</a></td>
+                <td><a href="{{ pathProject }}">{{ entity.id }}</a></td>
+                <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
+                <td><a href="{{ pathProject }}">{{ entity.summary }}</a></td>
+                <td><a href="{{ pathProject }}">{{ entity.code }}</a></td>
             </tr>
         {% endfor %}
         </tbody>

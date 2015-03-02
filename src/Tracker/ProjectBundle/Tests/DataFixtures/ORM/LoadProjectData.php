@@ -22,7 +22,7 @@ class LoadProjectData extends AbstractFixture implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         $project = new Project();
-        $project->setCode('1');
+        $project->setCode('11');
         $project->setLabel('First project');
         $project->setSummary('First project with test data');
 

@@ -21,3 +21,9 @@ doctrine:
         dbname:   tracker_test
         user:     root
         password: qwerty
+
+        # app/config/config_test.yml
+security:
+    firewalls:
+        main:
+            http_basic: ~

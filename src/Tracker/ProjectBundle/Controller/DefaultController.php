@@ -50,6 +50,8 @@ class DefaultController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+
+
         if ($form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($entity);
@@ -92,7 +94,6 @@ class DefaultController extends Controller
      */
     public function newAction()
     {
-//        var_dump($this->get('security.authorization_checker'));exit;
         if (false === $this->get('security.authorization_checker')->isGranted('create', new Project())) {
             throw new AccessDeniedException('Unauthorised access!');
         }
@@ -117,10 +118,13 @@ class DefaultController extends Controller
      */
     public function showAction($projectId)
     {
+        if (false === $this->get('security.authorization_checker')->isGranted('view', new Project())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TrackerProjectBundle:Project')->findByCode($projectId);
-        $entity = $entity[0];
+        $entity = $em->getRepository('TrackerProjectBundle:Project')->find($projectId);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Project entity.');
@@ -145,6 +149,10 @@ class DefaultController extends Controller
      */
     public function editAction($projectId)
     {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', new Project())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $entity = $entityManager->getRepository('TrackerProjectBundle:Project')->find($projectId);
@@ -172,6 +180,10 @@ class DefaultController extends Controller
      */
     private function createEditForm(Project $entity)
     {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', new Project())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $form = $this->createForm(new ProjectType(), $entity, array(
             'action' => $this->generateUrl('project_update', array('projectId' => $entity->getId())),
             'method' => 'PUT',
@@ -194,8 +206,11 @@ class DefaultController extends Controller
      */
     public function updateAction(Request $request, $projectId)
     {
-        $entityManager = $this->getDoctrine()->getManager();
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', new Project())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
 
+        $entityManager = $this->getDoctrine()->getManager();
         $entity = $entityManager->getRepository('TrackerProjectBundle:Project')->find($projectId);
 
         if (!$entity) {
@@ -206,10 +221,11 @@ class DefaultController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
+
         if ($editForm->isValid()) {
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('project_edit', array('projectId' => $projectId)));
+            return $this->redirect($this->generateUrl('project_show', array('projectId' => $entity->getId())));
         }
 
         return array(
