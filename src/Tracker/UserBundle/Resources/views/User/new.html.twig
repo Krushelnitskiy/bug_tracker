@@ -3,18 +3,17 @@
 {% form_theme form 'TrackerProjectBundle:Form:fields.html.twig' %}
 
 {% block body -%}
-    <h3>{{ "project.create"|trans }}</h3>
+    <h3>{{ "user.create"|trans }}</h3>
 
     <ul class="record_actions">
         <li>
-            <a href="{{ path('project') }}">
-                {{ "project.back"|trans }}
+            <a href="{{ path('user') }}">
+                {{ "user.back"|trans }}
 
             </a>
         </li>
     </ul>
 
     {{ form(form, {'attr':{'class':"form-horizontal"}}) }}
-
 
 {% endblock %}

@@ -43,6 +43,28 @@ class UserController extends Controller
     }
 
     /**
+     * Displays a form to create a new Project entity.
+     *
+     * @Route("/new", name="user_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newAction()
+    {
+        if (false === $this->get('security.authorization_checker')->isGranted('create', new User())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $entity = new User();
+        $form   = $this->createCreateForm($entity);
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+    }
+
+    /**
      * Finds and displays a User entity.
      *
      * @Route("/{id}", name="user_show")
@@ -132,7 +154,7 @@ class UserController extends Controller
      *
      * @Route("/{userId}", name="user_update")
      * @Method("PUT")
-     * @Template("TrackerUserBundle:Default:edit.html.twig")
+     * @Template("TrackerUserBundle:User:edit.html.twig")
      */
     public function updateAction(Request $request, $userId)
     {
@@ -152,10 +174,11 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
 
+
         if ($editForm->isValid()) {
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('userId' => $entity->getId())));
+            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -164,4 +187,55 @@ class UserController extends Controller
 //            'delete_form' => $deleteForm->createView(),
         );
     }
+
+    /**
+     * Creates a form to create a Project entity.
+     *
+     * @param User $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(user $entity)
+    {
+        $form = $this->createForm(new UserType(), $entity, array(
+            'action' => $this->generateUrl('user_create'),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Create'));
+
+        return $form;
+    }
+
+    /**
+     * Creates a new Project entity.
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return array
+     *
+     * @Route("/", name="user_create")
+     * @Method("POST")
+     * @Template("TrackeruserBundle:User:new.html.twig")
+     */
+    public function createAction(Request $request)
+    {
+        $entity = new User();
+        $form = $this->createCreateForm($entity);
+        $form->handleRequest($request);
+
+
+
+        if ($form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($entity);
+            $entityManager->flush();
+
+            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+        }
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+    }
+
 }

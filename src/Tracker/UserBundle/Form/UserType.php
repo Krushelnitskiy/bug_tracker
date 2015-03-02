@@ -46,7 +46,8 @@ class UserType extends AbstractType
 //            'label' => 'form.password_confirmation',
 //        ));
 
-        $attrRole = array_merge($attributeDefault,
+        $attrRole = array_merge(
+            $attributeDefault,
             array(
                 'choices' => array(
                     'ROLE_ADMIN' => 'role.admin',
@@ -73,6 +74,7 @@ class UserType extends AbstractType
                 'invalid_message' => 'fos_user.password.mismatch',
             ))
             ->add('roles', 'choice', $attrRole)
+            ->add('enabled', 'checkbox', $attributeDefault)
         ;
 
 
