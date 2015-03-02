@@ -3,3 +3,9 @@ services:
         class: Tracker\UserBundle\Form\RegistrationFormType
         tags:
             - { name: form.type, alias: acme_user_registration }
+
+    tracker.user.security.voter:
+        class:      Tracker\UserBundle\Security\Authorization\Voter\UserVoter
+        public:     false
+        tags:
+            - { name: security.voter }

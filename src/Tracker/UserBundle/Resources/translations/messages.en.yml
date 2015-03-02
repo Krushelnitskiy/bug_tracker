@@ -1,0 +1,10 @@
+user:
+  user: "User"
+  back: "Back to the list"
+  list: "Users list"
+  grid:
+    id: "Id"
+    username: "User name"
+    email: "Email"
+    lastLogin: "Last login"
+    enabled: "Enable"

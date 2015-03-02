@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h3>{{ "user.user"|trans }}</h3>
+
+    <p>
+        <a href="{{ path('user') }}">
+            {{ "user.back"|trans }}
+        </a> |
+        <a href="{{ path("user_edit", {userId: entity.id}) }}">
+            {{ "user.edit"|trans }}
+        </a>
+    </p>
+
+    <table class="record_properties table">
+        <tbody>
+            <tr>
+                <th>{{ "user.grid.id"|trans }}</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+
+            <tr>
+                <th>{{ "user.grid.username"|trans }}</th>
+                <td>{{ entity.username }}</td>
+            </tr>
+
+            <tr>
+                <th>{{ "user.grid.email"|trans }}</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+
+            <tr>
+                <th>{{ "user.grid.lastLogin"|trans }}</th>
+                <td>{{ entity.lastLogin|date("d.m.Y") }}</td>
+            </tr>
+
+            <tr>
+                <th>{{ "user.grid.enabled"|trans }}</th>
+                <td>{{ entity.enabled }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}
