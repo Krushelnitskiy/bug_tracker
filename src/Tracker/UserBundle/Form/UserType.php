@@ -5,6 +5,7 @@ namespace Tracker\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 
 class UserType extends AbstractType
 {
@@ -61,6 +62,32 @@ class UserType extends AbstractType
             )
         );
 
+        $attrEnabled = array_merge(
+            $attributeDefault,
+            array(
+                'choices' => array(
+                    '1' => 'Enable',
+                    '0' => 'Disable',
+                ),
+                'label' => 'Enabled',
+//                'expanded' => true,
+//                'multiple' => true,
+//                'mapped' => true,
+            )
+//            array( 'choice_list' =>
+//                new ChoiceList(array(1, 0.5), array('Full', 'Half')),
+//                'expanded'=>true
+//            )
+        );
+
+        $attrPasswordFirst = array_merge($attributeDefault, array(
+            'label' => 'form.password',
+        ));
+
+        $attrPasswordSecond = array_merge($attributeDefault, array(
+            'label' => 'form.password_confirmation',
+        ));
+
 
         $builder
             ->add('email', 'email', $attributeDefault)
@@ -69,19 +96,13 @@ class UserType extends AbstractType
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',
                 'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => $attributeDefault,
-                'second_options' => $attributeDefault,
+                'first_options' => $attrPasswordFirst,
+                'second_options' => $attrPasswordSecond,
                 'invalid_message' => 'fos_user.password.mismatch',
             ))
             ->add('roles', 'choice', $attrRole)
-            ->add('enabled', 'checkbox', $attributeDefault)
+            ->add('enabled', 'choice', $attrEnabled)
         ;
-
-
-
-
-
-
     }
 
     /**

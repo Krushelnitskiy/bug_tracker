@@ -85,3 +85,35 @@
     {%- endif -%}
     <button type="{{ type|default('button') }}" class="btn btn-default" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
 {%- endblock button_widget -%}
+
+{%- block email_widget -%}
+    <div class="col-sm-6">
+        {%- set type = type|default('email') -%}
+        {{ block('form_widget_simple') }}
+    </div>
+{%- endblock email_widget -%}
+
+{%- block checkbox_widget -%}
+    {#<div class="col-sm-6">#}
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    {#</div>#}
+{%- endblock checkbox_widget -%}
+
+{%- block password_widget -%}
+    <div class="col-sm-6">
+        {%- set type = type|default('password') -%}
+        {{ block('form_widget_simple') }}
+    </div>
+{%- endblock password_widget -%}
+
+{%- block choice_widget -%}
+
+    {% if expanded %}
+        <div class="col-sm-6">
+            {{- block('choice_widget_expanded') -}}
+        </div>
+    {% else %}
+        {{- block('choice_widget_collapsed') -}}
+    {% endif %}
+
+{%- endblock choice_widget -%}

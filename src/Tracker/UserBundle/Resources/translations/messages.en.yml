@@ -1,7 +1,17 @@
 user:
-  user: "User"
-  back: "Back to the list"
-  list: "Users list"
+  page:
+    list:
+      title: "Users list"
+    create:
+      title: "Create User"
+    edit:
+      title: "Edit user"
+    user:
+      title: "User"
+  action:
+    create: "Create new user"
+    edit: "Edit"
+    backToList: "Back to the list"
   grid:
     id: "Id"
     username: "User name"
