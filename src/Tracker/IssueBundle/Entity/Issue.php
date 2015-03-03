@@ -75,17 +75,14 @@ class Issue
     protected $reporter;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="assignedIssue")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
      **/
     protected $assignee;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User")
-     * @ORM\JoinTable(name="issue_collaborator",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")}
-     *      )
+     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="issue")
+     * @ORM\JoinTable(name="issue_collaborator")
      **/
     protected $collaborators;
 

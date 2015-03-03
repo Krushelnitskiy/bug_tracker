@@ -6,10 +6,13 @@
     <p>
         <a href="{{ path('user') }}">
             {{ "user.action.backToList"|trans }}
-        </a> |
-        <a href="{{ path("user_edit", {userId: entity.id}) }}">
-            {{ "user.action.edit"|trans }}
         </a>
+        {% if is_granted('edit', entity) %}
+            |
+            <a href="{{ path("user_edit", {userId: entity.id}) }}">
+                {{ "user.action.edit"|trans }}
+            </a>
+        {% endif %}
     </p>
 
     <table class="record_properties table">
@@ -41,4 +44,21 @@
         </tbody>
     </table>
 
+
+    <div class="home-issue col-md-6">
+        {% if entity.assignedIssue|length > 0 %}
+            <div class="block-with-title">
+                    <h2>{{ 'layout.listIssue.title'|trans }}</h2>
+                    <ul>
+                        {% for issue in entity.assignedIssue %}
+                            <li>
+                                {% include 'TrackerHomeBundle:Default:issue.html.twig' with { 'issue': issue } %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                <a href="{{ path("issue") }}">{{ "layout.listIssue.linkToAll"|trans }}</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
