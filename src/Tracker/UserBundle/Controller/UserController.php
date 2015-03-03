@@ -104,17 +104,12 @@ class UserController extends Controller
         if (false === $this->get('security.authorization_checker')->isGranted('edit', new User())) {
             throw new AccessDeniedException('Unauthorised access!');
         }
-
         $entityManager = $this->getDoctrine()->getManager();
-
         $entity = $entityManager->getRepository('TrackerUserBundle:User')->find($userId);
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
-
         $editForm = $this->createEditForm($entity);
-//        $deleteForm = $this->createDeleteForm($userId);
 
         return array(
             'entity'      => $entity,
@@ -172,6 +167,7 @@ class UserController extends Controller
 //        $deleteForm = $this->createDeleteForm($projectId);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
+
 
 
 

@@ -5,7 +5,6 @@ namespace Tracker\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 
 class UserType extends AbstractType
 {
@@ -20,32 +19,6 @@ class UserType extends AbstractType
             'translation_domain' => 'FOSUserBundle',
             'attr'=>array('class'=> 'form-control')
         );
-
-//        $attribute = array(
-//            'translation_domain' => 'FOSUserBundle',
-//            'attr'=>array(
-//                'class'=>'form-control'
-//            ),
-//            'label_attr'=>array(
-//                'class'=>'col-sm-4 control-label'
-//            )
-//        );
-
-//        $attributeEmail = array_merge($attributeDefault, array(
-//            'label' => 'form.email',
-//        ));
-//
-//        $attributeUserName = array_merge($attributeDefault, array(
-//            'label' => 'form.username',
-//        ));
-//
-//        $attrPasswordFirst = array_merge($attributeDefault, array(
-//            'label' => 'form.password',
-//        ));
-//
-//        $attrPasswordSecond = array_merge($attributeDefault, array(
-//            'label' => 'form.password_confirmation',
-//        ));
 
         $attrRole = array_merge(
             $attributeDefault,
@@ -70,14 +43,7 @@ class UserType extends AbstractType
                     '0' => 'Disable',
                 ),
                 'label' => 'Enabled',
-//                'expanded' => true,
-//                'multiple' => true,
-//                'mapped' => true,
             )
-//            array( 'choice_list' =>
-//                new ChoiceList(array(1, 0.5), array('Full', 'Half')),
-//                'expanded'=>true
-//            )
         );
 
         $attrPasswordFirst = array_merge($attributeDefault, array(
