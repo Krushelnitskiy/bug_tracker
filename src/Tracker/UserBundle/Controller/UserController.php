@@ -34,7 +34,6 @@ class UserController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('TrackerUserBundle:User')->findAll();
 
         return array(
@@ -43,7 +42,7 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to create a new Project entity.
+     * Displays a form to create a new User entity.
      *
      * @Route("/new", name="user_new")
      * @Method("GET")
@@ -78,7 +77,6 @@ class UserController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('TrackerUserBundle:User')->find($id);
 
         if (!$entity) {
@@ -91,7 +89,7 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Project entity.
+     * Displays a form to edit an existing User entity.
      * @param $userId
      * @return array
      *
@@ -118,7 +116,7 @@ class UserController extends Controller
     }
 
     /**
-     * Creates a form to edit a Project entity.
+     * Creates a form to edit a User entity.
      *
      * @param User $entity The entity
      *
@@ -141,7 +139,7 @@ class UserController extends Controller
     }
 
     /**
-     * Edits an existing Project entity.
+     * Edits an existing User entity.
      * @param integer $userId,
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -164,12 +162,8 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-//        $deleteForm = $this->createDeleteForm($projectId);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-
-
-
 
         if ($editForm->isValid()) {
             $entityManager->flush();
@@ -180,12 +174,11 @@ class UserController extends Controller
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-//            'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Creates a form to create a Project entity.
+     * Creates a form to create a User entity.
      *
      * @param User $entity The entity
      *
@@ -204,7 +197,7 @@ class UserController extends Controller
     }
 
     /**
-     * Creates a new Project entity.
+     * Creates a new User entity.
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return array
      *
@@ -233,5 +226,4 @@ class UserController extends Controller
             'form'   => $form->createView(),
         );
     }
-
 }

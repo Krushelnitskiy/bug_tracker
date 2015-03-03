@@ -58,7 +58,6 @@ class UserType extends AbstractType
         $builder
             ->add('email', 'email', $attributeDefault)
             ->add('username', null, $attributeDefault)
-//            ->add('fullName')
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',
                 'options' => array('translation_domain' => 'FOSUserBundle'),
