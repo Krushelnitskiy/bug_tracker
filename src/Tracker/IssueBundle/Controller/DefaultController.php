@@ -7,10 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Tracker\IssueBundle\Entity\Comment;
 use Tracker\IssueBundle\Entity\Issue;
+use Tracker\IssueBundle\Form\IssueCommentType;
 use Tracker\IssueBundle\Form\IssueType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Issue controller.
@@ -136,10 +139,12 @@ class DefaultController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
+        $createCommentForm = $this->createCreateCommentForm(new Comment(), $id);
 
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'comment_form' => $createCommentForm->createView(),
         );
     }
 
@@ -229,6 +234,47 @@ class DefaultController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
+
+    /**
+     * Edits an existing Issue entity.
+     *
+     * @Route("/comment/{issue}", name="issue_comment_create")
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @Method("POST")
+     * @Template("TrackerIssueBundle:Issue:edit.html.twig")
+     */
+    public function createCommentAction(Request $request, Issue $issue)
+    {
+        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $entity = new Comment();
+        $form = $this->createCreateCommentForm($entity, $issue->getId());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $entity->setCreated(new \DateTime());
+            $author = $this->get('security.context')->getToken()->getUser();
+            $entity->setAuthor($author);
+            $entity->setIssue($issue);
+
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getIssue()->getId())));
+        }
+
+        return array(
+            'entity' => $entity->getIssue(),
+            'comment_form'   => $form->createView(),
+        );
+
+    }
+
     /**
      * Deletes a Issue entity.
      *
@@ -271,5 +317,24 @@ class DefaultController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
             ;
+    }
+
+    /**
+     * Creates a form to create a Issue entity.
+     *
+     * @param Issue $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateCommentForm(Comment $comment, $issueId)
+    {
+        $form = $this->createForm(new IssueCommentType(), $comment, array(
+            'action' => $this->generateUrl('issue_comment_create', array('issue'=>$issueId)),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Create'));
+
+        return $form;
     }
 }

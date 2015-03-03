@@ -1,0 +1,31 @@
+issue:
+  page:
+    list:
+      title: "Issue list"
+    create:
+      title: "Issue creation"
+    edit:
+      title: "Issue edit"
+    view:
+      title: "Issue"
+      collaborators: "Collaborators List"
+      subTask: "Sub tasks"
+      comment: "Comments"
+      sendComment: "Send comment"
+  action:
+    create: "Create a new entry"
+    edit: "Edit"
+    back: "Back to the list"
+  grid:
+    id: "Id"
+    summary: "Summary"
+    code: "Code"
+    description: "Description"
+    created: "Created"
+    updated: "Updated"
+    actions: "Actions"
+  comment:
+    grid:
+      body: "Message"
+      created: "Created"
+      author: "Author"

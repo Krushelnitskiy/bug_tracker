@@ -44,6 +44,12 @@ class Comment
     protected $created;
 
     /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\IssueBundle\Entity\Issue", inversedBy="comment")
+     * @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
+     **/
+    protected $issue;
+
+    /**
      * Set body
      *
      * @param string $body
@@ -120,5 +126,28 @@ class Comment
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set issue
+     *
+     * @param \Tracker\IssueBundle\Entity\Issue $issue
+     * @return Comment
+     */
+    public function setIssue(\Tracker\IssueBundle\Entity\Issue $issue = null)
+    {
+        $this->issue = $issue;
+
+        return $this;
+    }
+
+    /**
+     * Get issue
+     *
+     * @return \Tracker\IssueBundle\Entity\Issue 
+     */
+    public function getIssue()
+    {
+        return $this->issue;
     }
 }

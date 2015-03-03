@@ -1,48 +1,113 @@
 {% extends '::base.html.twig' %}
+{% form_theme comment_form 'TrackerProjectBundle:Form:fields.html.twig' %}
+
+{% block title %}
+    {{ "issue.page.view.title"|trans }}
+{% endblock title %}
 
 {% block body -%}
-    <h1>Issue</h1>
+    <h3>{{ "issue.page.view.title"|trans }}</h3>
 
-    <table class="record_properties">
+    <p>
+            <a href="{{ path('issue') }}">
+                {{ "issue.action.back"|trans }}
+            </a>
+
+            {%  if is_granted("edit", entity) %}
+                |
+
+                <a href="{{ path('issue_edit', { 'id': entity.id }) }}">
+                    {{ "issue.action.edit"|trans }}
+                </a>
+            {% endif %}
+
+            {% if entity.parent %}
+                |
+                <a href="{{ path('issue_show', { 'id': entity.parent.id }) }}">
+                    {{ entity.parent.code }} - {{ entity.parent.summary }}
+                </a>
+            {% endif %}
+    </p>
+
+    <table class="record_properties table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>{{ "issue.grid.id"|trans }}</th>
                 <td>{{ entity.id }}</td>
             </tr>
             <tr>
-                <th>Summary</th>
+                <th>{{ "issue.grid.summary"|trans }}</th>
                 <td>{{ entity.summary }}</td>
             </tr>
             <tr>
-                <th>Code</th>
+                <th>{{ "issue.grid.code"|trans }}</th>
                 <td>{{ entity.code }}</td>
             </tr>
             <tr>
-                <th>Description</th>
+                <th>{{ "issue.grid.description"|trans }}</th>
                 <td>{{ entity.description }}</td>
             </tr>
             <tr>
-                <th>Created</th>
-                <td>{{ entity.created|date('Y-m-d H:i:s') }}</td>
+                <th>{{ "issue.grid.created"|trans }}</th>
+                <td>{{ entity.created|date('d.m.Y') }}</td>
             </tr>
             <tr>
-                <th>Updated</th>
-                <td>{{ entity.updated|date('Y-m-d H:i:s') }}</td>
+                <th>{{ "issue.grid.updated"|trans }}</th>
+                <td>{{ entity.updated|date('d.m.Y') }}</td>
             </tr>
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('issue') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('issue_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    {% if entity.collaborators|length > 0 %}
+        <h4>{{ "issue.page.view.collaborators"|trans }}</h4>
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                </tr>
+            <thead>
+            <tbody>
+                {% for collaborator in entity.collaborators %}
+                    <tr>
+                        <td>{{ collaborator.username }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if entity.children|length > 0 %}
+        <h4>{{ "issue.page.view.subTask"|trans }}</h4>
+        {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'entities': entity.children } %}
+    {% endif %}
+
+    {% if entity.comment|length > 0 %}
+        <h4>{{ "issue.page.view.comment"|trans }}</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ "issue.comment.grid.body"|trans }}</th>
+                <th>{{ "issue.comment.grid.created"|trans }}</th>
+                <th>{{ "issue.comment.grid.author"|trans }}</th>
+            </tr>
+            <thead>
+            <tbody>
+            {% for comment in entity.comment %}
+                <tr>
+                    <td>{{ comment.body }}</td>
+                    <td>{{ comment.created|date("d.m.Y H:i:s") }}</td>
+                    <td>{{ comment.author.username }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    {% endif %}
+
+    <h4>{{ "issue.page.view.sendComment"|trans }}</h4>
+
+    {{ form(comment_form, {'attr':{'class':"form-horizontal"}}) }}
 {% endblock %}

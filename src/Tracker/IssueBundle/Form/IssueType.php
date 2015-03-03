@@ -14,22 +14,31 @@ class IssueType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('summary', 'text', array('attr' => array('class' => 'form-control')) )
-            ->add('code' , 'text', array('attr' => array('class' => 'form-control')))
-            ->add('description', null, array('attr' => array('class' => 'form-control')))
-            ->add('created',null, array('attr' => array('class' => 'form-control')))
-            ->add('updated',null, array('attr' => array('class' => 'form-control')))
-            ->add('type',null, array('attr' => array('class' => 'form-control')))
-            ->add('priority',null, array('attr' => array('class' => 'form-control')))
-            ->add('status' ,null, array('attr' => array('class' => 'form-control')))
-            ->add('resolution',null, array('attr' => array('class' => 'form-control')))
-            ->add('reporter',null, array('attr' => array('class' => 'form-control')))
-            ->add('assignee',null, array('attr' => array('class' => 'form-control')))
-            ->add('collaborators',null, array('attr' => array('class' => 'form-control')))
-            ->add('parent',null, array('attr' => array('class' => 'form-control')))
-            ->add('project',null, array('attr' => array('class' => 'form-control')))
+        $attribute = array (
+            'attr'=>array (
+                'class'=>'form-control'
+            ),
+            'label_attr'=>array (
+                'class'=>'col-sm-4 control-label'
+            ),
+        );
 
+        $builder
+            ->add('project', null, $attribute)
+            ->add('type', null, $attribute)
+
+            ->add('summary', 'text', $attribute)
+            ->add('priority', null, $attribute)
+
+            ->add('code', 'text', $attribute)
+            ->add('description', null, $attribute)
+
+//            ->add('status', null, $attribute)
+//            ->add('resolution', null, $attribute)
+            ->add('reporter', null, $attribute)
+            ->add('assignee', null, $attribute)
+//            ->add('collaborators', null, $attribute)
+//            ->add('parent', null, $attribute)
             ;
     }
     

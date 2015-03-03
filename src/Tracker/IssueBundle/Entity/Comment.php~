@@ -44,6 +44,12 @@ class Comment
     protected $created;
 
     /**
+     * @ORM\ManyToOne(targetEntity="\Tracker\IssueBundle\Entity\Issue", inversedBy="comment")
+     * @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
+     **/
+    protected $issue;
+
+    /**
      * Set body
      *
      * @param string $body
@@ -110,5 +116,15 @@ class Comment
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }
