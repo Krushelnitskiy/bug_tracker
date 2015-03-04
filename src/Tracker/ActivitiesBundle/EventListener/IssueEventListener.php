@@ -12,9 +12,36 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Tracker\ActivitiesBundle\Entity\Activity;
 use Tracker\IssueBundle\Entity\Issue;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IssueEventListener
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+    /**
+     * @param ContainerInterface $serviceContainer
+     */
+    public function __construct(ContainerInterface $serviceContainer)
+    {
+        $this->container = $serviceContainer;
+    }
+
+    public function prePersist(LifecycleEventArgs $eventArgs)
+    {
+        $issue = $eventArgs->getEntity();
+        if ($issue instanceof Issue) {
+            if (!$issue->getCollaborators()->contains($issue->getReporter())) {
+                $issue->getCollaborators()->add($issue->getReporter());
+            }
+
+            if (!$issue->getCollaborators()->contains($issue->getAssignee())) {
+                $issue->getCollaborators()->add($issue->getAssignee());
+            }
+        }
+    }
+
     /** @PostPersist */
     public function postPersist(LifecycleEventArgs $eventArgs)
     {
@@ -29,7 +56,6 @@ class IssueEventListener
                 $eventEntity->setEvent($issue->getStatus()->getValue());
                 $entityManager->persist($eventEntity);
                 $entityManager->flush();
-
         }
     }
 
@@ -39,6 +65,20 @@ class IssueEventListener
         $entityManager = $eventArgs->getEntityManager();
 
         if ($issue instanceof Issue) {
+            if ($eventArgs->hasChangedField('reporter')) {
+                if (!$issue->getCollaborators()->contains($issue->getReporter())) {
+                    $issue->getCollaborators()->add($issue->getReporter());
+                }
+            }
+
+            if ($eventArgs->hasChangedField('assignee')) {
+                if (!$issue->getCollaborators()->contains($issue->getAssignee())) {
+                    $issue->getCollaborators()->add($issue->getAssignee());
+                }
+            }
+
+            $user = $this->container->get('security.context')->getToken()->getUser();
+
             if ($eventArgs->hasChangedField('status')) {
                 $eventEntity = new Activity();
                 $eventEntity->setIssue($issue);
@@ -47,6 +87,10 @@ class IssueEventListener
                 $eventEntity->setEvent($issue->getStatus()->getValue());
                 $eventEntity->setEvent($eventArgs->getNewValue('status'));
                 $entityManager->persist($eventEntity);
+
+                if (!$issue->getCollaborators()->contains($user)) {
+                    $issue->getCollaborators()->add($user);
+                }
             }
         }
     }
