@@ -6,7 +6,7 @@
  * Time: 17:32
  */
 
-namespace Tracker\ProjectBundle\Tests\DataFixtures\ORM;
+namespace Tracker\TestBundle\Tests\DataFixtures\ORM;
 
 use Tracker\ProjectBundle\Entity\Project;
 

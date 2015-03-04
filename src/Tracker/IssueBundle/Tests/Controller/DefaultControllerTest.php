@@ -2,64 +2,74 @@
 
 namespace Tracker\IssueBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Tracker\TestBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
 
-    public function testIndex()
+    public function testViewList()
     {
-//        $client = static::createClient();
-//
-//        $crawler = $client->request('GET', '/hello/Fabien');
-//
-//        $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
-        $this->assertTrue('' =='');
-    }
-    /*
-    public function testCompleteScenario()
-    {
-        // Create a new client to browse the application
-        $client = static::createClient();
-
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/issue/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /issue/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
-
-        // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'tracker_issuebundle_issue[field_name]'  => 'Test',
-            // ... other fields to fill
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW'   => 'test',
         ));
 
+        $crawler = $client->request('GET', '/issue');
+        $crawler = $client->followRedirect();
+        $this->assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
+    }
+
+    public function testShow()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW'   => 'test',
+        ));
+
+        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
+        $this->assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
+    }
+
+    public function testCreate()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW'   => 'test',
+        ));
+
+        $crawler = $client->request('GET', '/issue/new');
+
+        $form = $crawler->selectButton('Create')->form();
+        $form['tracker_issuebundle_issue[project]'] = $this->getReference('project.first')->getId();
+        $form['tracker_issuebundle_issue[type]'] = $this->getReference('type.story')->getId();
+        $form['tracker_issuebundle_issue[summary]'] = 'issue test summary 1';
+        $form['tracker_issuebundle_issue[priority]'] = $this->getReference('priority.trivial')->getId();
+        $form['tracker_issuebundle_issue[code]'] = 'test-1';
+        $form['tracker_issuebundle_issue[description]'] = 'issue test description 1';
+        $form['tracker_issuebundle_issue[reporter]'] = $this->getReference('admin-user')->getId();
+        $form['tracker_issuebundle_issue[assignee]'] = $this->getReference('admin-user')->getId();
         $client->submit($form);
         $crawler = $client->followRedirect();
 
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
-
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
-
-        $form = $crawler->selectButton('Update')->form(array(
-            'tracker_issuebundle_issue[field_name]'  => 'Foo',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+        $this->assertContains('issue test summary 1', $crawler->html());
     }
 
-    */
+    public function testEdit()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW'   => 'test',
+        ));
+
+        $issueId = $this->getReference('issue.story')->getId();
+        $crawler = $client->request('GET', '/issue/'.$issueId.'/edit');
+
+        $form = $crawler->selectButton('Update')->form();
+        $form['tracker_issuebundle_issue[summary]'] = 'issue test summary 2';
+        $client->submit($form);
+
+        $crawler = $client->followRedirect();
+
+        $this->assertContains('issue test summary 2', $crawler->html());
+    }
 }

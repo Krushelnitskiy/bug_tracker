@@ -6,6 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CommentControllerTest extends WebTestCase
 {
+
+    public function testViewList()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW'   => 'test',
+        ));
+
+        $this->assertContains('Create new user', 'Create new user');
+    }
+
     /*
     public function testCompleteScenario()
     {

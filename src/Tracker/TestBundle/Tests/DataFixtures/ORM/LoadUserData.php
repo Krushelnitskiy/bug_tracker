@@ -6,7 +6,7 @@
  * Time: 17:32
  */
 
-namespace Tracker\ProjectBundle\Tests\DataFixtures\ORM;
+namespace Tracker\TestBundle\Tests\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -40,20 +40,12 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
     {
         $password = 'test';
         $userManager = $this->container->get('fos_user.user_manager');
-
-//        $encoderFactory = $this->container->get('security.encoder_factory');
-
         $userAdmin = $userManager->createUser();
-
-//        $encoder = $encoderFactory->getEncoder($userAdmin);
-//        $encodedPass = $encoder->encodePassword($password, $userAdmin->getSalt());
-
         $userAdmin->setUsername('admin');
         $userAdmin->setEmail('test@test.test');
         $userAdmin->setPlainPassword($password);
         $userAdmin->setEnabled(true);
         $userAdmin->addRole(User::ROLE_ADMIN);
-
         $userManager->updateUser($userAdmin);
 
         $this->addReference("admin-user", $userAdmin);

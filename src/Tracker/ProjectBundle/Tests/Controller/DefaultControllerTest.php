@@ -75,6 +75,4 @@ class DefaultControllerTest extends WebTestCase
 
         $this->assertContains('label2222', $crawler->html());
     }
-
-
 }

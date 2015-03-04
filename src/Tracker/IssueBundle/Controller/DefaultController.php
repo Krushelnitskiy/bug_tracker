@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Tracker\IssueBundle\Entity\Comment;
 use Tracker\IssueBundle\Entity\Issue;
+use Tracker\IssueBundle\Entity\Status;
 use Tracker\IssueBundle\Form\IssueCommentType;
 use Tracker\IssueBundle\Form\IssueType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -64,6 +65,14 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setCreated(new \DateTime());
+            $entity->setUpdated(new \DateTime());
+
+
+            $entityStatus = $em->getRepository('TrackerIssueBundle:Status')->findByValue(Status::STATUS_OPEN);
+
+            $entity->setStatus($entityStatus[0]);
+
             $em->persist($entity);
             $em->flush();
 

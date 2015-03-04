@@ -24,6 +24,14 @@ issue:
     created: "Created"
     updated: "Updated"
     actions: "Actions"
+    status: "Status"
+    type: "Type"
+    priority: "Priority"
+    resolution: "Resolution"
+    resolution: "Resolution"
+    assignee: "Assignee"
+    collaborators: "Collaborators"
+    project: "Project"
   comment:
     grid:
       body: "Message"

@@ -118,10 +118,6 @@ class Issue
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="issue")
      **/
-
-    /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="issue")
-     **/
     protected $comment;
 
     public function __construct()
