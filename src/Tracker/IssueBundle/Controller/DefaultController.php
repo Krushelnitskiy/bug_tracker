@@ -37,9 +37,7 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('TrackerIssueBundle:Issue')->findAll();
 
         return array(
@@ -68,9 +66,7 @@ class DefaultController extends Controller
             $entity->setCreated(new \DateTime());
             $entity->setUpdated(new \DateTime());
 
-
             $entityStatus = $em->getRepository('TrackerIssueBundle:Status')->findByValue(Status::STATUS_OPEN);
-
             $entity->setStatus($entityStatus[0]);
 
             $em->persist($entity);
@@ -140,7 +136,6 @@ class DefaultController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
 
         if (!$entity) {
@@ -171,7 +166,6 @@ class DefaultController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
 
         if (!$entity) {
@@ -281,7 +275,32 @@ class DefaultController extends Controller
             'entity' => $entity->getIssue(),
             'comment_form'   => $form->createView(),
         );
+    }
 
+    /**
+     * Deletes a Issue entity.
+     *
+     * @Route("/{issue}/comment/{id}", name="issue_comment_delete")
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @Method("GET")
+     */
+    public function deleteCommentAction(Request $request, $issue, $id)
+    {
+        if (false === $this->get('security.authorization_checker')->isGranted('delete', new Comment())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('TrackerIssueBundle:Comment')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Issue entity.');
+        }
+
+        $em->remove($entity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('issue_show', array('id'=>$issue->getId())));
     }
 
     /**
@@ -327,6 +346,7 @@ class DefaultController extends Controller
             ->getForm()
             ;
     }
+
 
     /**
      * Creates a form to create a Issue entity.

@@ -94,6 +94,7 @@
                 <th>{{ "issue.comment.grid.body"|trans }}</th>
                 <th>{{ "issue.comment.grid.created"|trans }}</th>
                 <th>{{ "issue.comment.grid.author"|trans }}</th>
+                <th>{{ "issue.comment.grid.action"|trans }}</th>
             </tr>
             <thead>
             <tbody>
@@ -102,13 +103,15 @@
                     <td>{{ comment.body }}</td>
                     <td>{{ comment.created|date("d.m.Y H:i:s") }}</td>
                     <td>{{ comment.author.username }}</td>
+                    <td>
+                        {% if is_granted("edit", entity) %}
+                            <a href="{{ path('issue_comment_delete', {"issue":entity.id, "id":comment.id}) }}">{{ "issue.action.delete"|trans }}</a>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-
-
-
     {% endif %}
 
     <h4>{{ "issue.page.view.sendComment"|trans }}</h4>

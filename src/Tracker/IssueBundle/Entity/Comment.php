@@ -111,7 +111,7 @@ class Comment
     /**
      * Get author
      *
-     * @return \Tracker\UserBundle\User
+     * @return \Tracker\UserBundle\Entity\User
      */
     public function getAuthor()
     {

@@ -16,6 +16,7 @@ issue:
     create: "Create a new entry"
     edit: "Edit"
     back: "Back to the list"
+    delete: "Delete"
   grid:
     id: "Id"
     summary: "Summary"
@@ -37,3 +38,4 @@ issue:
       body: "Message"
       created: "Created"
       author: "Author"
+      action: "Action"
