@@ -33,7 +33,7 @@ class IssueType extends AbstractType
             ->add('code', 'text', $attribute)
             ->add('description', null, $attribute)
 
-//            ->add('status', null, $attribute)
+            ->add('status', null, $attribute)
 //            ->add('resolution', null, $attribute)
             ->add('reporter', null, $attribute)
             ->add('assignee', null, $attribute)

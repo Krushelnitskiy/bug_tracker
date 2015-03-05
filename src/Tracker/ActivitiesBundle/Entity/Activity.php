@@ -9,6 +9,9 @@
 namespace Tracker\ActivitiesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\Issue;
+use \Tracker\ProjectBundle\Entity\Project;
 
 /**
  * Class Issue
@@ -88,7 +91,7 @@ class Activity
      * @param \Tracker\UserBundle\Entity\User $user
      * @return Activity
      */
-    public function setUser(\Tracker\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -98,7 +101,7 @@ class Activity
     /**
      * Get user
      *
-     * @return \Tracker\UserBundle\Entity\User 
+     * @return \Tracker\UserBundle\Entity\User
      */
     public function getUser()
     {
@@ -111,7 +114,7 @@ class Activity
      * @param \Tracker\IssueBundle\Entity\Issue $issue
      * @return Activity
      */
-    public function setIssue(\Tracker\IssueBundle\Entity\Issue $issue = null)
+    public function setIssue(Issue $issue = null)
     {
         $this->issue = $issue;
 
@@ -121,7 +124,7 @@ class Activity
     /**
      * Get issue
      *
-     * @return \Tracker\IssueBundle\Entity\Issue 
+     * @return \Tracker\IssueBundle\Entity\Issue
      */
     public function getIssue()
     {
@@ -134,7 +137,7 @@ class Activity
      * @param \Tracker\ProjectBundle\Entity\Project $project
      * @return Activity
      */
-    public function setProject(\Tracker\ProjectBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -144,7 +147,7 @@ class Activity
     /**
      * Get project
      *
-     * @return \Tracker\ProjectBundle\Entity\Project 
+     * @return \Tracker\ProjectBundle\Entity\Project
      */
     public function getProject()
     {

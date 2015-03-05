@@ -83,8 +83,8 @@ class IssueEventListener
                 $eventEntity = new Activity();
                 $eventEntity->setIssue($issue);
                 $eventEntity->setProject($issue->getProject());
-                $eventEntity->setUser($issue->getReporter());
-                $eventEntity->setEvent($issue->getStatus()->getValue());
+                $eventEntity->setUser($user);
+//                $eventEntity->setEvent($issue->getStatus()->getValue());
                 $eventEntity->setEvent($eventArgs->getNewValue('status'));
                 $entityManager->persist($eventEntity);
 
