@@ -26,7 +26,7 @@ class ProjectVoter implements VoterInterface
         return in_array($attribute, array(
             self::VIEW,
             self::EDIT,
-            self::CREATE,
+            self::CREATE
         ));
     }
 
@@ -95,7 +95,9 @@ class ProjectVoter implements VoterInterface
             return true;
         }
 
-        if ($user->hasRole(User::ROLE_OPERATOR) && $project->getMembers()->contains($user)) {
+        $operatorCanView = $user->hasRole(User::ROLE_OPERATOR) && $project->getMembers()->contains($user);
+
+        if ($operatorCanView) {
             return true;
         }
 

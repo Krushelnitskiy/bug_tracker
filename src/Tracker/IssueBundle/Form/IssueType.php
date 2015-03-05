@@ -20,7 +20,7 @@ class IssueType extends AbstractType
             ),
             'label_attr'=>array (
                 'class'=>'col-sm-4 control-label'
-            ),
+            )
         );
 
         $builder

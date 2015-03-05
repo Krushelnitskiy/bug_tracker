@@ -46,7 +46,7 @@ class ActivityEventListener
                 ->setTo($collaborateEmails)
                 ->setBody(
                     $this->container->get('twig')->render(
-                        'TrackerActivitiesBundle:Emails:eventOfIssue.html',
+                        'TrackerActivitiesBundle:Emails:eventOfIssue.html.twig',
                         array('activity'=>$activity )
                     ),
                     'text/html'

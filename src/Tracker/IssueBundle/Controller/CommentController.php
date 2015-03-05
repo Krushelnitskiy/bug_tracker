@@ -35,7 +35,7 @@ class CommentController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $entity
         );
     }
 }

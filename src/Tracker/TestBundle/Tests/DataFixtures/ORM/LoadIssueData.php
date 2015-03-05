@@ -40,7 +40,7 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Contain
     public function load(ObjectManager $manager)
     {
         $issueStory = new Issue();
-        $issueStory->setAssignee($this->getReference('admin-user'));
+        $issueStory->setAssignee($this->getReference('user.admin'));
         $issueStory->setCode('1');
         $issueStory->setSummary('issue test summary');
         $issueStory->setDescription('');
@@ -50,6 +50,7 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Contain
         $issueStory->setType($this->getReference('type.story'));
         $issueStory->setPriority($this->getReference('priority.trivial'));
         $issueStory->setProject($this->getReference('project.first'));
+        $issueStory->setReporter($this->getReference('user.admin'));
         $manager->persist($issueStory);
         $manager->flush();
 

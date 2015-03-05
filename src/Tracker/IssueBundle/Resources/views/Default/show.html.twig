@@ -116,5 +116,7 @@
 
     <h4>{{ "issue.page.view.sendComment"|trans }}</h4>
 
-    {{ form(comment_form, {'attr':{'class':"form-horizontal"}}) }}
+    {% if is_granted('create', entity) %}
+        {{ form(comment_form, {'attr':{'class':"form-horizontal"}}) }}
+    {% endif %}
 {% endblock %}

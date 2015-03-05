@@ -2,8 +2,13 @@
 
 namespace Tracker\IssueBundle\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Tracker\TestBundle\Test\WebTestCase;
 
+/**
+ * Class DefaultControllerTest
+ * @package Tracker\IssueBundle\Tests\Controller
+ */
 class DefaultControllerTest extends WebTestCase
 {
 
@@ -11,10 +16,10 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'test',
+            'PHP_AUTH_PW'   => 'test'
         ));
 
-        $crawler = $client->request('GET', '/issue');
+        $client->request('GET', '/issue');
         $crawler = $client->followRedirect();
         $this->assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
     }
@@ -23,7 +28,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'test',
+            'PHP_AUTH_PW'   => 'test'
         ));
 
         $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
@@ -34,7 +39,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'test',
+            'PHP_AUTH_PW'   => 'test'
         ));
 
         $crawler = $client->request('GET', '/issue/new');
@@ -46,8 +51,8 @@ class DefaultControllerTest extends WebTestCase
         $form['tracker_issuebundle_issue[priority]'] = $this->getReference('priority.trivial')->getId();
         $form['tracker_issuebundle_issue[code]'] = 'test-1';
         $form['tracker_issuebundle_issue[description]'] = 'issue test description 1';
-        $form['tracker_issuebundle_issue[reporter]'] = $this->getReference('admin-user')->getId();
-        $form['tracker_issuebundle_issue[assignee]'] = $this->getReference('admin-user')->getId();
+        $form['tracker_issuebundle_issue[reporter]'] = $this->getReference('user.admin')->getId();
+        $form['tracker_issuebundle_issue[assignee]'] = $this->getReference('user.admin')->getId();
         $client->submit($form);
         $crawler = $client->followRedirect();
 
@@ -58,7 +63,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'test',
+            'PHP_AUTH_PW'   => 'test'
         ));
 
         $issueId = $this->getReference('issue.story')->getId();

@@ -49,6 +49,9 @@ class IssueEventListener
         $entityManager = $eventArgs->getEntityManager();
 
         if ($issue instanceof Issue) {
+//            var_dump($this->container->get('security.context')->getToken());exit;
+//                $user = $this->container->get('security.context')->getToken()->getUser();
+
                 $eventEntity = new Activity();
                 $eventEntity->setIssue($issue);
                 $eventEntity->setProject($issue->getProject());
@@ -65,16 +68,12 @@ class IssueEventListener
         $entityManager = $eventArgs->getEntityManager();
 
         if ($issue instanceof Issue) {
-            if ($eventArgs->hasChangedField('reporter')) {
-                if (!$issue->getCollaborators()->contains($issue->getReporter())) {
-                    $issue->getCollaborators()->add($issue->getReporter());
-                }
+            if ($eventArgs->hasChangedField('reporter') && !$issue->getCollaborators()->contains($issue->getReporter())) {
+                $issue->getCollaborators()->add($issue->getReporter());
             }
 
-            if ($eventArgs->hasChangedField('assignee')) {
-                if (!$issue->getCollaborators()->contains($issue->getAssignee())) {
-                    $issue->getCollaborators()->add($issue->getAssignee());
-                }
+            if ($eventArgs->hasChangedField('assignee') && !$issue->getCollaborators()->contains($issue->getAssignee())) {
+                $issue->getCollaborators()->add($issue->getAssignee());
             }
 
             $user = $this->container->get('security.context')->getToken()->getUser();

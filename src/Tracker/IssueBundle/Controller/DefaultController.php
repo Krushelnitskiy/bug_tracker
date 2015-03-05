@@ -41,7 +41,7 @@ class DefaultController extends Controller
         $entities = $em->getRepository('TrackerIssueBundle:Issue')->findAll();
 
         return array(
-            'entities' => $entities,
+            'entities' => $entities
         );
     }
     /**
@@ -77,7 +77,7 @@ class DefaultController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 
@@ -92,7 +92,7 @@ class DefaultController extends Controller
     {
         $form = $this->createForm(new IssueType(), $entity, array(
             'action' => $this->generateUrl('issue_create'),
-            'method' => 'POST',
+            'method' => 'POST'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -118,7 +118,7 @@ class DefaultController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 
@@ -131,15 +131,15 @@ class DefaultController extends Controller
      */
     public function showAction($id)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('view', new Issue())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Issue entity.');
+        }
+
+        if (false === $this->get('security.authorization_checker')->isGranted('view', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -148,7 +148,7 @@ class DefaultController extends Controller
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-            'comment_form' => $createCommentForm->createView(),
+            'comment_form' => $createCommentForm->createView()
         );
     }
 
@@ -161,15 +161,15 @@ class DefaultController extends Controller
      */
     public function editAction($id)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', new Issue())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Issue entity.');
+        }
+
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -178,7 +178,7 @@ class DefaultController extends Controller
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'delete_form' => $deleteForm->createView()
         );
     }
 
@@ -193,7 +193,7 @@ class DefaultController extends Controller
     {
         $form = $this->createForm(new IssueType(), $entity, array(
             'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+            'method' => 'PUT'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -234,7 +234,7 @@ class DefaultController extends Controller
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'delete_form' => $deleteForm->createView()
         );
     }
 
@@ -273,7 +273,7 @@ class DefaultController extends Controller
 
         return array(
             'entity' => $entity->getIssue(),
-            'comment_form'   => $form->createView(),
+            'comment_form'   => $form->createView()
         );
     }
 
@@ -359,7 +359,7 @@ class DefaultController extends Controller
     {
         $form = $this->createForm(new IssueCommentType(), $comment, array(
             'action' => $this->generateUrl('issue_comment_create', array('issue'=>$issueId)),
-            'method' => 'POST',
+            'method' => 'POST'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));

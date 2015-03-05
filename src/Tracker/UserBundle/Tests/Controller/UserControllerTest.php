@@ -47,18 +47,18 @@ class UserControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test',
         ));
 
-        $crawler = $client->request('GET', '/user/'.$this->getReference('admin-user')->getId());
-        $this->assertContains($this->getReference('admin-user')->getEmail(), $crawler->html());
+        $crawler = $client->request('GET', '/user/'.$this->getReference('user.admin')->getId());
+        $this->assertContains($this->getReference('user.admin')->getEmail(), $crawler->html());
     }
 
     public function testEdit()
     {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'test',
+            'PHP_AUTH_PW'   => 'test'
         ));
 
-        $userId = $this->getReference('admin-user')->getId();
+        $userId = $this->getReference('user.admin')->getId();
         $crawler = $client->request('GET', '/user/'.$userId.'/edit');
 
         $form = $crawler->selectButton('Update')->form();

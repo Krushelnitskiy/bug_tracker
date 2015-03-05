@@ -8,11 +8,10 @@
 
 namespace Tracker\IssueBundle\Security\Authorization\Voter;
 
+use Tracker\IssueBundle\Entity\Issue;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
-use Tracker\ProjectBundle\Entity\Project;
 use Tracker\UserBundle\Entity\User;
 
 class IssueVoter implements VoterInterface
@@ -21,15 +20,23 @@ class IssueVoter implements VoterInterface
     const EDIT = 'edit';
     const CREATE = 'create';
 
+    /**
+     * @param string $attribute
+     * @return bool
+     */
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
             self::VIEW,
             self::EDIT,
-            self::CREATE,
-        ));
+            self::CREATE
+        ), false);
     }
 
+    /**
+     * @param string $class
+     * @return bool
+     */
     public function supportsClass($class)
     {
         $supportedClass = 'Tracker\IssueBundle\Entity\Issue';
@@ -38,13 +45,15 @@ class IssueVoter implements VoterInterface
     }
 
     /**
-     * @var \Tracker\ProjectBundle\Entity\Project $issue
+     * @param TokenInterface $token
+     * @param Issue $issue
+     * @param array $attributes
+     * @return int
      */
     public function vote(TokenInterface $token, $issue, array $attributes)
     {
-
         if (!$this->supportsClass(get_class($issue))) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return self::ACCESS_ABSTAIN;
         }
 
         if (1 !== count($attributes)) {
@@ -54,7 +63,7 @@ class IssueVoter implements VoterInterface
         $attribute = $attributes[0];
 
         if (!$this->supportsAttribute($attribute)) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return self::ACCESS_ABSTAIN;
         }
 
         // get current logged in user
@@ -62,57 +71,68 @@ class IssueVoter implements VoterInterface
 
         // make sure there is a user object (i.e. that the user is logged in)
         if (!$user instanceof UserInterface) {
-            return VoterInterface::ACCESS_DENIED;
+            return self::ACCESS_DENIED;
         }
 
         switch($attribute) {
             case self::VIEW:
                 if ($this->userCanView($user, $issue)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
             case self::CREATE:
                 if ($this->userCanCreate($user, $issue)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
             case self::EDIT:
                 if ($this->userCanEdit($user, $issue)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
         }
 
-        return  VoterInterface::ACCESS_DENIED;
+        return  self::ACCESS_DENIED;
     }
 
-    public function userCanView(User $user, $issue)
+    /**
+     * @param User $user
+     * @param Issue $issue
+     * @return bool
+     */
+    public function userCanView($user, $issue)
     {
-        if ($user->hasRole("ROLE_ADMIN") || $user->hasRole('ROLE_ADMINISTRATOR')) {
+        if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
 
-        if ($user->hasRole("ROLE_MANAGER")) {
+        if ($user->hasRole(User::ROLE_MANAGER)) {
             return true;
         }
 
-        if ($user->hasRole("ROLE_OPERATOR") && $issue->getProject()->getMembers()->contains($user)) {
+        if ($this->operatorHasAccess($user, $issue)) {
             return true;
         }
 
         return false;
     }
 
-    public function userCanEdit(User $user, $issue)
+    /**
+     * @param User $user
+     * @param Issue $issue
+     * @return bool
+     */
+    public function userCanEdit($user, $issue)
     {
-        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_ADMINISTRATOR')) {
-            return true;
-        }
-        if ($user->hasRole('ROLE_MANAGER')) {
+        if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
 
-        if ($user->hasRole("ROLE_OPERATOR") && $issue->getProject()->getMembers()->contains($user)) {
+        if ($user->hasRole(User::ROLE_MANAGER)) {
+            return true;
+        }
+
+        if ($this->operatorHasAccess($user, $issue)) {
             return true;
         }
 
@@ -120,20 +140,35 @@ class IssueVoter implements VoterInterface
         return false;
     }
 
-    public function userCanCreate(User $user, $issue)
+    /**
+     * @param User $user
+     * @param Issue $issue
+     * @return bool
+     */
+    public function userCanCreate($user, $issue)
     {
-        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_ADMINISTRATOR')) {
-            return true;
-        }
-        if ($user->hasRole('ROLE_MANAGER')) {
+        if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
 
-        if ($user->hasRole("ROLE_OPERATOR") && $issue->getProject()->getMembers()->contains($user)) {
+        if ($user->hasRole(User::ROLE_MANAGER)) {
             return true;
         }
 
+        if ($this->operatorHasAccess($user, $issue)) {
+            return true;
+        }
 
         return false;
+    }
+
+    /**
+     * @param User $user
+     * @param Issue $issue
+     * @return bool
+     */
+    protected function operatorHasAccess($user, $issue)
+    {
+        return $user->hasRole(User::ROLE_OPERATOR) && $issue->getProject()->getMembers()->contains($user);
     }
 }

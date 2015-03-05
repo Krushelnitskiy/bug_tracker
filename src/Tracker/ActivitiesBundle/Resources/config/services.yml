@@ -2,7 +2,7 @@ services:
    tracker.issue.lifecycle.event_listener:
       class: Tracker\ActivitiesBundle\EventListener\IssueEventListener
       arguments:
-      - @service_container
+          - @service_container
       tags:
       - { name: doctrine.event_listener, event: preUpdate }
 #     - { name: doctrine.event_listener, event: prePersist }
