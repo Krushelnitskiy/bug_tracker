@@ -21,7 +21,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class User extends BaseUser
 {
-    const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_MANAGER = 'ROLE_MANAGER';
     const ROLE_OPERATOR = 'ROLE_OPERATOR';

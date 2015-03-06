@@ -92,7 +92,7 @@ class DefaultControllerTest extends WebTestCase
     public function testAccess()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'user',
+            'PHP_AUTH_USER' => 'operator.noProjects',
             'PHP_AUTH_PW'   => 'test'
         ));
 

@@ -14,6 +14,7 @@ namespace Tracker\UserBundle\Controller;
 use FOS\UserBundle\Controller\ResettingController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Tracker\UserBundle\Entity\User;
 
 class ResettingController extends BaseController
 {
@@ -51,7 +52,7 @@ class ResettingController extends BaseController
     {
         $username = $request->request->get('username');
 
-        /** @var $user UserInterface */
+        /** @var $user User */
         $user = $this->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {

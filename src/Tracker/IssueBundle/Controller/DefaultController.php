@@ -282,7 +282,7 @@ class DefaultController extends Controller
     /**
      * Deletes a Issue entity.
      * @param Request $request
-     * @param integer $issue
+     * @param Issue $issue
      * @param integer $id
      * @Route("/{issue}/comment/{id}", name="issue_comment_delete")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})

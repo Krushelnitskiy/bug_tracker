@@ -40,13 +40,13 @@ class ProjectVoter implements VoterInterface
 
     /**
      * @param TokenInterface $token
-     * @param null|Issue $issue
+     * @param null|Project $project
      * @param array $attributes
      * @return int
      */
-    public function vote(TokenInterface $token, $issue, array $attributes)
+    public function vote(TokenInterface $token, $project, array $attributes)
     {
-        if (!$this->supportsClass(get_class($issue))) {
+        if (!$this->supportsClass(get_class($project))) {
             return self::ACCESS_ABSTAIN;
         }
 
@@ -64,23 +64,23 @@ class ProjectVoter implements VoterInterface
         $user = $token->getUser();
 
         // make sure there is a user object (i.e. that the user is logged in)
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return self::ACCESS_DENIED;
         }
 
         switch($attribute) {
             case self::VIEW:
-                if ($this->userCanView($user, $issue)) {
+                if ($this->userCanView($user, $project)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
             case self::CREATE:
-                if ($this->userCanCreate($user, $issue)) {
+                if ($this->userCanCreate($user, $project)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
             case self::EDIT:
-                if ($this->userCanEdit($user, $issue)) {
+                if ($this->userCanEdit($user, $project)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;

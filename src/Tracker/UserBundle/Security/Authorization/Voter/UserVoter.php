@@ -10,7 +10,6 @@ namespace Tracker\UserBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Tracker\UserBundle\Entity\User;
 
 class UserVoter implements VoterInterface
@@ -38,7 +37,7 @@ class UserVoter implements VoterInterface
 
     /**
      * @param TokenInterface $token
-     * @param null|object $user
+     * @param null|User $user
      * @param array $attributes
      * @return int
      */
@@ -46,7 +45,7 @@ class UserVoter implements VoterInterface
     {
 
         if (!$this->supportsClass(get_class($user))) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return self::ACCESS_ABSTAIN;
         }
 
         if (1 !== count($attributes)) {
@@ -56,36 +55,36 @@ class UserVoter implements VoterInterface
         $attribute = $attributes[0];
 
         if (!$this->supportsAttribute($attribute)) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return self::ACCESS_ABSTAIN;
         }
 
         // get current logged in user
         $user = $token->getUser();
 
         // make sure there is a user object (i.e. that the user is logged in)
-        if (!$user instanceof UserInterface) {
-            return VoterInterface::ACCESS_DENIED;
+        if (!$user instanceof User) {
+            return self::ACCESS_DENIED;
         }
 
         switch($attribute) {
             case self::VIEW:
                 if ($this->userCanView($user)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
             case self::CREATE:
                 if ($this->userCanCreate($user)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
             case self::EDIT:
                 if ($this->userCanEdit($user)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
         }
 
-        return VoterInterface::ACCESS_DENIED;
+        return self::ACCESS_DENIED;
     }
 
     public function userCanView(User $user)

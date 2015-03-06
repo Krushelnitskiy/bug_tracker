@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\IssueRepository;
+use Tracker\ActivitiesBundle\Entity\ActivityRepository;
 
 class DefaultController extends Controller
 {
@@ -19,12 +21,20 @@ class DefaultController extends Controller
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $user = $this->container->get('security.context')->getToken()->getUser();
             $em = $this->getDoctrine()->getEntityManager();
-
             $issues = array();
             $activity = array();
+
+            /**
+             * @var $issueRepository IssueRepository
+             */
+            $issueRepository = $em->getRepository('TrackerIssueBundle:Issue');
+            /**
+             * @var $activityRepository ActivityRepository
+             */
+            $activityRepository = $em->getRepository('TrackerActivitiesBundle:Activity');
             if ($user instanceof User) {
-                $issues = $em->getRepository('TrackerIssueBundle:Issue')->findByCollaborator($user);
-                $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByUser($user);
+                $issues = $issueRepository->findByCollaborator($user);
+                $activity = $activityRepository->findByUser($user);
             }
 
             return array(

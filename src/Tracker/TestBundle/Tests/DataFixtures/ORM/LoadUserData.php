@@ -85,21 +85,9 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
         $userOperatorNoProject->addRole(User::ROLE_OPERATOR);
         $userManager->updateUser($userOperatorNoProject);
 
-        /**
-         * @var $user User
-         */
-        $user = $userManager->createUser();
-        $user->setUsername('user');
-        $user->setEmail('user.test@test.test');
-        $user->setPlainPassword($password);
-        $user->setEnabled(true);
-        $user->addRole(User::ROLE_USER);
-        $userManager->updateUser($user);
-
         $this->addReference('user.admin', $userAdmin);
         $this->addReference('user.manager', $userRoleManager);
         $this->addReference('user.operator', $userOperator);
         $this->addReference('user.operator.noProjects', $userOperatorNoProject);
-        $this->addReference('user.user', $user);
     }
 }

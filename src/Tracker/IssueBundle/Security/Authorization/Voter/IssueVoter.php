@@ -11,7 +11,6 @@ namespace Tracker\IssueBundle\Security\Authorization\Voter;
 use Tracker\IssueBundle\Entity\Issue;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Tracker\UserBundle\Entity\User;
 
 class IssueVoter implements VoterInterface
@@ -66,11 +65,11 @@ class IssueVoter implements VoterInterface
             return self::ACCESS_ABSTAIN;
         }
 
-        // get current logged in user
+
         $user = $token->getUser();
 
         // make sure there is a user object (i.e. that the user is logged in)
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return self::ACCESS_DENIED;
         }
 

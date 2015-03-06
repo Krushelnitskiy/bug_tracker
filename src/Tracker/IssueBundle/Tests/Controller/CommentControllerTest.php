@@ -4,6 +4,10 @@ namespace Tracker\IssueBundle\Tests\Controller;
 
 use Tracker\TestBundle\Test\WebTestCase;
 
+/**
+ * Class CommentControllerTest
+ * @package Tracker\IssueBundle\Tests\Controller
+ */
 class CommentControllerTest extends WebTestCase
 {
 

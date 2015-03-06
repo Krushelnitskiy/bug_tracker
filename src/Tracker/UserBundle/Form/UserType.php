@@ -26,7 +26,7 @@ class UserType extends AbstractType
                 'choices' => array(
                     'ROLE_ADMIN' => 'role.admin',
                     'ROLE_MANAGER' => 'role.manager',
-                    'ROLE_USER' => 'role.user'
+                    'ROLE_OPERATOR' => 'role.operator'
                 ),
                 'label' => 'Roles',
                 'expanded' => true,

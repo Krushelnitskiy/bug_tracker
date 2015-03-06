@@ -13,6 +13,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Tracker\UserBundle\Entity\User;
 
 class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
 {
@@ -40,6 +41,9 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
         $userManager = $this->container->get('fos_user.user_manager');
         $encoder_factory = $this->container->get('security.encoder_factory');
 
+        /**
+         * @var $userAdmin User
+         */
         $userAdmin = $userManager->createUser();
         $encoder = $encoder_factory->getEncoder($userAdmin);
         $encodedPass = $encoder->encodePassword($password, $userAdmin->getSalt());
