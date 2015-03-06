@@ -41,21 +41,20 @@ class DefaultController extends Controller
         $entities = $em->getRepository('TrackerIssueBundle:Issue')->findAll();
 
         return array(
-            'entities' => $entities
+            'entities' => $entities,
+            'emptyEntity' => new Issue()
         );
     }
     /**
      * Creates a new Issue entity.
-     *
+     * @param Request $request
      * @Route("/", name="issue_create")
      * @Method("POST")
      * @Template("TrackerIssueBundle:Issue:new.html.twig")
+     * @return array
      */
     public function createAction(Request $request)
     {
-
-
-
         if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
             throw new AccessDeniedException('Unauthorised access!');
         }
@@ -127,10 +126,11 @@ class DefaultController extends Controller
 
     /**
      * Finds and displays a Issue entity.
-     *
+     * @param integer $id
      * @Route("/{id}", name="issue_show")
      * @Method("GET")
      * @Template()
+     * @return array
      */
     public function showAction($id)
     {
@@ -145,22 +145,21 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $createCommentForm = $this->createCreateCommentForm(new Comment(), $id);
 
         return array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
             'comment_form' => $createCommentForm->createView()
         );
     }
 
     /**
      * Displays a form to edit an existing Issue entity.
-     *
+     * @param integer $id
      * @Route("/{id}/edit", name="issue_edit")
      * @Method("GET")
      * @Template()
+     * @return array
      */
     public function editAction($id)
     {
@@ -176,12 +175,10 @@ class DefaultController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView()
+            'edit_form'   => $editForm->createView()
         );
     }
 
@@ -205,10 +202,12 @@ class DefaultController extends Controller
     }
     /**
      * Edits an existing Issue entity.
-     *
+     * @param integer $id
+     * @param Request $request
      * @Route("/{id}", name="issue_update")
      * @Method("PUT")
      * @Template("TrackerIssueBundle:Issue:edit.html.twig")
+     * @return array
      */
     public function updateAction(Request $request, $id)
     {
@@ -223,8 +222,7 @@ class DefaultController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Issue entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
+        ;
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
@@ -236,19 +234,20 @@ class DefaultController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView()
+            'edit_form'   => $editForm->createView()
         );
     }
 
 
     /**
      * Edits an existing Issue entity.
-     *
+     * @param Request $request
+     * @param Issue $issue
      * @Route("/comment/{issue}", name="issue_comment_create")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @Method("POST")
      * @Template("TrackerIssueBundle:Issue:edit.html.twig")
+     * @return array
      */
     public function createCommentAction(Request $request, Issue $issue)
     {
@@ -282,10 +281,13 @@ class DefaultController extends Controller
 
     /**
      * Deletes a Issue entity.
-     *
+     * @param Request $request
+     * @param integer $issue
+     * @param integer $id
      * @Route("/{issue}/comment/{id}", name="issue_comment_delete")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @Method("GET")
+     * @return array
      */
     public function deleteCommentAction(Request $request, $issue, $id)
     {
@@ -307,56 +309,9 @@ class DefaultController extends Controller
     }
 
     /**
-     * Deletes a Issue entity.
-     *
-     * @Route("/{id}", name="issue_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Issue entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('issue'));
-    }
-
-    /**
-     * Creates a form to delete a Issue entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('issue_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-            ;
-    }
-
-
-    /**
-     * Creates a form to create a Issue entity.
-     *
-     * @param Issue $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @param Comment $comment
+     * @param integer $issueId
+     * @return \Symfony\Component\Form\Form
      */
     private function createCreateCommentForm(Comment $comment, $issueId)
     {

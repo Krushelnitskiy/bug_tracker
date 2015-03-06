@@ -11,10 +11,13 @@
         <a href="{{ path('project') }}">
             Back to the list
         </a>
-        |
-        <a href="{{ path('project_edit', { 'projectId': entity.id }) }}">
-            Edit
-        </a>
+
+        {% if is_granted('edit', entity) %}
+            |
+            <a href="{{ path('project_edit', { 'projectId': entity.id }) }}">
+                Edit
+            </a>
+        {% endif %}
     </p>
 
     <table class="record_properties table">

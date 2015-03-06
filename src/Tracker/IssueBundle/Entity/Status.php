@@ -19,9 +19,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Status
 {
-    const STATUS_OPEN = "Open";
-    const STATUS_IN_PROGRESS = "In progress";
-    const STATUS_CLOSED = "Closed";
+    const STATUS_OPEN = 'Open';
+    const STATUS_IN_PROGRESS = 'In progress';
+    const STATUS_CLOSED = 'Closed';
 
 
     /**
@@ -76,4 +76,3 @@ class Status
         return $this->value;
     }
 }
-

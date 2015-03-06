@@ -37,7 +37,7 @@ class UserController extends Controller
         $entities = $em->getRepository('TrackerUserBundle:User')->findAll();
 
         return array(
-            'entities' => $entities,
+            'entities' => $entities
         );
     }
 
@@ -59,16 +59,17 @@ class UserController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 
     /**
      * Finds and displays a User entity.
-     *
+     * @param integer $id
      * @Route("/{id}", name="user_show")
      * @Method("GET")
      * @Template()
+     * @return array
      */
     public function showAction($id)
     {
@@ -84,7 +85,7 @@ class UserController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $entity
         );
     }
 
@@ -111,7 +112,7 @@ class UserController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'edit_form'   => $editForm->createView()
         );
     }
 
@@ -130,7 +131,7 @@ class UserController extends Controller
 
         $form = $this->createForm(new UserType(), $entity, array(
             'action' => $this->generateUrl('user_update', array('userId' => $entity->getId())),
-            'method' => 'PUT',
+            'method' => 'PUT'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -173,7 +174,7 @@ class UserController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'edit_form'   => $editForm->createView()
         );
     }
 
@@ -188,7 +189,7 @@ class UserController extends Controller
     {
         $form = $this->createForm(new UserType(), $entity, array(
             'action' => $this->generateUrl('user_create'),
-            'method' => 'POST',
+            'method' => 'POST'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -223,7 +224,7 @@ class UserController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 }

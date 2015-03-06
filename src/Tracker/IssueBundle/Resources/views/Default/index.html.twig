@@ -8,9 +8,11 @@
     <h3>{{ "issue.page.list.title"|trans }}</h3>
 
     <p>
-        <a href="{{ path('issue_new') }}">
-            {{ "issue.action.create"|trans }}
-        </a>
+        {% if is_granted('create', emptyEntity) %}
+            <a href="{{ path('issue_new') }}">
+                {{ "issue.action.create"|trans }}
+            </a>
+        {% endif %}
     </p>
 
     <div class="container">

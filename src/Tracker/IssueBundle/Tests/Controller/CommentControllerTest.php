@@ -2,36 +2,46 @@
 
 namespace Tracker\IssueBundle\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Tracker\TestBundle\Test\WebTestCase;
 
 class CommentControllerTest extends WebTestCase
 {
 
-    public function testViewList()
+    public function testAdminCreateComment()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'user',
+            'PHP_AUTH_USER' => 'admin',
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
+
+        $form = $crawler->selectButton('Create')->form();
+        $form['tracker_issueBundle_comment[body]'] = 'You need add description.';
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+
+        $html = $crawler->html();
+        $this->assertContains('Delete', $html);
+        $this->assertContains('You need add description.', $html);
     }
 
-    /*
-        public function testCompleteScenario()
-        {
-            // Create a new client to browse the application
-            $client = static::createClient();
+    public function testReporterCreateComment()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'operator',
+            'PHP_AUTH_PW'   => 'test'
+        ));
 
-            // Go to the list view
-            $crawler = $client->request('GET', '/comment/');
-            $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /comment/");
+        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
 
-            // Go to the show view
-            $crawler = $client->click($crawler->selectLink('show')->link());
-            $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code");
-        }
-    */
+        $form = $crawler->selectButton('Create')->form();
+        $form['tracker_issueBundle_comment[body]'] = 'You need add description.';
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+
+        $html = $crawler->html();
+        $this->assertContains('Delete', $html);
+        $this->assertContains('You need add description.', $html);
+    }
 }

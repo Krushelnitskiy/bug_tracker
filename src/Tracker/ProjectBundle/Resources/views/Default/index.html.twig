@@ -8,9 +8,11 @@
     <h3>{{ 'project.list'|trans }}</h3>
 
     <p>
-        <a href="{{ path('project_new') }}">
-            {{ "project.action.create"|trans }}
-        </a>
+        {% if is_granted('create', emptyEntity) %}
+            <a href="{{ path('project_new') }}">
+                {{ "project.action.create"|trans }}
+            </a>
+        {% endif %}
     </p>
 
     <table class="records_list table table-bordered">
@@ -25,12 +27,14 @@
         <tbody>
         {% for entity in entities %}
             {% set pathProject = path('project_show', { 'projectId': entity.id }) %}
-            <tr>
-                <td><a href="{{ pathProject }}">{{ entity.id }}</a></td>
-                <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
-                <td><a href="{{ pathProject }}">{{ entity.summary }}</a></td>
-                <td><a href="{{ pathProject }}">{{ entity.code }}</a></td>
-            </tr>
+            {% if is_granted ('view', entity) %}
+                <tr>
+                    <td><a href="{{ pathProject }}">{{ entity.id }}</a></td>
+                    <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
+                    <td><a href="{{ pathProject }}">{{ entity.summary }}</a></td>
+                    <td><a href="{{ pathProject }}">{{ entity.code }}</a></td>
+                </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

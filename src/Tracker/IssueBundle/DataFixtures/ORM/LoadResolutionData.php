@@ -38,10 +38,9 @@ class LoadResolutionData extends AbstractFixture implements FixtureInterface
 
         $manager->flush();
 
-        $this->addReference("resolution.done", $resolutionDone);
-        $this->addReference("resolution.fixed", $resolutionFixed);
-        $this->addReference("resolution.wontDo", $resolutionWontDo);
-        $this->addReference("resolution.wontFix", $resolutionWontFix);
+        $this->addReference('resolution.done', $resolutionDone);
+        $this->addReference('resolution.fixed', $resolutionFixed);
+        $this->addReference('resolution.wontDo', $resolutionWontDo);
+        $this->addReference('resolution.wontFix', $resolutionWontFix);
     }
-
 }

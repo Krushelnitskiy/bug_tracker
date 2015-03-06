@@ -42,7 +42,9 @@ class IssueEventListener
         }
     }
 
-    /** @PostPersist */
+    /**
+     * @param LifecycleEventArgs $eventArgs
+     */
     public function postPersist(LifecycleEventArgs $eventArgs)
     {
         $issue = $eventArgs->getEntity();
@@ -59,17 +61,20 @@ class IssueEventListener
         }
     }
 
+    /**
+     * @param PreUpdateEventArgs $eventArgs
+     */
     public function preUpdate(PreUpdateEventArgs $eventArgs)
     {
         $issue = $eventArgs->getEntity();
         $entityManager = $eventArgs->getEntityManager();
 
         if ($issue instanceof Issue) {
-            if ($eventArgs->hasChangedField('reporter') && !$issue->getCollaborators()->contains($issue->getReporter())) {
+            if ($this->isChangeReporter($eventArgs)) {
                 $issue->getCollaborators()->add($issue->getReporter());
             }
 
-            if ($eventArgs->hasChangedField('assignee') && !$issue->getCollaborators()->contains($issue->getAssignee())) {
+            if ($this->isChangeAssignee($eventArgs)) {
                 $issue->getCollaborators()->add($issue->getAssignee());
             }
 
@@ -89,6 +94,28 @@ class IssueEventListener
                 }
             }
         }
+    }
+
+    /**
+     * @param PreUpdateEventArgs $eventArgs
+     * @return bool
+     */
+    private function isChangeAssignee(PreUpdateEventArgs $eventArgs)
+    {
+        $issue = $eventArgs->getEntity();
+
+        return $eventArgs->hasChangedField('assignee') && !$issue->getCollaborators()->contains($issue->getAssignee());
+    }
+
+    /**
+     * @param PreUpdateEventArgs $eventArgs
+     * @return bool
+     */
+    private function isChangeReporter(PreUpdateEventArgs $eventArgs)
+    {
+        $issue = $eventArgs->getEntity();
+
+        return $eventArgs->hasChangedField('reporter') && !$issue->getCollaborators()->contains($issue->getReporter());
     }
 
     /**

@@ -23,22 +23,20 @@ class RegistrationFormType extends AbstractType
         );
 
         $attributeEmail = array_merge($attributeDefault, array(
-            'label' => 'form.email',
+            'label' => 'form.email'
         ));
 
         $attributeUserName = array_merge($attributeDefault, array(
-            'label' => 'form.username',
+            'label' => 'form.username'
         ));
 
         $attrPasswordFirst = array_merge($attributeDefault, array(
-            'label' => 'form.password',
+            'label' => 'form.password'
         ));
 
         $attrPasswordSecond = array_merge($attributeDefault, array(
-            'label' => 'form.password_confirmation',
+            'label' => 'form.password_confirmation'
         ));
-
-
 
         $builder
             ->add('email', 'email', $attributeEmail)
@@ -48,7 +46,7 @@ class RegistrationFormType extends AbstractType
                 'options' => array('translation_domain' => 'FOSUserBundle'),
                 'first_options' => $attrPasswordFirst,
                 'second_options' => $attrPasswordSecond,
-                'invalid_message' => 'fos_user.password.mismatch',
+                'invalid_message' => 'fos_user.password.mismatch'
             ))
         ;
     }
@@ -62,6 +60,4 @@ class RegistrationFormType extends AbstractType
     {
         return 'acme_user_registration';
     }
-
-
 }

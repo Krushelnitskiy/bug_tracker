@@ -169,7 +169,7 @@ class IssueVoter implements VoterInterface
      */
     protected function operatorHasAccess($user, $issue)
     {
-        if ($issue->getProject()){
+        if ($issue->getProject()) {
             $isMemberInProject = $issue->getProject()->getMembers()->contains($user);
         } else {
             $isMemberInProject = $user->getProduct()->count() > 0;

@@ -2,12 +2,10 @@
 
 namespace Tracker\IssueBundle\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tracker\IssueBundle\Entity\Comment;
 
 /**
  * Comment controller.
@@ -19,10 +17,11 @@ class CommentController extends Controller
 
     /**
      * Finds and displays a Comment entity.
-     *
+     * @param integer $id
      * @Route("/{id}/delete", name="comment_delete")
      * @Method("GET")
      * @Template()
+     * @return array
      */
     public function showAction($id)
     {
@@ -35,7 +34,7 @@ class CommentController extends Controller
         }
 
         return array(
-            'entity'      => $entity
+            'entity' => $entity
         );
     }
 }

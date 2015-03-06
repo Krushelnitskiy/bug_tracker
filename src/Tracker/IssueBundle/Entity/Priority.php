@@ -19,11 +19,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Priority
 {
-    const PRIORITY_TRIVIAL = "Trivial";
-    const PRIORITY_MINOR = "Minor";
-    const PRIORITY_MAJOR = "Major";
-    const PRIORITY_CRITICAL = "Critical";
-    const PRIORITY_BLOCKER = "Blocker";
+    const PRIORITY_TRIVIAL = 'Trivial';
+    const PRIORITY_MINOR = 'Minor';
+    const PRIORITY_MAJOR = 'Major';
+    const PRIORITY_CRITICAL = 'Critical';
+    const PRIORITY_BLOCKER = 'Blocker';
 
     /**
      * @ORM\Column(type="integer")

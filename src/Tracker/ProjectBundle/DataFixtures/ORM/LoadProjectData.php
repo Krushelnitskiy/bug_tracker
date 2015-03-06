@@ -29,6 +29,6 @@ class LoadProjectData extends AbstractFixture implements FixtureInterface
         $manager->persist($project);
         $manager->flush();
 
-        $this->addReference("project.first", $project);
+        $this->addReference('project.first', $project);
     }
 }

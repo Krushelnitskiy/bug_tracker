@@ -8,15 +8,11 @@
 
 namespace Tracker\UserBundle\DataFixtures\ORM;
 
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Tracker\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-// implements OrderedFixtureInterface
 
 class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
 {
@@ -56,6 +52,6 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
 
         $userManager->updateUser($userAdmin);
 
-        $this->addReference("admin-user", $userAdmin);
+        $this->addReference('admin-user', $userAdmin);
     }
 }

@@ -31,7 +31,7 @@ class UserType extends AbstractType
                 'label' => 'Roles',
                 'expanded' => true,
                 'multiple' => true,
-                'mapped' => true,
+                'mapped' => true
             )
         );
 
@@ -40,18 +40,18 @@ class UserType extends AbstractType
             array(
                 'choices' => array(
                     '1' => 'Enable',
-                    '0' => 'Disable',
+                    '0' => 'Disable'
                 ),
-                'label' => 'Enabled',
+                'label' => 'Enabled'
             )
         );
 
         $attrPasswordFirst = array_merge($attributeDefault, array(
-            'label' => 'form.password',
+            'label' => 'form.password'
         ));
 
         $attrPasswordSecond = array_merge($attributeDefault, array(
-            'label' => 'form.password_confirmation',
+            'label' => 'form.password_confirmation'
         ));
 
 
@@ -63,7 +63,7 @@ class UserType extends AbstractType
                 'options' => array('translation_domain' => 'FOSUserBundle'),
                 'first_options' => $attrPasswordFirst,
                 'second_options' => $attrPasswordSecond,
-                'invalid_message' => 'fos_user.password.mismatch',
+                'invalid_message' => 'fos_user.password.mismatch'
             ))
             ->add('roles', 'choice', $attrRole)
             ->add('enabled', 'choice', $attrEnabled)
@@ -85,6 +85,6 @@ class UserType extends AbstractType
      */
     public function getName()
     {
-        return 'tracker_userbundle_user';
+        return 'tracker_userBundle_user';
     }
 }

@@ -13,6 +13,7 @@ use Tracker\ProjectBundle\Entity\Project;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Tracker\UserBundle\Entity\User;
 
 class LoadProjectData extends AbstractFixture implements FixtureInterface
 {
@@ -21,14 +22,19 @@ class LoadProjectData extends AbstractFixture implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        /**
+         * @var $userOperator User
+         */
+        $userOperator = $this->getReference('user.operator');
+
         $project = new Project();
         $project->setCode('11');
         $project->setLabel('First project');
         $project->setSummary('First project with test data');
-        $project->addMember($this->getReference('user.operator'));
+        $project->addMember($userOperator);
         $manager->persist($project);
         $manager->flush();
 
-        $this->addReference("project.first", $project);
+        $this->addReference('project.first', $project);
     }
 }

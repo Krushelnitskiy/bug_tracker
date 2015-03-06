@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Tracker\IssueBundle\Entity\Issue;
 use Tracker\ProjectBundle\Entity\Project;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class Project
@@ -20,10 +21,10 @@ use Tracker\ProjectBundle\Entity\Project;
  */
 class User extends BaseUser
 {
-    const ROLE_USER = "ROLE_USER";
-    const ROLE_ADMIN = "ROLE_ADMIN";
-    const ROLE_MANAGER = "ROLE_MANAGER";
-    const ROLE_OPERATOR = "ROLE_OPERATOR";
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_MANAGER = 'ROLE_MANAGER';
+    const ROLE_OPERATOR = 'ROLE_OPERATOR';
 
     /**
      * @ORM\Column(type="integer")
@@ -44,7 +45,7 @@ class User extends BaseUser
 
     public function __construct()
     {
-        $this->product = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->product = new ArrayCollection();
         parent::__construct();
 
     }
@@ -63,8 +64,8 @@ class User extends BaseUser
     /**
      * Add assignedIssue
      *
-     * @param \Tracker\IssueBundle\Entity\Issue $assignedIssue
-     * @return User
+     * @param Issue $assignedIssue
+     * @return array Issue
      */
     public function addAssignedIssue(Issue $assignedIssue)
     {
@@ -76,7 +77,7 @@ class User extends BaseUser
     /**
      * Remove assignedIssue
      *
-     * @param \Tracker\IssueBundle\Entity\Issue $assignedIssue
+     * @param Issue $assignedIssue
      */
     public function removeAssignedIssue(Issue $assignedIssue)
     {
@@ -119,7 +120,7 @@ class User extends BaseUser
     /**
      * Get product
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProduct()
     {

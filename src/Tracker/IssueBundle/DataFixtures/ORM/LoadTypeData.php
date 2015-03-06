@@ -39,9 +39,9 @@ class LoadTypeData extends AbstractFixture implements FixtureInterface
 
         $manager->flush();
 
-        $this->addReference("type.bug", $typeBug);
-        $this->addReference("type.story", $typeStory);
-        $this->addReference("type.subTask", $typeSubTask);
-        $this->addReference("type.task", $typeTask);
+        $this->addReference('type.bug', $typeBug);
+        $this->addReference('type.story', $typeStory);
+        $this->addReference('type.subTask', $typeSubTask);
+        $this->addReference('type.task', $typeTask);
     }
 }

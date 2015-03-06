@@ -27,7 +27,9 @@ class ActivityEventListener
         $this->container = $serviceContainer;
     }
 
-    /** @PostPersist */
+    /**
+     * @param LifecycleEventArgs $eventArgs
+     */
     public function postPersist(LifecycleEventArgs $eventArgs)
     {
         $activity = $eventArgs->getEntity();

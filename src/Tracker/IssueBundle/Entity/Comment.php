@@ -10,6 +10,7 @@ namespace Tracker\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\Issue;
 
 /**
  * Class Comment
@@ -121,7 +122,7 @@ class Comment
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -134,7 +135,7 @@ class Comment
      * @param \Tracker\IssueBundle\Entity\Issue $issue
      * @return Comment
      */
-    public function setIssue(\Tracker\IssueBundle\Entity\Issue $issue = null)
+    public function setIssue(Issue $issue = null)
     {
         $this->issue = $issue;
 
@@ -144,7 +145,7 @@ class Comment
     /**
      * Get issue
      *
-     * @return \Tracker\IssueBundle\Entity\Issue 
+     * @return \Tracker\IssueBundle\Entity\Issue
      */
     public function getIssue()
     {

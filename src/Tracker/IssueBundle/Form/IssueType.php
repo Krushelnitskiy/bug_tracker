@@ -37,7 +37,7 @@ class IssueType extends AbstractType
 //            ->add('resolution', null, $attribute)
             ->add('reporter', null, $attribute)
             ->add('assignee', null, $attribute)
-//            ->add('collaborators', null, $attribute)
+//          ->add('collaborators', null, $attribute)
 //            ->add('parent', null, $attribute)
             ;
     }
@@ -57,6 +57,6 @@ class IssueType extends AbstractType
      */
     public function getName()
     {
-        return 'tracker_issuebundle_issue';
+        return 'tracker_issueBundle_issue';
     }
 }

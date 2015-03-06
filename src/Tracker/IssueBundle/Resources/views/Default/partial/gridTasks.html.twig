@@ -2,24 +2,29 @@
     <thead>
     <tr>
         <th>  {{ "issue.grid.id"|trans }}</th>
-        <th>  {{ "issue.grid.summary"|trans }}</th>
         <th>  {{ "issue.grid.code"|trans }}</th>
+        <th>  {{ "issue.grid.summary"|trans }}</th>
         <th>  {{ "issue.grid.description"|trans }}</th>
         <th>  {{ "issue.grid.created"|trans }}</th>
         <th>  {{ "issue.grid.updated"|trans }}</th>
+        <th>  {{ "issue.grid.project"|trans }}</th>
     </tr>
     </thead>
     <tbody>
     {% for entity in entities %}
-        {% set pathIssueView = path('issue_show', { 'id': entity.id }) %}
-        <tr>
-            <td><a href="{{ pathIssueView }}">{{ entity.id }}</a></td>
-            <td><a href="{{ pathIssueView }}">{{ entity.summary }}</a></td>
-            <td><a href="{{ pathIssueView }}">{{ entity.code }}</a></td>
-            <td><a href="{{ pathIssueView }}">{{ entity.description }}</a></td>
-            <td><a href="{{ pathIssueView }}">{% if entity.created %}{{ entity.created|date('d.m.Y H:i:s') }}{% endif %}</a></td>
-            <td><a href="{{ pathIssueView }}">{% if entity.updated %}{{ entity.updated|date('d.m.Y H:i:s') }}{% endif %}</a></td>
-        </tr>
+        {% if is_granted('view', entity) %}
+            {% set pathIssueView = path('issue_show', { 'id': entity.id }) %}
+            {% set pathProjectView = path('project_show', { 'projectId': entity.project.id }) %}
+            <tr>
+                <td><a href="{{ pathIssueView }}">{{ entity.id }}</a></td>
+                <td><a href="{{ pathIssueView }}">{{ entity.code }}</a></td>
+                <td><a href="{{ pathIssueView }}">{{ entity.summary }}</a></td>
+                <td>{{ entity.description }}</td>
+                <td>{% if entity.created %}{{ entity.created|date('d.m.Y H:i:s') }}{% endif %}</td>
+                <td>{% if entity.updated %}{{ entity.updated|date('d.m.Y H:i:s') }}{% endif %}</td>
+                <td><a href="{{ pathProjectView }}">{{ entity.project.label }}</a></td>
+            </tr>
+        {% endif %}
     {% endfor %}
     </tbody>
 </table>

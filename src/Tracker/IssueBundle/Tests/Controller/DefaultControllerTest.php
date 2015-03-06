@@ -2,7 +2,6 @@
 
 namespace Tracker\IssueBundle\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Tracker\TestBundle\Test\WebTestCase;
 
 /**
@@ -45,14 +44,15 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/issue/new');
 
         $form = $crawler->selectButton('Create')->form();
-        $form['tracker_issuebundle_issue[project]'] = $this->getReference('project.first')->getId();
-        $form['tracker_issuebundle_issue[type]'] = $this->getReference('type.story')->getId();
-        $form['tracker_issuebundle_issue[summary]'] = 'issue test summary 1';
-        $form['tracker_issuebundle_issue[priority]'] = $this->getReference('priority.trivial')->getId();
-        $form['tracker_issuebundle_issue[code]'] = 'test-1';
-        $form['tracker_issuebundle_issue[description]'] = 'issue test description 1';
-        $form['tracker_issuebundle_issue[reporter]'] = $this->getReference('user.admin')->getId();
-        $form['tracker_issuebundle_issue[assignee]'] = $this->getReference('user.admin')->getId();
+        $form['tracker_issueBundle_issue[project]'] = $this->getReference('project.first')->getId();
+        $form['tracker_issueBundle_issue[type]'] = $this->getReference('type.story')->getId();
+        $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 1';
+        $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 1';
+        $form['tracker_issueBundle_issue[priority]'] = $this->getReference('priority.trivial')->getId();
+        $form['tracker_issueBundle_issue[code]'] = 'test-1';
+        $form['tracker_issueBundle_issue[description]'] = 'issue test description 1';
+        $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.admin')->getId();
+        $form['tracker_issueBundle_issue[assignee]'] = $this->getReference('user.admin')->getId();
         $client->submit($form);
         $crawler = $client->followRedirect();
 
@@ -70,7 +70,7 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/issue/'.$issueId.'/edit');
 
         $form = $crawler->selectButton('Update')->form();
-        $form['tracker_issuebundle_issue[summary]'] = 'issue test summary 2';
+        $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 2';
         $client->submit($form);
 
         $crawler = $client->followRedirect();

@@ -25,8 +25,8 @@
                     {% block menu %}
                         <div class="menu">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                    <a href="{{ path("project") }}">Projects</a> |
-                                    <a href="{{ path("issue") }}">Issues</a>
+                                <a href="{{ path("project") }}">Projects</a> |
+                                <a href="{{ path("issue") }}">Issues</a>
 
                                 {% if is_granted("ROLE_ADMIN") %}|
                                     <a href="{{ path("user") }}">Users</a>

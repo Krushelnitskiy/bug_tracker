@@ -45,6 +45,6 @@ class ProjectType extends AbstractType
      */
     public function getName()
     {
-        return 'tracker_projectbundle_project';
+        return 'tracker_projectBundle_project';
     }
 }

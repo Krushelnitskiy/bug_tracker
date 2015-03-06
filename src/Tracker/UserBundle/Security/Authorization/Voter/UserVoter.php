@@ -11,8 +11,6 @@ namespace Tracker\UserBundle\Security\Authorization\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
-use Tracker\ProjectBundle\Entity\Project;
 use Tracker\UserBundle\Entity\User;
 
 class UserVoter implements VoterInterface
@@ -26,8 +24,8 @@ class UserVoter implements VoterInterface
         return in_array($attribute, array(
             self::VIEW,
             self::EDIT,
-            self::CREATE,
-        ));
+            self::CREATE
+        ), false);
     }
 
     public function supportsClass($class)
@@ -39,7 +37,10 @@ class UserVoter implements VoterInterface
     }
 
     /**
-     * @var \Tracker\ProjectBundle\Entity\Project $user
+     * @param TokenInterface $token
+     * @param null|object $user
+     * @param array $attributes
+     * @return int
      */
     public function vote(TokenInterface $token, $user, array $attributes)
     {

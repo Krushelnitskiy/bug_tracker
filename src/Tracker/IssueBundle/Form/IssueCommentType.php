@@ -43,6 +43,6 @@ class IssueCommentType extends AbstractType
      */
     public function getName()
     {
-        return 'tracker_issuebundle_comment';
+        return 'tracker_issueBundle_comment';
     }
 }

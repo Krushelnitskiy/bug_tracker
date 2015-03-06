@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\Issue;
 
 class ProjectVoter implements VoterInterface
 {
@@ -27,7 +28,7 @@ class ProjectVoter implements VoterInterface
             self::VIEW,
             self::EDIT,
             self::CREATE
-        ));
+        ), false);
     }
 
     public function supportsClass($class)
@@ -38,12 +39,15 @@ class ProjectVoter implements VoterInterface
     }
 
     /**
-     * @var \Tracker\ProjectBundle\Entity\Project $issue
+     * @param TokenInterface $token
+     * @param null|Issue $issue
+     * @param array $attributes
+     * @return int
      */
     public function vote(TokenInterface $token, $issue, array $attributes)
     {
         if (!$this->supportsClass(get_class($issue))) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return self::ACCESS_ABSTAIN;
         }
 
         if (1 !== count($attributes)) {
@@ -53,7 +57,7 @@ class ProjectVoter implements VoterInterface
         $attribute = $attributes[0];
 
         if (!$this->supportsAttribute($attribute)) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return self::ACCESS_ABSTAIN;
         }
 
         // get current logged in user
@@ -61,28 +65,28 @@ class ProjectVoter implements VoterInterface
 
         // make sure there is a user object (i.e. that the user is logged in)
         if (!$user instanceof UserInterface) {
-            return VoterInterface::ACCESS_DENIED;
+            return self::ACCESS_DENIED;
         }
 
         switch($attribute) {
             case self::VIEW:
                 if ($this->userCanView($user, $issue)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
             case self::CREATE:
                 if ($this->userCanCreate($user, $issue)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
             case self::EDIT:
                 if ($this->userCanEdit($user, $issue)) {
-                    return VoterInterface::ACCESS_GRANTED;
+                    return self::ACCESS_GRANTED;
                 }
                 break;
         }
 
-        return VoterInterface::ACCESS_DENIED;
+        return self::ACCESS_DENIED;
     }
 
     public function userCanView(User $user, Project $project)
@@ -95,7 +99,13 @@ class ProjectVoter implements VoterInterface
             return true;
         }
 
-        $operatorCanView = $user->hasRole(User::ROLE_OPERATOR) && $project->getMembers()->contains($user);
+        if ($project->getMembers()->count() > 0) {
+            $isMemberProject = $project->getMembers()->contains($user);
+        } else {
+            $isMemberProject = $user->getProduct()->count() > 0;
+        }
+
+        $operatorCanView = $user->hasRole(User::ROLE_OPERATOR) && $isMemberProject;
 
         if ($operatorCanView) {
             return true;
@@ -109,6 +119,7 @@ class ProjectVoter implements VoterInterface
         if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
+
         if ($user->hasRole(User::ROLE_MANAGER)) {
             return true;
         }
@@ -120,9 +131,11 @@ class ProjectVoter implements VoterInterface
         if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
+
         if ($user->hasRole(User::ROLE_MANAGER)) {
             return true;
         }
+
         return false;
     }
 }

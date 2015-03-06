@@ -9,15 +9,14 @@
 namespace Tracker\ActivitiesBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Tracker\ActivitiesBundle\Entity\Activity;
 use Tracker\IssueBundle\Entity\Comment;
-use Tracker\IssueBundle\Entity\Issue;
 
 class CommentEventListener
 {
-
-    /** @PostPersist */
+    /**
+     * @param LifecycleEventArgs $eventArgs
+     */
     public function postPersist(LifecycleEventArgs $eventArgs)
     {
         $comment = $eventArgs->getEntity();

@@ -34,9 +34,8 @@ class LoadStatusData extends AbstractFixture implements FixtureInterface
 
         $manager->flush();
 
-        $this->addReference("status.open", $statusOpen);
-        $this->addReference("status.closed", $statusClosed);
-        $this->addReference("status.inProgress", $statusInProgress);
+        $this->addReference('status.open', $statusOpen);
+        $this->addReference('status.closed', $statusClosed);
+        $this->addReference('status.inProgress', $statusInProgress);
     }
-
 }

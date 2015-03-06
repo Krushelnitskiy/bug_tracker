@@ -55,7 +55,7 @@ class OperatorTest extends WebTestCase
     public function testCreateIssueNoProject()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'user.operator,noProjects',
+            'PHP_AUTH_USER' => 'operator.noProjects',
             'PHP_AUTH_PW' => 'test'
         ));
 
@@ -66,7 +66,7 @@ class OperatorTest extends WebTestCase
     public function testViewIssueNoProject()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'user.operator,noProjects',
+            'PHP_AUTH_USER' => 'operator.noProjects',
             'PHP_AUTH_PW' => 'test'
         ));
 
@@ -77,13 +77,11 @@ class OperatorTest extends WebTestCase
     public function testEditIssueNoProject()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'user.operator,noProjects',
+            'PHP_AUTH_USER' => 'operator.noProjects',
             'PHP_AUTH_PW' => 'test'
         ));
 
         $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId() .'/edit');
         $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
     }
-
-
 }

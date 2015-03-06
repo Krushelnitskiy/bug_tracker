@@ -15,7 +15,6 @@ use FOS\UserBundle\Controller\ResettingController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-
 class ResettingController extends BaseController
 {
     /**
@@ -27,7 +26,8 @@ class ResettingController extends BaseController
     }
 
     /**
-     * Tell the user to check his email provider
+     * @param Request $request
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function checkEmailAction(Request $request)
     {
@@ -39,12 +39,13 @@ class ResettingController extends BaseController
         }
 
         return $this->render('TrackerUserBundle:Resetting:checkEmail.html.twig', array(
-            'email' => $email,
+            'email' => $email
         ));
     }
 
     /**
-     * Request reset user password: submit form and send email
+     * @param Request $request
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function sendEmailAction(Request $request)
     {
@@ -73,8 +74,8 @@ class ResettingController extends BaseController
         $user->setPasswordRequestedAt(new \DateTime());
         $this->get('fos_user.user_manager')->updateUser($user);
 
-        return new RedirectResponse($this->generateUrl('fos_user_resetting_check_email',
-            array('email' => $this->getObfuscatedEmail($user))
-        ));
+        $redirectUrlParams = array('email' => $this->getObfuscatedEmail($user));
+        $redirectUrl = $this->generateUrl('fos_user_resetting_check_email', $redirectUrlParams);
+        return new RedirectResponse($redirectUrl);
     }
 }

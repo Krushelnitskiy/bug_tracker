@@ -3,6 +3,7 @@
 namespace Tracker\IssueBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Tracker\UserBundle\Entity\User;
 
 /**
  * IssueRepository
@@ -12,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class IssueRepository extends EntityRepository
 {
-    public function findByCollaborator($user)
+    public function findByCollaborator(User $user)
     {
         $qb = $this->createQueryBuilder('issue');
 

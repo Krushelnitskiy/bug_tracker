@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Tracker\UserBundle\Entity\User;
 
-
 class DefaultController extends Controller
 {
     /**

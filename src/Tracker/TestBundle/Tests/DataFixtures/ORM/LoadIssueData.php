@@ -14,7 +14,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tracker\IssueBundle\Entity\Issue;
-use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\Status;
+use Tracker\IssueBundle\Entity\Type;
+use Tracker\IssueBundle\Entity\Priority;
+use Tracker\ProjectBundle\Entity\Project;
+use Tracker\userBundle\Entity\User;
 
 // implements OrderedFixtureInterface
 
@@ -39,18 +43,43 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Contain
      */
     public function load(ObjectManager $manager)
     {
+        /**
+         * @var $user User
+         */
+        $user = $this->getReference('user.admin');
+        /**
+         * @var $status Status
+         */
+        $status = $this->getReference('status.open');
+        /**
+         * @var $type Type
+         */
+        $type = $this->getReference('type.story');
+        /**
+         * @var $priority Priority
+         */
+        $priority = $this->getReference('priority.trivial');
+        /**
+         * @var $project Project
+         */
+        $project =$this->getReference('project.first');
+        /**
+         * @var $userOperator User
+         */
+        $userOperator = $this->getReference('user.operator');
+
         $issueStory = new Issue();
-        $issueStory->setAssignee($this->getReference('user.admin'));
+        $issueStory->setAssignee($user);
         $issueStory->setCode('1');
         $issueStory->setSummary('issue test summary');
         $issueStory->setDescription('');
         $issueStory->setCreated(new \DateTime());
         $issueStory->setUpdated(new \DateTime());
-        $issueStory->setStatus($this->getReference('status.open'));
-        $issueStory->setType($this->getReference('type.story'));
-        $issueStory->setPriority($this->getReference('priority.trivial'));
-        $issueStory->setProject($this->getReference('project.first'));
-        $issueStory->setReporter($this->getReference('user.admin'));
+        $issueStory->setStatus($status);
+        $issueStory->setType($type);
+        $issueStory->setPriority($priority);
+        $issueStory->setProject($project);
+        $issueStory->setReporter($userOperator);
         $manager->persist($issueStory);
         $manager->flush();
 

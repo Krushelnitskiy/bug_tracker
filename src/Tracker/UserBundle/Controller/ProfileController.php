@@ -14,7 +14,6 @@ namespace Tracker\UserBundle\Controller;
 use FOS\UserBundle\Controller\ProfileController as BaseController;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-
 class ProfileController extends BaseController
 {
 

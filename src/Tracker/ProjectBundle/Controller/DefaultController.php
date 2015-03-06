@@ -28,13 +28,19 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        if (false === $this->get('security.authorization_checker')->isGranted('view', new Project())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         $entities = $entityManager->getRepository('TrackerProjectBundle:Project')->findAll();
 
-        return array(
+        return array (
             'entities' => $entities,
+            'emptyEntity' => new Project()
         );
     }
+
     /**
      * Creates a new Project entity.
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -46,6 +52,10 @@ class DefaultController extends Controller
      */
     public function createAction(Request $request)
     {
+        if (false === $this->get('security.authorization_checker')->isGranted('create', new Project())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entity = new Project();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -62,7 +72,7 @@ class DefaultController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 
@@ -77,7 +87,7 @@ class DefaultController extends Controller
     {
         $form = $this->createForm(new ProjectType(), $entity, array(
             'action' => $this->generateUrl('project_create'),
-            'method' => 'POST',
+            'method' => 'POST'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -103,7 +113,7 @@ class DefaultController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 
@@ -118,10 +128,6 @@ class DefaultController extends Controller
      */
     public function showAction($projectId)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('view', new Project())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('TrackerProjectBundle:Project')->find($projectId);
@@ -130,11 +136,12 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Unable to find Project entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($projectId);
+        if (false === $this->get('security.authorization_checker')->isGranted('view', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
 
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity'      => $entity
         );
     }
 
@@ -149,10 +156,6 @@ class DefaultController extends Controller
      */
     public function editAction($projectId)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', new Project())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $entityManager = $this->getDoctrine()->getManager();
 
         $entity = $entityManager->getRepository('TrackerProjectBundle:Project')->find($projectId);
@@ -161,13 +164,15 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Unable to find Project entity.');
         }
 
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($projectId);
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'edit_form'   => $editForm->createView()
         );
     }
 
@@ -186,7 +191,7 @@ class DefaultController extends Controller
 
         $form = $this->createForm(new ProjectType(), $entity, array(
             'action' => $this->generateUrl('project_update', array('projectId' => $entity->getId())),
-            'method' => 'PUT',
+            'method' => 'PUT'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -206,10 +211,6 @@ class DefaultController extends Controller
      */
     public function updateAction(Request $request, $projectId)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', new Project())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $entityManager = $this->getDoctrine()->getManager();
         $entity = $entityManager->getRepository('TrackerProjectBundle:Project')->find($projectId);
 
@@ -217,10 +218,12 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Unable to find Project entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($projectId);
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-
 
         if ($editForm->isValid()) {
             $entityManager->flush();
@@ -230,53 +233,7 @@ class DefaultController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'edit_form'   => $editForm->createView()
         );
-    }
-    /**
-     * Deletes a Project entity.
-     * @param integer $projectId
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @Route("/{projectId}", name="project_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $projectId)
-    {
-        $form = $this->createDeleteForm($projectId);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entity = $entityManager->getRepository('TrackerProjectBundle:Project')->find($projectId);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Project entity.');
-            }
-
-            $entityManager->remove($entity);
-            $entityManager->flush();
-        }
-
-        return $this->redirect($this->generateUrl('project'));
-    }
-
-    /**
-     * Creates a form to delete a Project entity by id.
-     *
-     * @param mixed $projectId The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($projectId)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('project_delete', array('projectId' => $projectId)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-            ;
     }
 }

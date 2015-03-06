@@ -19,10 +19,14 @@ use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadProjectData;
 use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadUserData;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\ORM\Tools\SchemaTool;
 
 class WebTestCase extends BaseWebTestCase
 {
+    /**
+     * @var $referenceRepository ReferenceRepository
+     */
     protected $referenceRepository;
 
     public function setUp()

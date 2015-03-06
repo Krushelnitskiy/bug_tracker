@@ -70,7 +70,9 @@ class CommentVoter implements VoterInterface
             return self::ACCESS_ABSTAIN;
         }
 
-        // get current logged in user
+        /**
+         * @var user User
+         */
         $user = $token->getUser();
 
         // make sure there is a user object (i.e. that the user is logged in)
