@@ -10,6 +10,7 @@ namespace Tracker\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Tracker\IssueBundle\Entity\Issue;
+use Tracker\ProjectBundle\Entity\Project;
 
 /**
  * Class Project
@@ -32,13 +33,20 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\ManyToMany(targetEntity="\Tracker\ProjectBundle\Entity\Project", mappedBy="members")
+     **/
+    protected $product;
+
+    /**
      * @ORM\OneToMany(targetEntity="\Tracker\IssueBundle\Entity\Issue", mappedBy="assignee")
      **/
     protected $assignedIssue;
 
     public function __construct()
     {
+        $this->product = new \Doctrine\Common\Collections\ArrayCollection();
         parent::__construct();
+
     }
 
 
@@ -58,7 +66,7 @@ class User extends BaseUser
      * @param \Tracker\IssueBundle\Entity\Issue $assignedIssue
      * @return User
      */
-    public function addAssignedIssue(\Tracker\IssueBundle\Entity\Issue $assignedIssue)
+    public function addAssignedIssue(Issue $assignedIssue)
     {
         $this->assignedIssue[] = $assignedIssue;
 
@@ -70,7 +78,7 @@ class User extends BaseUser
      *
      * @param \Tracker\IssueBundle\Entity\Issue $assignedIssue
      */
-    public function removeAssignedIssue(\Tracker\IssueBundle\Entity\Issue $assignedIssue)
+    public function removeAssignedIssue(Issue $assignedIssue)
     {
         $this->assignedIssue->removeElement($assignedIssue);
     }
@@ -83,5 +91,38 @@ class User extends BaseUser
     public function getAssignedIssue()
     {
         return $this->assignedIssue;
+    }
+
+    /**
+     * Add product
+     *
+     * @param \Tracker\ProjectBundle\Entity\Project $product
+     * @return User
+     */
+    public function addProduct(Project $product)
+    {
+        $this->product[] = $product;
+
+        return $this;
+    }
+
+    /**
+     * Remove product
+     *
+     * @param \Tracker\ProjectBundle\Entity\Project $product
+     */
+    public function removeProduct(Project $product)
+    {
+        $this->product->removeElement($product);
+    }
+
+    /**
+     * Get product
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

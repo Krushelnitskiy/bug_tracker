@@ -44,11 +44,8 @@ class Project
     protected $code;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User")
-     * @ORM\JoinTable(name="projects_users",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")}
-     *      )
+     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinTable(name="projects_users")
      **/
     protected $members;
     /**

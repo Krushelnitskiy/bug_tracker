@@ -53,6 +53,9 @@ class DefaultController extends Controller
      */
     public function createAction(Request $request)
     {
+
+
+
         if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
             throw new AccessDeniedException('Unauthorised access!');
         }

@@ -49,9 +49,6 @@ class IssueEventListener
         $entityManager = $eventArgs->getEntityManager();
 
         if ($issue instanceof Issue) {
-//            var_dump($this->container->get('security.context')->getToken());exit;
-//                $user = $this->container->get('security.context')->getToken()->getUser();
-
                 $eventEntity = new Activity();
                 $eventEntity->setIssue($issue);
                 $eventEntity->setProject($issue->getProject());

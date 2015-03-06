@@ -46,8 +46,44 @@ class OperatorTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-        var_dump($this->getReference('issue.story')->getId());exit;
+        $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId() .'/edit');
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
+
+
+    public function testCreateIssueNoProject()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'user.operator,noProjects',
+            'PHP_AUTH_PW' => 'test'
+        ));
+
+        $client->request('GET', '/issue/new');
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+    }
+
+    public function testViewIssueNoProject()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'user.operator,noProjects',
+            'PHP_AUTH_PW' => 'test'
+        ));
+
+        $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+    }
+
+    public function testEditIssueNoProject()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'user.operator,noProjects',
+            'PHP_AUTH_PW' => 'test'
+        ));
+
         $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId() .'/edit');
         $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
     }
+
+
 }

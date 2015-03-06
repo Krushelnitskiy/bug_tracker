@@ -169,6 +169,12 @@ class IssueVoter implements VoterInterface
      */
     protected function operatorHasAccess($user, $issue)
     {
-        return $user->hasRole(User::ROLE_OPERATOR) && $issue->getProject()->getMembers()->contains($user);
+        if ($issue->getProject()){
+            $isMemberInProject = $issue->getProject()->getMembers()->contains($user);
+        } else {
+            $isMemberInProject = $user->getProduct()->count() > 0;
+        }
+
+        return $user->hasRole(User::ROLE_OPERATOR) && $isMemberInProject;
     }
 }
