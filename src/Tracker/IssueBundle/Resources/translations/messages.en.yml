@@ -37,6 +37,7 @@ issue:
     resolution: "Resolution"
     resolution: "Resolution"
     assignee: "Assignee"
+    reporter: "Reporter"
     collaborators: "Collaborators"
     project: "Project"
   comment:

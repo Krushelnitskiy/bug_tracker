@@ -8,10 +8,10 @@ tracker_home:
     type:     annotation
     prefix:   /
 
-tracker_activities:
-    resource: "@TrackerActivitiesBundle/Controller/"
-    type:     annotation
-    prefix:   /
+#tracker_activities:
+#    resource: "@TrackerActivitiesBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
 
 tracker_issue:
     resource: "@TrackerIssueBundle/Controller/"

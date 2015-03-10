@@ -63,7 +63,6 @@ class CommentController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-
         if (!$comment) {
             throw $this->createNotFoundException('Unable to find Issue entity.');
         }

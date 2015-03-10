@@ -66,6 +66,14 @@
                 <th>{{ "issue.grid.updated"|trans }}</th>
                 <td>{{ entity.updated|date('d.m.Y') }}</td>
             </tr>
+            <tr>
+                <th>{{ "issue.grid.reporter"|trans }}</th>
+                <td>{{ entity.reporter.username }}</td>
+            </tr>
+            <tr>
+                <th>{{ "issue.grid.assignee"|trans }}</th>
+                <td>{{ entity.assignee.username }}</td>
+            </tr>
         </tbody>
     </table>
 

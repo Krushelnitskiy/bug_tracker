@@ -14,6 +14,7 @@ use Tracker\IssueBundle\DataFixtures\ORM\LoadPriorityData;
 use Tracker\IssueBundle\DataFixtures\ORM\LoadResolutionData;
 use Tracker\IssueBundle\DataFixtures\ORM\LoadStatusData;
 use Tracker\IssueBundle\DataFixtures\ORM\LoadTypeData;
+use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadCommentData;
 use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadIssueData;
 use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadProjectData;
 use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadUserData;
@@ -69,9 +70,12 @@ class WebTestCase extends BaseWebTestCase
         $loader->addFixture($fixtures);
 
         $fixtures = new LoadIssueData();
+        $fixtures->setContainer($container);
         $loader->addFixture($fixtures);
 
-
+//        $fixtures = new LoadCommentData();
+//        $fixtures->setContainer($container);
+//        $loader->addFixture($fixtures);
 
         $executor->execute($loader->getFixtures());
         $this->referenceRepository = $executor->getReferenceRepository();

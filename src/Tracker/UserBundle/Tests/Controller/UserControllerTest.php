@@ -34,7 +34,7 @@ class UserControllerTest extends WebTestCase
         $form['tracker_userBundle_user[username]']='test';
         $form['tracker_userBundle_user[plainPassword][first]']= '123';
         $form['tracker_userBundle_user[plainPassword][second]']= '123';
-        $form['tracker_userBundle_user[roles]']= array(User::ROLE_ADMIN, User::ROLE_MANAGER);
+        $form['tracker_userBundle_user[roles]']= User::ROLE_MANAGER;
         $form['tracker_userBundle_user[enabled]']= 1;
         $client->submit($form);
         $crawler = $client->followRedirect();

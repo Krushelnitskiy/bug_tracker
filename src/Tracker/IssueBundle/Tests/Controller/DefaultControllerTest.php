@@ -20,7 +20,7 @@ class DefaultControllerTest extends WebTestCase
 
         $client->request('GET', '/issue');
         $crawler = $client->followRedirect();
-        $this->assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
+        self::assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
     }
 
     public function testShow()
@@ -31,7 +31,7 @@ class DefaultControllerTest extends WebTestCase
         ));
 
         $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
-        $this->assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
+        self::assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
     }
 
     public function testCreate()
@@ -51,12 +51,12 @@ class DefaultControllerTest extends WebTestCase
         $form['tracker_issueBundle_issue[priority]'] = $this->getReference('priority.trivial')->getId();
         $form['tracker_issueBundle_issue[code]'] = 'test-1';
         $form['tracker_issueBundle_issue[description]'] = 'issue test description 1';
-        $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.admin')->getId();
-        $form['tracker_issueBundle_issue[assignee]'] = $this->getReference('user.admin')->getId();
+        $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.manager')->getId();
+        $form['tracker_issueBundle_issue[assignee]'] = $this->getReference('user.operator')->getId();
         $client->submit($form);
         $crawler = $client->followRedirect();
 
-        $this->assertContains('issue test summary 1', $crawler->html());
+        self::assertContains('issue test summary 1', $crawler->html());
     }
 
     public function testEdit()
@@ -71,10 +71,14 @@ class DefaultControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Update')->form();
         $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 2';
+        $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.manager')->getId();
+        $form['tracker_issueBundle_issue[status]'] = $this->getReference('status.inProgress')->getId();
         $client->submit($form);
 
         $crawler = $client->followRedirect();
 
-        $this->assertContains('issue test summary 2', $crawler->html());
+        self::assertContains('manager', $crawler->html());
+        self::assertContains('manager', $crawler->html());
+        self::assertContains('In progress', $crawler->html());
     }
 }
