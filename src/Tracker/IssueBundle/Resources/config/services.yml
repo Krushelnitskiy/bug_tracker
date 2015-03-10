@@ -17,3 +17,10 @@ services:
             - @security.context
         tags:
             - { name: form.type, alias: tracker_issueBundle_issue }
+
+    tracker_issueBundle_issueSubTask_form:
+        class: Tracker\IssueBundle\Form\IssueSubTaskType
+        arguments:
+            - @security.context
+        tags:
+            - { name: form.type, alias: tracker_issueBundle_issueSubTask_form }

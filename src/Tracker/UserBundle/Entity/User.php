@@ -45,10 +45,10 @@ class User extends BaseUser
     public function __construct()
     {
         $this->project = new ArrayCollection();
+        $this->assignedIssue = new ArrayCollection();
         parent::__construct();
 
     }
-
 
     /**
      * Get id

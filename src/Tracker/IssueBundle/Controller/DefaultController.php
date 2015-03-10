@@ -15,6 +15,9 @@ use Tracker\IssueBundle\Form\IssueCommentType;
 use Tracker\IssueBundle\Form\IssueType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Tracker\IssueBundle\Security\Authorization\Voter\IssueVoter;
+use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\Type;
 
 /**
  * Issue controller.
@@ -50,7 +53,7 @@ class DefaultController extends Controller
      * @param Request $request
      * @Route("/", name="issue_create")
      * @Method("POST")
-     * @Template("TrackerIssueBundle:Issue:new.html.twig")
+     * @Template("TrackerIssueBundle:Default:new.html.twig")
      * @return array
      */
     public function createAction(Request $request)
@@ -98,9 +101,18 @@ class DefaultController extends Controller
 
         $entity = new Issue();
 
+        $user = $this->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $projects = array();
+        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
+            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
+        }
+
         $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
             'action' => $this->generateUrl('issue_create'),
-            'method' => 'POST'
+            'method' => 'POST',
+            'projects' => $projects
         ));
 
         return array(
@@ -296,5 +308,84 @@ class DefaultController extends Controller
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
+    }
+
+
+    /**
+     * Displays a form to create a new Issue entity.
+     *
+     * @Route("/{issue}/new", name="issue_new_sub_task")
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @Method("GET")
+     * @Template()
+     */
+    public function newSubTaskAction (Request $request, $issue) {
+        if (false === $this->get('security.authorization_checker')->isGranted(IssueVoter::CREATE_SUB_TASK, $issue)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $entity = new Issue();
+
+        $form  = $this->createForm('tracker_issueBundle_issueSubTask_form', $entity, array(
+            'action' => $this->generateUrl('issue_create_sub_task', array('issue'=>$issue->getId())),
+            'method' => 'POST',
+            'issueStory' => $issue
+        ));
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView()
+        );
+    }
+
+    /**
+     * Creates a new Issue entity.
+     * @param Request $request
+     * @Route("/{issue}", name="issue_create_sub_task")
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @Method("POST")
+     * @Template("TrackerIssueBundle:Issue:new.html.twig")
+     * @return array
+     */
+    public function createSubTaskAction(Request $request, $issue)
+    {
+        if (false === $this->get('security.authorization_checker')->isGranted(IssueVoter::CREATE_SUB_TASK, $issue)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $entity = new Issue();
+        $form  = $this->createForm('tracker_issueBundle_issueSubTask_form', $entity, array(
+            'action' => $this->generateUrl('issue_create_sub_task', array('issue'=>$issue->getId())),
+            'method' => 'POST',
+            'issueStory' => $issue
+        ));
+        $form->handleRequest($request);
+
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $repositoryStatus = $em->getRepository('TrackerIssueBundle:Status');
+            $repositoryType = $em->getRepository('TrackerIssueBundle:Type');
+
+            $entityStatus = $repositoryStatus->findByValue(Status::STATUS_OPEN)[0];
+            $entityType = $repositoryType->findByValue(Type::TYPE_SUB_TASK)[0];
+            $entity->setCreated(new \DateTime());
+            $entity->setUpdated(new \DateTime());
+            $entity->setParent($issue);
+            $entity->setProject($issue->getProject());
+            $entity->setType($entityType);
+            $entity->setStatus($entityStatus);
+
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getId())));
+        }
+
+        return array(
+            'entity' => $entity,
+            'form' => $form->createView()
+        );
     }
 }

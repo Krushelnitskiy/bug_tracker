@@ -4,6 +4,8 @@ issue:
       title: "Issue list"
     create:
       title: "Issue creation"
+    createSubTask:
+      title: "Sub task creation"
     edit:
       title: "Issue edit"
     view:
@@ -17,6 +19,7 @@ issue:
     edit: "Edit"
     back: "Back to the list"
     delete: "Delete"
+    create_sub_task: "Create sub task"
   grid:
     id: "Id"
     summary: "Summary"

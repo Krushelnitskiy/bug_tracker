@@ -40,23 +40,37 @@ class IssueType extends AbstractType
             )
         );
 
+        $projects = $options['projects'];
+
         /**
          * @var $user User
          */
         $user = $this->securityContext->getToken()->getUser();
 
         if ($builder->getData()->getId() == null) {
-            $project = $user->getProject()[0];
+            if (count($projects) === 0) {
+                $project = $user->getProject()->first();
+            } else {
+                $project  = $projects[0];
+            }
         } else {
             $project = $builder->getData()->getProject();
         }
 
         $attributeProject = array_merge($attribute, array(
             'class' => 'TrackerProjectBundle:Project',
-            'property' => 'label'
-//            'data' => $project
+            'property' => 'label',
+            'data' => $project,
+            'query_builder' => function ($er) use ($user) {
+                $query = $er->createQueryBuilder('p');
+                if (!$user->hasRole(User::ROLE_ADMIN) && !$user->hasRole(User::ROLE_MANAGER)) {
+                    $query = $query->join('p.members', 'pu')
+                        ->where('pu.id = :user')
+                        ->setParameter('user', $user->getId());
+                }
+                return $query;
+            }
         ));
-
 
         $attributePriority = array_merge($attribute, array(
             'class' => 'TrackerIssueBundle:Priority',
@@ -65,19 +79,19 @@ class IssueType extends AbstractType
 
         $attributeStatus = array_merge($attribute, array(
             'class' => 'TrackerIssueBundle:Status',
-            'property' => 'value',
+            'property' => 'value'
         ));
 
         $attributeReporter = array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
-            'data' => $project->getMembers()[0]
+            'data' => $project->getMembers()->first()
         ));
 
         $attributeAssign = array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
-            'data' => $project->getMembers()[0]
+            'data' => $project->getMembers()->first()
         ));
 
         $attributeType = array_merge($attribute,  array(
@@ -95,10 +109,10 @@ class IssueType extends AbstractType
         if ($builder->getData()->getid() != null) {
             $builder->add('status', 'entity', $attributeStatus);
             if (Type::TYPE_STORY !== $builder->getData()->getType()->getValue()) {
-                $builder->add( 'type', 'entity', $attributeType );
+                $builder->add('type', 'entity', $attributeType);
             }
         } else {
-            $builder->add( 'type', 'entity', $attributeType );
+            $builder->add('type', 'entity', $attributeType);
         }
 
         $builder
@@ -110,11 +124,8 @@ class IssueType extends AbstractType
 //          ->add('resolution', null, $attribute)
             ->add('reporter', null, $attributeReporter)
             ->add('assignee', null, $attributeAssign)
-//          ->add('collaborators', null, $attribute)
-//          ->add('parent', null, $attribute)
             ->add('save', 'submit')
             ;
-
     }
     
     /**
@@ -123,7 +134,8 @@ class IssueType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Tracker\IssueBundle\Entity\Issue'
+            'data_class' => 'Tracker\IssueBundle\Entity\Issue',
+            'projects' => array()
         ));
     }
 
