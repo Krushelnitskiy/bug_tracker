@@ -20,6 +20,14 @@
                 </a>
             {% endif %}
 
+            {% if is_granted("create_sub_task", entity) %}
+                |
+                <a href="{{ path('issue_create_sub_task', { 'id': entity.id }) }}">
+                    {{ "issue.action.create_sub_task"|trans }}
+                </a>
+            {% endif %}
+
+
             {% if entity.parent %}
                 |
                 <a href="{{ path('issue_show', { 'id': entity.parent.id }) }}">

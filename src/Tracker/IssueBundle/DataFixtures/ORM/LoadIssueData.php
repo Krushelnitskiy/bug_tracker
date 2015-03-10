@@ -32,6 +32,9 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
         $issueStory->setType($this->getReference('type.story'));
         $issueStory->setPriority($this->getReference('priority.trivial'));
         $issueStory->setProject($this->getReference('project.first'));
+        $issueStory->setReporter($this->getReference('admin-user'));
+        $issueStory->setAssignee($this->getReference('admin-user'));
+
         $manager->persist($issueStory);
 
 
@@ -47,6 +50,9 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
         $issueStorySubTask->setType($this->getReference('type.subTask'));
         $issueStorySubTask->setPriority($this->getReference('priority.trivial'));
         $issueStorySubTask->setProject($this->getReference('project.first'));
+        $issueStorySubTask->setReporter($this->getReference('admin-user'));
+        $issueStorySubTask->setAssignee($this->getReference('admin-user'));
+
         $manager->persist($issueStorySubTask);
 
         $manager->flush();

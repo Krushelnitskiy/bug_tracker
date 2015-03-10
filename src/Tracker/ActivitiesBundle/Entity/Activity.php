@@ -12,11 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Tracker\UserBundle\Entity\User;
 use Tracker\IssueBundle\Entity\Issue;
 use \Tracker\ProjectBundle\Entity\Project;
+use \Tracker\ActivitiesBundle\Entity;
 
 /**
  * Class Issue
  * @package Tracker\ActivitiesBundle\Entity
- * @ORM\Entity(repositoryClass="Tracker\ActivitiesBundle\Entity\ActivityRepository")
+ * @ORM\Entity(repositoryClass="ActivityRepository")
  * @ORM\Table(name="activity")
  */
 class Activity

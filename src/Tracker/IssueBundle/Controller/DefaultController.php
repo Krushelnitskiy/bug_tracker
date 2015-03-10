@@ -60,7 +60,7 @@ class DefaultController extends Controller
         }
 
         $entity = new Issue();
-        $form = $this->createCreateForm($entity);
+        $form  = $this->createForm('tracker_issueBundle_issue', $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -84,25 +84,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Creates a form to create a Issue entity.
-     *
-     * @param Issue $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Issue $entity)
-    {
-        $form = $this->createForm(new IssueType(), $entity, array(
-            'action' => $this->generateUrl('issue_create'),
-            'method' => 'POST'
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
-
-        return $form;
-    }
-
-    /**
      * Displays a form to create a new Issue entity.
      *
      * @Route("/new", name="issue_new")
@@ -116,7 +97,11 @@ class DefaultController extends Controller
         }
 
         $entity = new Issue();
-        $form   = $this->createCreateForm($entity);
+
+        $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
+            'action' => $this->generateUrl('issue_create'),
+            'method' => 'POST'
+        ));
 
         return array(
             'entity' => $entity,
@@ -174,7 +159,10 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createForm('tracker_issueBundle_issue', $entity, array(
+                'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
+                'method' => 'PUT'
+            ));
 
         return array(
             'entity'      => $entity,
@@ -183,30 +171,12 @@ class DefaultController extends Controller
     }
 
     /**
-     * Creates a form to edit a Issue entity.
-     *
-     * @param Issue $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createEditForm(Issue $entity)
-    {
-        $form = $this->createForm(new IssueType(), $entity, array(
-            'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
-            'method' => 'PUT'
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
-        return $form;
-    }
-    /**
      * Edits an existing Issue entity.
      * @param integer $id
      * @param Request $request
      * @Route("/{id}", name="issue_update")
      * @Method("PUT")
-     * @Template("TrackerIssueBundle:Issue:edit.html.twig")
+     * @Template("TrackerIssueBundle:Default:edit.html.twig")
      * @return array
      */
     public function updateAction(Request $request, $id)
@@ -216,20 +186,23 @@ class DefaultController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Issue entity.');
         }
-        ;
-        $editForm = $this->createEditForm($entity);
+
+        $editForm = $this->createForm('tracker_issueBundle_issue', $entity, array(
+            'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
+                'method' => 'PUT'
+            ));
         $editForm->handleRequest($request);
+
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('issue_show', array('id' => $id)));
         }
 
         return array(

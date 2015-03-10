@@ -102,7 +102,7 @@ class ProjectVoter implements VoterInterface
         if ($project->getMembers()->count() > 0) {
             $isMemberProject = $project->getMembers()->contains($user);
         } else {
-            $isMemberProject = $user->getProduct()->count() > 0;
+            $isMemberProject = $user->getProject()->count() > 0;
         }
 
         $operatorCanView = $user->hasRole(User::ROLE_OPERATOR) && $isMemberProject;

@@ -4,8 +4,16 @@ services:
         public:     false
         tags:
            - { name: security.voter }
+
     tracker.issueComment.security.voter:
         class:      Tracker\IssueBundle\Security\Authorization\Voter\CommentVoter
         public:     false
         tags:
             - { name: security.voter }
+
+    tracker_issueBundle_issue:
+        class: Tracker\IssueBundle\Form\IssueType
+        arguments:
+            - @security.context
+        tags:
+            - { name: form.type, alias: tracker_issueBundle_issue }

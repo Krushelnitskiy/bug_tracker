@@ -35,7 +35,7 @@ class User extends BaseUser
     /**
      * @ORM\ManyToMany(targetEntity="\Tracker\ProjectBundle\Entity\Project", mappedBy="members")
      **/
-    protected $product;
+    protected $project;
 
     /**
      * @ORM\OneToMany(targetEntity="\Tracker\IssueBundle\Entity\Issue", mappedBy="assignee")
@@ -44,7 +44,7 @@ class User extends BaseUser
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
+        $this->project = new ArrayCollection();
         parent::__construct();
 
     }
@@ -101,7 +101,7 @@ class User extends BaseUser
      */
     public function addProduct(Project $product)
     {
-        $this->product[] = $product;
+        $this->project[] = $product;
 
         return $this;
     }
@@ -113,7 +113,7 @@ class User extends BaseUser
      */
     public function removeProduct(Project $product)
     {
-        $this->product->removeElement($product);
+        $this->project->removeElement($product);
     }
 
     /**
@@ -121,8 +121,8 @@ class User extends BaseUser
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProduct()
+    public function getProject()
     {
-        return $this->product;
+        return $this->project;
     }
 }

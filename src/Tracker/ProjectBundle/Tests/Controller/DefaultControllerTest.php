@@ -41,7 +41,6 @@ class DefaultControllerTest extends WebTestCase
             'PHP_AUTH_USER' => 'admin',
             'PHP_AUTH_PW'   => 'test'
         ));
-
         $crawler = $client->request('GET', '/project/new');
 
         $form = $crawler->selectButton('Create')->form();

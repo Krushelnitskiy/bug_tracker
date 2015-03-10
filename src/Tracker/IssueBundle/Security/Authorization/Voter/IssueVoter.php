@@ -12,12 +12,14 @@ use Tracker\IssueBundle\Entity\Issue;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\Type;
 
 class IssueVoter implements VoterInterface
 {
     const VIEW = 'view';
     const EDIT = 'edit';
     const CREATE = 'create';
+    const CREATE_SUB_TASK = 'create_sub_task';
 
     /**
      * @param string $attribute
@@ -28,7 +30,8 @@ class IssueVoter implements VoterInterface
         return in_array($attribute, array(
             self::VIEW,
             self::EDIT,
-            self::CREATE
+            self::CREATE,
+            self::CREATE_SUB_TASK
         ), false);
     }
 
@@ -86,6 +89,11 @@ class IssueVoter implements VoterInterface
                 break;
             case self::EDIT:
                 if ($this->userCanEdit($user, $issue)) {
+                    return self::ACCESS_GRANTED;
+                }
+                break;
+            case self::CREATE_SUB_TASK:
+                if ($issue->getType()->getValue() === Type::TYPE_STORY && $this->userCanCreate($user, $issue)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
@@ -171,7 +179,7 @@ class IssueVoter implements VoterInterface
         if ($issue->getProject()) {
             $isMemberInProject = $issue->getProject()->getMembers()->contains($user);
         } else {
-            $isMemberInProject = $user->getProduct()->count() > 0;
+            $isMemberInProject = $user->getProject()->count() > 0;
         }
 
         return $user->hasRole(User::ROLE_OPERATOR) && $isMemberInProject;

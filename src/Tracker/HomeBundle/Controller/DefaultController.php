@@ -23,7 +23,6 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             $issues = array();
             $activity = array();
-
             /**
              * @var $issueRepository IssueRepository
              */
