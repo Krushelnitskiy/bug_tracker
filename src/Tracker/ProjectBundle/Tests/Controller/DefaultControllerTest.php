@@ -20,10 +20,10 @@ class DefaultControllerTest extends WebTestCase
         $project = $this->getReference('project.first');
 
         $crawler = $client->request('GET', '/project/'.$project->getId());
-        $this->assertContains($project->getLabel(), $crawler->html());
+        self::assertContains($project->getLabel(), $crawler->html());
 
         $crawler = $client->request('GET', '/project/testtest');
-        $this->assertContains('Unable to find Project entity.', $crawler->html());
+        self::assertContains('Unable to find Project entity.', $crawler->html());
     }
 
     public function testCreateWithOutAUth()
@@ -32,7 +32,7 @@ class DefaultControllerTest extends WebTestCase
         $client->request('GET', '/project/new');
         $crawler = $client->followRedirect();
 
-        $this->assertContains('Registration', $crawler->html());
+        self::assertContains('Registration', $crawler->html());
     }
 
     public function testCreate()
@@ -50,7 +50,7 @@ class DefaultControllerTest extends WebTestCase
 
         $client->submit($form);
         $crawler = $client->followRedirect();
-        $this->assertContains('code111', $crawler->html());
+        self::assertContains('code111', $crawler->html());
     }
 
     public function testViewList()
@@ -62,7 +62,7 @@ class DefaultControllerTest extends WebTestCase
 
         $client->request('GET', '/project');
         $crawler = $client->followRedirect();
-        $this->assertContains('Create a new project', $crawler->html());
+        self::assertContains('Create a new project', $crawler->html());
     }
 
     public function testEdit()
@@ -85,7 +85,7 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->followRedirect();
 
-        $this->assertContains('label2222', $crawler->html());
+        self::assertContains('label2222', $crawler->html());
     }
 
     public function testAccess()
@@ -97,9 +97,9 @@ class DefaultControllerTest extends WebTestCase
 
         $client->request('GET', '/project');
         $crawler = $client->followRedirect();
-        $this->assertContains('Unauthorised access!', $crawler->html());
+        self::assertContains('Unauthorised access!', $crawler->html());
 
         $client->request('GET', '/project/new');
-        $this->assertContains('Unauthorised access!', $crawler->html());
+        self::assertContains('Unauthorised access!', $crawler->html());
     }
 }

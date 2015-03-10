@@ -10,11 +10,8 @@ namespace Tracker\ProjectBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\UserBundle\Entity\User;
-use Tracker\IssueBundle\Entity\Issue;
 
 class ProjectVoter implements VoterInterface
 {

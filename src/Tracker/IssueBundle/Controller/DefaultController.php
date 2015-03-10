@@ -11,8 +11,6 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Tracker\IssueBundle\Entity\Comment;
 use Tracker\IssueBundle\Entity\Issue;
 use Tracker\IssueBundle\Entity\Status;
-use Tracker\IssueBundle\Form\IssueCommentType;
-use Tracker\IssueBundle\Form\IssueType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Tracker\IssueBundle\Security\Authorization\Voter\IssueVoter;
@@ -58,12 +56,30 @@ class DefaultController extends Controller
      */
     public function createAction(Request $request)
     {
+
         if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
         $entity = new Issue();
-        $form  = $this->createForm('tracker_issueBundle_issue', $entity);
+
+        /**
+         * @var $user User
+         */
+        $user = $this->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $projects = array();
+        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
+            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
+        }
+
+        $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
+            'action' => $this->generateUrl('issue_create'),
+            'method' => 'POST',
+            'projects' => $projects
+        ));
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -300,12 +316,11 @@ class DefaultController extends Controller
      */
     private function createCreateCommentForm(Comment $comment, $issueId)
     {
-        $form = $this->createForm(new IssueCommentType(), $comment, array(
+
+        $form = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
             'action' => $this->generateUrl('issue_comment_create', array('issue'=>$issueId)),
             'method' => 'POST'
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }

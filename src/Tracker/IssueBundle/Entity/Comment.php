@@ -45,7 +45,7 @@ class Comment
     protected $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Tracker\IssueBundle\Entity\Issue", inversedBy="comment")
+     * @ORM\ManyToOne(targetEntity="Issue", inversedBy="comment")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
      **/
     protected $issue;

@@ -14,6 +14,9 @@ issue:
       subTask: "Sub tasks"
       comment: "Comments"
       sendComment: "Send comment"
+  form:
+    create: "Create"
+    update: "Update"
   action:
     create: "Create a new entry"
     edit: "Edit"
@@ -37,6 +40,9 @@ issue:
     collaborators: "Collaborators"
     project: "Project"
   comment:
+    page:
+      edit:
+        title: "Commnet edit"
     grid:
       body: "Message"
       created: "Created"

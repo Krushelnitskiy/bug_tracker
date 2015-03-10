@@ -114,6 +114,13 @@
                         {% if is_granted("delete", comment) %}
                             <a href="{{ path('issue_comment_delete', {"issue":entity.id, "id":comment.id}) }}">{{ "issue.action.delete"|trans }}</a>
                         {% endif %}
+
+                        {% if is_granted("delete", comment) and is_granted("edit", comment) %}
+                            |
+                        {% endif %}
+                        {% if is_granted("edit", comment) %}
+                            <a href="{{ path('issue_comment_edit', {"comment":comment.id}) }}">{{ "issue.action.edit"|trans }}</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

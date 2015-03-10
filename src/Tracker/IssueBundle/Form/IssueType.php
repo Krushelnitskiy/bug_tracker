@@ -124,8 +124,13 @@ class IssueType extends AbstractType
 //          ->add('resolution', null, $attribute)
             ->add('reporter', null, $attributeReporter)
             ->add('assignee', null, $attributeAssign)
-            ->add('save', 'submit')
             ;
+
+        if (!$builder->getData()->getid()) {
+            $builder->add('save', 'submit', array('label' => 'issue.form.create'));
+        } else {
+            $builder->add('save', 'submit', array('label' => 'issue.form.update'));
+        }
     }
     
     /**

@@ -24,3 +24,10 @@ services:
             - @security.context
         tags:
             - { name: form.type, alias: tracker_issueBundle_issueSubTask_form }
+
+    tracker_issueBundle_comment_form:
+        class: Tracker\IssueBundle\Form\IssueCommentType
+        arguments:
+          - @security.context
+        tags:
+          - { name: form.type, alias: tracker_issueBundle_comment_form }

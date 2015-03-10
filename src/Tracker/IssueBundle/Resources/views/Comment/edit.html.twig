@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+
+{% form_theme edit_form 'TrackerProjectBundle:Form:fields.html.twig' %}
+
+{% block body -%}
+    <h3>{{ "issue.comment.page.edit.title"|trans }}</h3>
+
+    <p>
+        <a href="{{ path('issue') }}">
+            {{ "issue.action.back"|trans }}
+        </a>
+    </p>
+
+    {{ form(edit_form,  {'attr':{'class':"form-horizontal"}} ) }}
+
+{% endblock %}

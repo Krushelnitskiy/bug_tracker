@@ -21,7 +21,7 @@ class CommentControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
 
         $form = $crawler->selectButton('Create')->form();
-        $form['tracker_issueBundle_comment[body]'] = 'You need add description.';
+        $form['tracker_issueBundle_comment_form[body]'] = 'You need add description.';
         $client->submit($form);
         $crawler = $client->followRedirect();
 
@@ -40,7 +40,7 @@ class CommentControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
 
         $form = $crawler->selectButton('Create')->form();
-        $form['tracker_issueBundle_comment[body]'] = 'You need add description.';
+        $form['tracker_issueBundle_comment_form[body]'] = 'You need add description.';
         $client->submit($form);
         $crawler = $client->followRedirect();
 

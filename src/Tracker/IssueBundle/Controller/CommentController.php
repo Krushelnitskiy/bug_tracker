@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Tracker\IssueBundle\Entity\Comment;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Comment controller.
@@ -15,26 +18,72 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class CommentController extends Controller
 {
 
+
     /**
      * Finds and displays a Comment entity.
-     * @param integer $id
-     * @Route("/{id}/delete", name="comment_delete")
+     * @param Comment $comment
+     * @Route("/{comment}/edit", name="issue_comment_edit")
      * @Method("GET")
+     * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
      * @Template()
      * @return array
      */
-    public function showAction($id)
+    public function editAction($comment)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('TrackerIssueBundle:Comment')->find($id);
-
-        if (!$entity) {
+        if (!$comment) {
             throw $this->createNotFoundException('Unable to find Comment entity.');
         }
 
+        $form  = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
+            'action' => $this->generateUrl('issue_comment_update', array('comment'=>$comment->getId())),
+            'method' => 'PUT'
+        ));
+
         return array(
-            'entity' => $entity
+            'entity' => $comment,
+            'edit_form'=> $form->createView()
+        );
+    }
+
+    /**
+     * Edits an existing Issue entity.
+     * @param integer $id
+     * @param Request $request
+     * @Route("/{comment}", name="issue_comment_update")
+     * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
+     * @Method("PUT")
+     * @Template("TrackerIssueBundle:Default:edit.html.twig")
+     * @return array
+     */
+    public function updateAction(Request $request, $comment)
+    {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $comment)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        if (!$comment) {
+            throw $this->createNotFoundException('Unable to find Issue entity.');
+        }
+
+        $editForm = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
+            'action' => $this->generateUrl('issue_comment_update', array('comment'=>$comment->getId())),
+            'method' => 'PUT'
+        ));
+        $editForm->handleRequest($request);
+
+
+        if ($editForm->isValid()) {
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('issue_show', array('id' => $comment->getIssue()->getId())));
+        }
+
+        return array(
+            'entity'      => $comment,
+            'edit_form'   => $editForm->createView()
         );
     }
 }

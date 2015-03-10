@@ -14,6 +14,14 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Tracker\UserBundle\Entity\User;
+use Tracker\ProjectBundle\Entity\Project;
+use Tracker\IssueBundle\Entity\Type;
+use Tracker\IssueBundle\Entity\Priority;
+use Tracker\IssueBundle\Entity\Status;
+
+
+
 class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
@@ -21,37 +29,51 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        /**
+         * @var $user User
+         * @var $project Project
+         * @var $priorityTrivial Priority
+         * @var $status Status
+         * @var $typeStory Type
+         * @var $typeSubTask Type
+         */
+        $user = $this->getReference('admin-user');
+        $project = $this->getReference('project.first');
+        $priorityTrivial = $this->getReference('priority.trivial');
+        $status = $this->getReference('status.open');
+        $typeStory = $this->getReference('type.story');
+        $typeSubTask = $this->getReference('type.subTask');
+
         $issueStory = new Issue();
-        $issueStory->setAssignee($this->getReference('admin-user'));
+        $issueStory->setAssignee($user);
         $issueStory->setCode('1');
         $issueStory->setSummary('1');
         $issueStory->setDescription('');
         $issueStory->setCreated(new \DateTime());
         $issueStory->setUpdated(new \DateTime());
-        $issueStory->setStatus($this->getReference('status.open'));
-        $issueStory->setType($this->getReference('type.story'));
-        $issueStory->setPriority($this->getReference('priority.trivial'));
-        $issueStory->setProject($this->getReference('project.first'));
-        $issueStory->setReporter($this->getReference('admin-user'));
-        $issueStory->setAssignee($this->getReference('admin-user'));
+        $issueStory->setStatus($status);
+        $issueStory->setType($typeStory);
+        $issueStory->setPriority($priorityTrivial);
+        $issueStory->setProject($project);
+        $issueStory->setReporter($user);
+        $issueStory->setAssignee($user);
 
         $manager->persist($issueStory);
 
-
         $issueStorySubTask = new Issue();
-        $issueStorySubTask->setAssignee($this->getReference('admin-user'));
+        $issueStorySubTask->setAssignee($user);
         $issueStorySubTask->setCode('2');
         $issueStorySubTask->setSummary('2');
         $issueStorySubTask->setDescription('');
         $issueStorySubTask->setCreated(new \DateTime());
         $issueStorySubTask->setUpdated(new \DateTime());
         $issueStorySubTask->setParent($issueStory);
-        $issueStorySubTask->setStatus($this->getReference('status.open'));
-        $issueStorySubTask->setType($this->getReference('type.subTask'));
-        $issueStorySubTask->setPriority($this->getReference('priority.trivial'));
-        $issueStorySubTask->setProject($this->getReference('project.first'));
-        $issueStorySubTask->setReporter($this->getReference('admin-user'));
-        $issueStorySubTask->setAssignee($this->getReference('admin-user'));
+        $issueStorySubTask->setStatus($status);
+        $issueStorySubTask->setType($typeSubTask);
+        $issueStorySubTask->setPriority($priorityTrivial);
+        $issueStorySubTask->setProject($project);
+        $issueStorySubTask->setReporter($user);
+        $issueStorySubTask->setAssignee($user);
 
         $manager->persist($issueStorySubTask);
 
