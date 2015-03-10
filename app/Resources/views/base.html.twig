@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ "layout.title"|trans }}{% endblock %}</title>
 
         {% block stylesheets %}
             <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
@@ -25,11 +25,18 @@
                     {% block menu %}
                         <div class="menu">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <a href="{{ path("project") }}">Projects</a> |
-                                <a href="{{ path("issue") }}">Issues</a>
+                                <a href="{{ path("project") }}">
+                                    {{ "layout.menu.projects"|trans }}
+                                </a> |
+                                <a href="{{ path("issue") }}">
+                                    {{ "layout.menu.issues"|trans }}
+                                </a>
 
-                                {% if is_granted("ROLE_ADMIN") %}|
-                                    <a href="{{ path("user") }}">Users</a>
+                                {% if is_granted("ROLE_ADMIN") %}
+                                    |
+                                    <a href="{{ path("user") }}">
+                                        {{ "layout.menu.users"|trans }}
+                                    </a>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -39,7 +46,13 @@
                     {% block auth %}
                         <div class="auth">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                {{ 'layout.logged_in_as'|trans }} <a href="{{ path("fos_user_profile_show") }}">{{ app.user.username }}</a>  |
+                                {{ 'layout.logged_in_as'|trans }}
+                                {% if app.user.getWebPath() %}
+                                    <a href="{{ path("fos_user_profile_show") }}">
+                                        <img src="{{ app.user.getWebPath() }}"  width="48"/>
+                                    </a>
+                                {% endif %}
+                                <a href="{{ path("fos_user_profile_show") }}">{{ app.user.username }}</a>  |
                                 <a href="{{ path('fos_user_security_logout') }}">
                                     {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                                 </a>
@@ -59,7 +72,6 @@
                 {% endblock %}
 
                 {% block content %}
-
                 {% endblock %}
 
                 {% block footer %}

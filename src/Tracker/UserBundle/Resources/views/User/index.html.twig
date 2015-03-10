@@ -19,6 +19,7 @@
         <thead>
             <tr>
                 <th>{{ "user.grid.id"|trans }}</th>
+                <th></th>
                 <th>{{ "user.grid.username"|trans }}</th>
                 <th>{{ "user.grid.email"|trans }}</th>
                 <th>{{ "user.grid.lastLogin"|trans }}</th>
@@ -30,6 +31,14 @@
             {% set pathShowUser = path('user_show', { 'id': entity.id }) %}
             <tr>
                 <td><a href="{{ pathShowUser }}">{{ entity.id }}</a></td>
+
+                <td>
+                    {% if entity.getWebPath() %}
+                        <a href="{{ pathShowUser }}">
+                            <img src="{{ entity.getWebPath() }}"  width="64"/>
+                        </a>
+                    {% endif %}
+                </td>
                 <td><a href="{{ pathShowUser }}">{{ entity.username }}</a></td>
                 <td><a href="{{ pathShowUser }}">{{ entity.email }}</a></td>
                 <td><a href="{{ pathShowUser }}">{{ entity.lastLogin|date('d.m.Y') }}</a></td>

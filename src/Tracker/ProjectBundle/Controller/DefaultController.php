@@ -60,8 +60,6 @@ class DefaultController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-
-
         if ($form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($entity);

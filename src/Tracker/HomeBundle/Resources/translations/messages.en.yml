@@ -1,6 +1,10 @@
 layout:
+  menu:
+    projects: "Projects"
+    issues: "Issue"
+    users: "Users"
   title: "Home page"
-  logged_in_as: Logged in as
+  logged_in_as: "Logged in as"
   listIssue:
     title: "List opened/ reopened issue"
     linkToAll: "All issues >>"

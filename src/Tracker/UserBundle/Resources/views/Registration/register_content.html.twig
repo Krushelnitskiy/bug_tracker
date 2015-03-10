@@ -32,6 +32,13 @@
     </div>
 
     <div class="form-group">
+        {{ form_label(form.file) }}
+        <div class="col-sm-6">
+            {{ form_widget(form.file) }}
+        </div>
+    </div>
+
+    <div class="form-group">
         <div class="col-sm-offset-4 col-sm-6">
             <input type="submit" class="btn btn-default" value="{{ 'registration.submit'|trans }}" />
         </div>

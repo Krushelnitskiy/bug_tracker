@@ -41,6 +41,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', 'email', $attributeEmail)
             ->add('username', null, $attributeUserName)
+            ->add('file', null, $attributeDefault)
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',
                 'options' => array('translation_domain' => 'FOSUserBundle'),

@@ -10,6 +10,10 @@ namespace Tracker\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Tracker\IssueBundle\Entity\Issue;
+use Tracker\ProjectBundle\Entity\Project;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class Project
@@ -19,10 +23,9 @@ use Tracker\IssueBundle\Entity\Issue;
  */
 class User extends BaseUser
 {
-    const ROLE_USER = "ROLE_USER";
-    const ROLE_ADMIN = "ROLE_ADMIN";
-    const ROLE_MANAGER = "ROLE_MANAGER";
-    const ROLE_OPERATOR = "ROLE_OPERATOR";
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_MANAGER = 'ROLE_MANAGER';
+    const ROLE_OPERATOR = 'ROLE_OPERATOR';
 
     /**
      * @ORM\Column(type="integer")
@@ -34,7 +37,18 @@ class User extends BaseUser
     /**
      * @ORM\ManyToMany(targetEntity="\Tracker\ProjectBundle\Entity\Project", mappedBy="members")
      **/
-    protected $product;
+    protected $project;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $path;
+
+    /**
+     * @Assert\File(maxSize="4096k")
+     * @Assert\Image(mimeTypesMessage="Please upload a valid image.")
+     */
+    protected $file;
 
     /**
      * @ORM\OneToMany(targetEntity="\Tracker\IssueBundle\Entity\Issue", mappedBy="assignee")
@@ -43,11 +57,11 @@ class User extends BaseUser
 
     public function __construct()
     {
-        $this->product = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->project = new ArrayCollection();
+        $this->assignedIssue = new ArrayCollection();
         parent::__construct();
 
     }
-
 
     /**
      * Get id
@@ -62,10 +76,10 @@ class User extends BaseUser
     /**
      * Add assignedIssue
      *
-     * @param \Tracker\IssueBundle\Entity\Issue $assignedIssue
-     * @return User
+     * @param Issue $assignedIssue
+     * @return array Issue
      */
-    public function addAssignedIssue(\Tracker\IssueBundle\Entity\Issue $assignedIssue)
+    public function addAssignedIssue(Issue $assignedIssue)
     {
         $this->assignedIssue[] = $assignedIssue;
 
@@ -75,9 +89,9 @@ class User extends BaseUser
     /**
      * Remove assignedIssue
      *
-     * @param \Tracker\IssueBundle\Entity\Issue $assignedIssue
+     * @param Issue $assignedIssue
      */
-    public function removeAssignedIssue(\Tracker\IssueBundle\Entity\Issue $assignedIssue)
+    public function removeAssignedIssue(Issue $assignedIssue)
     {
         $this->assignedIssue->removeElement($assignedIssue);
     }
@@ -90,5 +104,38 @@ class User extends BaseUser
     public function getAssignedIssue()
     {
         return $this->assignedIssue;
+    }
+
+    /**
+     * Add product
+     *
+     * @param \Tracker\ProjectBundle\Entity\Project $product
+     * @return User
+     */
+    public function addProduct(Project $product)
+    {
+        $this->project[] = $product;
+
+        return $this;
+    }
+
+    /**
+     * Remove product
+     *
+     * @param \Tracker\ProjectBundle\Entity\Project $product
+     */
+    public function removeProduct(Project $product)
+    {
+        $this->project->removeElement($product);
+    }
+
+    /**
+     * Get product
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }

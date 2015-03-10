@@ -5,6 +5,7 @@ namespace Tracker\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tracker\UserBundle\Form\DataTransformer\StringToArrayTransformer;
 
 class UserType extends AbstractType
 {
@@ -14,29 +15,41 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $attributeDefault = array(
+        $attributeDefault = $this->getDefaultAttributes();
+
+        $attributeSubmit = $attributeDefault;
+        unset($attributeSubmit['attr']);
+
+
+        $builder->add('email', 'email', $attributeDefault)
+            ->add('username', null, $attributeDefault)
+            ->add($this->getPlainPassword($builder))
+            ->add($this->getRoles($builder))
+            ->add($this->getEnabled($builder))
+            ->add('file', null, $attributeSubmit)
+        ;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultAttributes()
+    {
+        return array(
             'label_attr' => array('class' => 'col-sm-4 control-label'),
             'translation_domain' => 'FOSUserBundle',
             'attr'=>array('class'=> 'form-control')
         );
+    }
 
-        $attrRole = array_merge(
-            $attributeDefault,
-            array(
-                'choices' => array(
-                    'ROLE_ADMIN' => 'role.admin',
-                    'ROLE_MANAGER' => 'role.manager',
-                    'ROLE_OPERATOR' => 'role.operator'
-                ),
-                'label' => 'Roles',
-                'expanded' => true,
-                'multiple' => true,
-                'mapped' => true
-            )
-        );
-
+    /**
+     * @param FormBuilderInterface $builder
+     * @return FormBuilderInterface
+     */
+    protected function getEnabled(FormBuilderInterface $builder)
+    {
         $attrEnabled = array_merge(
-            $attributeDefault,
+            $this->getDefaultAttributes(),
             array(
                 'choices' => array(
                     '1' => 'Enable',
@@ -46,28 +59,64 @@ class UserType extends AbstractType
             )
         );
 
-        $attrPasswordFirst = array_merge($attributeDefault, array(
-            'label' => 'form.password'
-        ));
+        return $builder->create('enabled', 'choice', $attrEnabled);
+    }
 
-        $attrPasswordSecond = array_merge($attributeDefault, array(
-            'label' => 'form.password_confirmation'
-        ));
+    /**
+     * @param FormBuilderInterface $builder
+     * @return FormBuilderInterface
+     */
+    protected function getPlainPassword(FormBuilderInterface $builder)
+    {
+        $attrPasswordFirst = array_merge(
+            $this->getDefaultAttributes(),
+            array(
+                'label' => 'form.password'
+            )
+        );
 
+        $attrPasswordSecond = array_merge(
+            $this->getDefaultAttributes(),
+            array(
+                'label' => 'form.password_confirmation'
+            )
+        );
 
-        $builder
-            ->add('email', 'email', $attributeDefault)
-            ->add('username', null, $attributeDefault)
-            ->add('plainPassword', 'repeated', array(
-                'type' => 'password',
-                'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => $attrPasswordFirst,
-                'second_options' => $attrPasswordSecond,
-                'invalid_message' => 'fos_user.password.mismatch'
-            ))
-            ->add('roles', 'choice', $attrRole)
-            ->add('enabled', 'choice', $attrEnabled)
-        ;
+        $attributes = array(
+            'type' => 'password',
+            'options' => array('translation_domain' => 'FOSUserBundle'),
+            'first_options' => $attrPasswordFirst,
+            'second_options' => $attrPasswordSecond,
+            'invalid_message' => 'fos_user.password.mismatch'
+        );
+
+         return $builder->create('plainPassword', 'repeated', $attributes);
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormConfigBuilderInterface
+     */
+    protected function getRoles(FormBuilderInterface $builder)
+    {
+        $transformer = new StringToArrayTransformer();
+
+        $attrRole = array_merge(
+            $this->getDefaultAttributes(),
+            array(
+                'choices' => array(
+                    'ROLE_ADMIN' => 'role.admin',
+                    'ROLE_MANAGER' => 'role.manager',
+                    'ROLE_OPERATOR' => 'role.operator'
+                ),
+                'label' => 'Roles',
+                'expanded' => false,
+                'multiple' => false,
+                'mapped' => true
+            )
+        );
+
+        return $builder->create('roles', 'choice', $attrRole)->addModelTransformer($transformer);
     }
 
     /**
