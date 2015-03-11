@@ -16,6 +16,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IssueEventListener
 {
+    const CREATE_NEW_ISSUE = 'event.create_new_issue';
+    const CHANGED_STATUS_TO = 'event.changed_status_to';
+
     /**
      * @var ContainerInterface
      */
@@ -56,7 +59,7 @@ class IssueEventListener
                 $eventEntity->setIssue($issue);
                 $eventEntity->setProject($issue->getProject());
                 $eventEntity->setUser($issue->getReporter());
-                $eventEntity->setEvent('Created new issue');
+                $eventEntity->setEvent(self::CREATE_NEW_ISSUE);
                 $entityManager->persist($eventEntity);
                 $entityManager->flush();
         }
@@ -86,8 +89,7 @@ class IssueEventListener
                 $eventEntity->setIssue($issue);
                 $eventEntity->setProject($issue->getProject());
                 $eventEntity->setUser($user);
-//                $eventEntity->setEvent($issue->getStatus()->getValue());
-                $eventEntity->setEvent('Changed status to: '.$eventArgs->getNewValue('status'));
+                $eventEntity->setEvent(self::CHANGED_STATUS_TO);
                 $entityManager->persist($eventEntity);
 
                 if (!$issue->getCollaborators()->contains($user)) {

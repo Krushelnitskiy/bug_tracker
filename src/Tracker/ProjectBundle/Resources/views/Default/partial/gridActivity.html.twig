@@ -9,7 +9,7 @@
     <tbody>
     {% for activity in activities %}
             <tr>
-                <td>{{ activity.event }}</a></td>
+                <td>{{ activity.event|trans }}</a></td>
                 <td><a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.summary }}</a></td>
                 <td>{{ activity.user.username }}</a></td>
             </tr>

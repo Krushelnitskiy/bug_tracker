@@ -14,6 +14,8 @@ use Tracker\IssueBundle\Entity\Comment;
 
 class CommentEventListener
 {
+    const CREATED_COMMENT = 'event.created_comment';
+
     /**
      * @param LifecycleEventArgs $eventArgs
      */
@@ -29,7 +31,7 @@ class CommentEventListener
             $eventEntity->setIssue($issue);
             $eventEntity->setProject($issue->getProject());
             $eventEntity->setUser($comment->getAuthor());
-            $eventEntity->setEvent('Created comment');
+            $eventEntity->setEvent(self::CREATED_COMMENT);
             $entityManager->persist($eventEntity);
             $entityManager->flush();
 

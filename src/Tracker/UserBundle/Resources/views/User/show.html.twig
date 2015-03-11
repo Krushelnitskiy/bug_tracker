@@ -55,20 +55,8 @@
     {% endif %}
 
     {% if entity.assignedIssue|length > 0 %}
-        <div class="home-issue col-md-6">
-            <div class="block-with-title">
-                    <h2>{{ 'layout.listIssue.title'|trans }}</h2>
-                    <ul>
-                        {% for issue in entity.assignedIssue %}
-                            <li>
-                                {% include 'TrackerHomeBundle:Default:issue.html.twig' with { 'issue': issue } %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-
-                <a href="{{ path("issue") }}">{{ "layout.listIssue.linkToAll"|trans }}</a>
-            </div>
-        </div>
+        <h4>{{ 'layout.listIssue.title'|trans }}</h4>
+        {% include 'TrackerUserBundle:User:partial/issue.html.twig' with { 'issues': entity.assignedIssue  } %}
     {% endif %}
 
 
