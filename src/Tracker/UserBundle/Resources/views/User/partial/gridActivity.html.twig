@@ -12,7 +12,7 @@
             <tr>
                 <td>{{ activity.event }}</a></td>
                 <td><a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.summary }}</a></td>
-                <td><a href="{{ path('project_show', { 'projectId': activity.project.id }) }}">{{ activity.project.label }}</a></td>
+                <td><a href="{{ path('project_show', { 'project': activity.project.id }) }}">{{ activity.project.label }}</a></td>
                 <td>{{ activity.user.username }}</a></td>
             </tr>
     {% endfor %}

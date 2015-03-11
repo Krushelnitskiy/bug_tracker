@@ -23,7 +23,7 @@ class DefaultControllerTest extends WebTestCase
         self::assertContains($project->getLabel(), $crawler->html());
 
         $crawler = $client->request('GET', '/project/testtest');
-        self::assertContains('Unable to find Project entity.', $crawler->html());
+        self::assertContains('TrackerProjectBundle:Project object not found.', $crawler->html());
     }
 
     public function testCreateWithOutAUth()
@@ -86,29 +86,5 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $client->followRedirect();
 
         self::assertContains('label2222', $crawler->html());
-    }
-
-    public function testAccess()
-    {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'operator.noProjects',
-            'PHP_AUTH_PW'   => 'test'
-        ));
-
-        $client->request('GET', '/project');
-        $crawler = $client->followRedirect();
-        self::assertContains('Unauthorised access!', $crawler->html());
-
-        $client->request('GET', '/project/new');
-        self::assertContains('Unauthorised access!', $crawler->html());
-
-        $client->request('GET', '/project/2231');
-        self::assertContains('Unauthorised access!', $crawler->html());
-
-        $client->request('GET', '/project/2231/edit');
-        self::assertContains('Unauthorised access!', $crawler->html());
-
-        $client->request('GET', '/project/'.$this->getReference('project.first')->getId().'/edit');
-        self::assertContains('Unauthorised access!', $crawler->html());
     }
 }

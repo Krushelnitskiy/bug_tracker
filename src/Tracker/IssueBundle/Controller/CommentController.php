@@ -28,10 +28,6 @@ class CommentController extends Controller
      */
     public function editAction($comment)
     {
-        if (!$comment) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
-        }
-
         $form  = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
             'action' => $this->generateUrl('issue_comment_update', array('comment'=>$comment->getId())),
             'method' => 'PUT'
@@ -60,10 +56,6 @@ class CommentController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-
-        if (!$comment) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
-        }
 
         $editForm = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
             'action' => $this->generateUrl('issue_comment_update', array('comment'=>$comment->getId())),

@@ -76,7 +76,7 @@
             </tr>
             <tr>
                 <th>{{ "issue.grid.project"|trans }}</th>
-                <td><a href="{{ path("project_show", {"projectId":entity.project.id }) }}">{{ entity.project.label }}</a></td>
+                <td><a href="{{ path("project_show", {"project":entity.project.id }) }}">{{ entity.project.label }}</a></td>
             </tr>
         </tbody>
     </table>

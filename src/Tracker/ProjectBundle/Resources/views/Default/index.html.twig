@@ -26,7 +26,7 @@
         </thead>
         <tbody>
         {% for entity in entities %}
-            {% set pathProject = path('project_show', { 'projectId': entity.id }) %}
+            {% set pathProject = path('project_show', { 'project': entity.id }) %}
             {% if is_granted ('view', entity) %}
                 <tr>
                     <td><a href="{{ pathProject }}">{{ entity.id }}</a></td>

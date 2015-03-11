@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\ProjectBundle\Form\ProjectType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -65,7 +66,7 @@ class DefaultController extends Controller
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('project_show', array('projectId' => $entity->getId())));
+            return $this->redirect($this->generateUrl('project_show', array('project' => $entity->getId())));
         }
 
         return array(
@@ -120,28 +121,23 @@ class DefaultController extends Controller
      * @param $projectId integer
      * @return array
      *
-     * @Route("/{projectId}", name="project_show")
+     * @Route("/{project}", name="project_show")
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "find"})
      * @Method("GET")
      * @Template()
      */
-    public function showAction($projectId)
+    public function showAction($project)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TrackerProjectBundle:Project')->find($projectId);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
-        }
-
-        if (false === $this->get('security.authorization_checker')->isGranted('view', $entity)) {
+        if (false === $this->get('security.authorization_checker')->isGranted('view', $project)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByProject($entity);
+        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByProject($project);
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $project,
             'activity'      => $activity
         );
     }
@@ -151,28 +147,21 @@ class DefaultController extends Controller
      * @param $projectId
      * @return array
      *
-     * @Route("/{projectId}/edit", name="project_edit")
+     * @Route("/{project}/edit", name="project_edit")
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "find"})
      * @Method("GET")
      * @Template()
      */
-    public function editAction($projectId)
+    public function editAction($project)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $entity = $entityManager->getRepository('TrackerProjectBundle:Project')->find($projectId);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
-        }
-
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $project)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($project);
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $project,
             'edit_form'   => $editForm->createView()
         );
     }
@@ -185,7 +174,7 @@ class DefaultController extends Controller
     private function createEditForm(Project $entity)
     {
         $form = $this->createForm(new ProjectType(), $entity, array(
-            'action' => $this->generateUrl('project_update', array('projectId' => $entity->getId())),
+            'action' => $this->generateUrl('project_update', array('project' => $entity->getId())),
             'method' => 'PUT'
         ));
 
@@ -200,34 +189,30 @@ class DefaultController extends Controller
      *
      * @return array
      *
-     * @Route("/{projectId}", name="project_update")
+     * @Route("/{project}", name="project_update")
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "find"})
      * @Method("PUT")
      * @Template("TrackerProjectBundle:Default:edit.html.twig")
      */
-    public function updateAction(Request $request, $projectId)
+    public function updateAction(Request $request, $project)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $entity = $entityManager->getRepository('TrackerProjectBundle:Project')->find($projectId);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
-        }
-
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $project)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($project);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('project_show', array('projectId' => $entity->getId())));
+            return $this->redirect($this->generateUrl('project_show', array('project' => $project->getId())));
         }
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $project,
             'edit_form'   => $editForm->createView()
         );
     }

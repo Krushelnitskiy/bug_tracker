@@ -48,20 +48,4 @@ class CommentControllerTest extends WebTestCase
         self::assertContains('Delete', $html);
         self::assertContains('You need add description.', $html);
     }
-
-//    public function testAdminEditComment()
-//    {
-//        $client = static::createClient(array(), array(
-//            'PHP_AUTH_USER' => 'operator',
-//            'PHP_AUTH_PW'   => 'test'
-//        ));
-//
-//        $crawler = $client->request('GET', '/issue/comment/'.$this->getReference('comment.story')->getId().'/edit');
-//        $form = $crawler->selectButton('Create')->form();
-//        $form['tracker_issueBundle_comment_form[body]'] = 'You need add description.';
-//        $client->submit($form);
-//        $crawler = $client->followRedirect();
-//        $html = $crawler->html();
-//        self::assertContains('You need add description.', $html);
-//    }
 }

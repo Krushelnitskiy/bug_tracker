@@ -61,7 +61,6 @@ class User extends BaseUser
         $this->project = new ArrayCollection();
         $this->assignedIssue = new ArrayCollection();
         parent::__construct();
-
     }
 
     /**
@@ -223,9 +222,6 @@ class User extends BaseUser
         $this->setPath($file->getClientOriginalName());
         return $this;
     }
-
-
-
 
     /**
      * Add project

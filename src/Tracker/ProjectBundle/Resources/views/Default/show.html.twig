@@ -14,7 +14,7 @@
 
         {% if is_granted('edit', entity) %}
             |
-            <a href="{{ path('project_edit', { 'projectId': entity.id }) }}">
+            <a href="{{ path('project_edit', { 'project': entity.id }) }}">
                 Edit
             </a>
         {% endif %}
