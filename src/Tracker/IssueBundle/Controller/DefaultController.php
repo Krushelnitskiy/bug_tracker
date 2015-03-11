@@ -159,9 +159,11 @@ class DefaultController extends Controller
         }
 
         $createCommentForm = $this->createCreateCommentForm(new Comment(), $id);
+        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByIssue($entity);
 
         return array(
             'entity'      => $entity,
+            'activity'      => $activity,
             'comment_form' => $createCommentForm->createView()
         );
     }
@@ -285,25 +287,25 @@ class DefaultController extends Controller
      * @param Request $request
      * @param Issue $issue
      * @param integer $id
-     * @Route("/{issue}/comment/{id}", name="issue_comment_delete")
+     * @Route("/{issue}/comment/{comment}", name="issue_comment_delete")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
      * @Method("GET")
      * @return array
      */
-    public function deleteCommentAction(Request $request, $issue, $id)
+    public function deleteCommentAction(Request $request, $issue, $comment)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('delete', new Comment())) {
+        if (false === $this->get('security.authorization_checker')->isGranted('delete', $comment)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('TrackerIssueBundle:Comment')->find($id);
 
-        if (!$entity) {
+        if (!$comment) {
             throw $this->createNotFoundException('Unable to find Issue entity.');
         }
 
-        $em->remove($entity);
+        $em->remove($comment);
         $em->flush();
 
         return $this->redirect($this->generateUrl('issue_show', array('id'=>$issue->getId())));

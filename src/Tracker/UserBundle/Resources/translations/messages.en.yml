@@ -6,8 +6,9 @@ user:
       title: "Create User"
     edit:
       title: "Edit user"
-    user:
+    view:
       title: "User"
+      activity: "Activity"
   action:
     create: "Create new user"
     edit: "Edit"

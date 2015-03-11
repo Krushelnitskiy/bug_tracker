@@ -14,6 +14,7 @@ issue:
       subTask: "Sub tasks"
       comment: "Comments"
       sendComment: "Send comment"
+      activity: "Activity"
   form:
     create: "Create"
     update: "Update"

@@ -41,7 +41,7 @@ class IssueEventListener
                 $eventEntity->setIssue($issue);
                 $eventEntity->setProject($issue->getProject());
                 $eventEntity->setUser($issue->getReporter());
-                $eventEntity->setEvent($issue->getStatus()->getValue());
+                $eventEntity->setEvent('Created new issue');
                 $entityManager->persist($eventEntity);
                 $entityManager->flush();
         }
@@ -72,7 +72,7 @@ class IssueEventListener
                 $eventEntity->setProject($issue->getProject());
                 $eventEntity->setUser($user);
 //                $eventEntity->setEvent($issue->getStatus()->getValue());
-                $eventEntity->setEvent($eventArgs->getNewValue('status'));
+                $eventEntity->setEvent('Changed status to: '.$eventArgs->getNewValue('status'));
                 $entityManager->persist($eventEntity);
 
                 if (!$issue->getCollaborators()->contains($user)) {

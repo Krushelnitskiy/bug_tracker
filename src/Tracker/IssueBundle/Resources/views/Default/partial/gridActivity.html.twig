@@ -1,0 +1,16 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>  {{ "activity.grid.event"|trans }}</th>
+        <th>  {{ "activity.grid.user"|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for activity in activities %}
+            <tr>
+                <td>{{ activity.event }}</a></td>
+                <td>{{ activity.user.username }}</a></td>
+            </tr>
+    {% endfor %}
+    </tbody>
+</table>

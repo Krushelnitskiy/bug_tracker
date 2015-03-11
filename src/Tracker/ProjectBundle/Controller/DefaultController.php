@@ -138,8 +138,11 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
+        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByProject($entity);
+
         return array(
-            'entity'      => $entity
+            'entity'      => $entity,
+            'activity'      => $activity
         );
     }
 

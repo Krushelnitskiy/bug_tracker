@@ -1,0 +1,6 @@
+activity:
+  grid:
+    event: "Event"
+    user: "User"
+    issue: "Issue"
+    project: "Project"

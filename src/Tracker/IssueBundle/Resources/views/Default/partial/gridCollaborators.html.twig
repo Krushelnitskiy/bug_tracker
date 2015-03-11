@@ -1,0 +1,32 @@
+<table class="records_list table table-bordered">
+    <thead>
+    <tr>
+        <th>{{ "user.grid.id"|trans }}</th>
+        <th></th>
+        <th>{{ "user.grid.username"|trans }}</th>
+        <th>{{ "user.grid.email"|trans }}</th>
+        <th>{{ "user.grid.lastLogin"|trans }}</th>
+        <th>{{ "user.grid.enabled"|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for collaborator in collaborators %}
+
+        <tr>
+            <td>{{ entity.id }}</td>
+
+            <td>
+                {% if collaborator.getWebPath() %}
+                    <a href="{{ pathShowUser }}">
+                        <img src="{{ collaborator.getWebPath() }}"  width="64"/>
+                    </a>
+                {% endif %}
+            </td>
+            <td>{{ collaborator.username }}</td>
+            <td>{{ collaborator.email }}</td>
+            <td>{{ collaborator.lastLogin|date('d.m.Y') }}</td>
+            <td>{{ collaborator.enabled }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

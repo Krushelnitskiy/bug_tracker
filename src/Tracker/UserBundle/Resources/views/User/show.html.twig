@@ -1,7 +1,11 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}
+    {{ "user.page.view.title"|trans }} - {{ entity.username }}
+{% endblock title -%}
+
 {% block body -%}
-    <h3>{{ "user.page.user.title"|trans }}</h3>
+    <h3>{{ "user.page.view.title"|trans }} - {{ entity.username }}</h3>
 
     <p>
         <a href="{{ path('user') }}">
@@ -45,8 +49,13 @@
     </table>
 
 
-    <div class="home-issue col-md-6">
-        {% if entity.assignedIssue|length > 0 %}
+    {% if activity|length > 0 %}
+        <h4>{{ "user.page.view.activity"|trans }}</h4>
+        {% include 'TrackerUserBundle:User:partial/gridActivity.html.twig' with { 'activities': activity } %}
+    {% endif %}
+
+    {% if entity.assignedIssue|length > 0 %}
+        <div class="home-issue col-md-6">
             <div class="block-with-title">
                     <h2>{{ 'layout.listIssue.title'|trans }}</h2>
                     <ul>
@@ -59,6 +68,8 @@
 
                 <a href="{{ path("issue") }}">{{ "layout.listIssue.linkToAll"|trans }}</a>
             </div>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
+
+
 {% endblock %}

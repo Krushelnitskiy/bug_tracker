@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CommentController extends Controller
 {
-
-
     /**
      * Finds and displays a Comment entity.
      * @param Comment $comment

@@ -84,8 +84,11 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
+        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByUser($entity);
+
         return array(
-            'entity'      => $entity
+            'entity'      => $entity,
+            'activity'      => $activity
         );
     }
 

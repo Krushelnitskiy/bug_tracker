@@ -59,4 +59,9 @@
         </tbody>
     </table>
 
+    {% if activity|length > 0 %}
+        <h4>{{ "project.page.view.activity"|trans }}</h4>
+        {% include 'TrackerProjectBundle:Default:partial/gridActivity.html.twig' with { 'activities': activity } %}
+    {% endif %}
+
 {% endblock %}
