@@ -1,4 +1,8 @@
-{% trans_default_domain 'FOSUserBundle' %}
+{#{% trans_default_domain 'FOSUserBundle' %}#}
+
+<a href="{{ path('fos_user_security_login') }}">{{ "user.page.auth.login"|trans }}</a> |
+<a href="{{ path('fos_user_registration_register') }}">{{ "user.page.auth.registration"|trans }}</a>
+
 
 <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request form-horizontal">
     <div class="form-group">

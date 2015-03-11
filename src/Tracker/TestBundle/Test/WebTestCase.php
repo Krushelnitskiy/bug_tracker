@@ -73,10 +73,6 @@ class WebTestCase extends BaseWebTestCase
         $fixtures->setContainer($container);
         $loader->addFixture($fixtures);
 
-//        $fixtures = new LoadCommentData();
-//        $fixtures->setContainer($container);
-//        $loader->addFixture($fixtures);
-
         $executor->execute($loader->getFixtures());
         $this->referenceRepository = $executor->getReferenceRepository();
     }

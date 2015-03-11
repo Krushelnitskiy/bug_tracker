@@ -32,6 +32,10 @@ nav .menu {
     margin: 20px;
 }
 
+.block-with-title .footer{
+    padding: 0 10px 10px;
+}
+
 .block-with-title h2 {
     color: #ffffff;
     background: #3B73AF;

@@ -28,6 +28,21 @@ class IssueEventListener
         $this->container = $serviceContainer;
     }
 
+
+    public function prePersist(LifecycleEventArgs $eventArgs)
+    {
+        $issue = $eventArgs->getEntity();
+        if ($issue instanceof Issue) {
+            if (!$issue->getCollaborators()->contains($issue->getReporter())) {
+                $issue->getCollaborators()->add($issue->getReporter());
+            }
+
+            if (!$issue->getCollaborators()->contains($issue->getAssignee())) {
+                $issue->getCollaborators()->add($issue->getAssignee());
+            }
+        }
+    }
+
     /**
      * @param LifecycleEventArgs $eventArgs
      */

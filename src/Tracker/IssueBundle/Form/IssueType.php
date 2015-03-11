@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Tracker\UserBundle\Entity\User;
 use Tracker\IssueBundle\Entity\Type;
 
-
 class IssueType extends AbstractType
 {
     /**
@@ -94,7 +93,7 @@ class IssueType extends AbstractType
             'data' => $project->getMembers()->first()
         ));
 
-        $attributeType = array_merge($attribute,  array(
+        $attributeType = array_merge($attribute, array(
             'class' => 'TrackerIssueBundle:Type',
             'property' => 'value',
             'query_builder' => function ($er) {

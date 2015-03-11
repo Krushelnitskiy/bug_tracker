@@ -156,6 +156,6 @@ class DefaultControllerTest extends WebTestCase
         $client->submit($form);
         $crawler = $client->followRedirect();
 
-        $this->assertEquals(0,$crawler->filter('a:contains("Delete")')->count());
+        $this->assertEquals(0, $crawler->filter('a:contains("Delete")')->count());
     }
 }

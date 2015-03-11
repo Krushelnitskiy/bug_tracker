@@ -28,14 +28,14 @@ class CommentEventListener
             $eventEntity = new Activity();
             $eventEntity->setIssue($issue);
             $eventEntity->setProject($issue->getProject());
-            $eventEntity->setUser($issue->getReporter());
-            $eventEntity->setEvent($issue->getStatus()->getValue());
+            $eventEntity->setUser($comment->getAuthor());
+            $eventEntity->setEvent('Created comment');
             $entityManager->persist($eventEntity);
             $entityManager->flush();
 
             if (!$issue->getCollaborators()->contains($comment->getAuthor())) {
                 $issue->addCollaborator($comment->getAuthor());
-                $entityManager->persist($eventEntity);
+                $entityManager->persist($issue);
                 $entityManager->flush();
             }
         }

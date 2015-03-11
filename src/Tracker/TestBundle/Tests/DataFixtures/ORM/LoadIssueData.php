@@ -69,7 +69,7 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Contain
         $userOperator = $this->getReference('user.operator');
 
         $issueStory = new Issue();
-        $issueStory->setAssignee($user);
+        $issueStory->setAssignee($userOperator);
         $issueStory->setCode('1');
         $issueStory->setSummary('issue test summary');
         $issueStory->setDescription('');
@@ -79,7 +79,7 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Contain
         $issueStory->setType($type);
         $issueStory->setPriority($priority);
         $issueStory->setProject($project);
-        $issueStory->setReporter($userOperator);
+        $issueStory->setReporter($user);
         $manager->persist($issueStory);
         $manager->flush();
 

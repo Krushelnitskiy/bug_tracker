@@ -12,12 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProjectRepository extends EntityRepository
 {
-    public function findOneByCode($code)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->where('p.code = :code')
-            ->setParameter('code', $code);
-
-        return $qb->getQuery()->getSingleResult();
-    }
 }

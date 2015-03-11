@@ -336,7 +336,8 @@ class DefaultController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newSubTaskAction (Request $request, $issue) {
+    public function newSubTaskAction (Request $request, $issue)
+    {
         if (false === $this->get('security.authorization_checker')->isGranted(IssueVoter::CREATE_SUB_TASK, $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }

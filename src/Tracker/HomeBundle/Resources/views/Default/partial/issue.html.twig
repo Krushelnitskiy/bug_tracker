@@ -1,0 +1,16 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>  {{ "issue.grid.code"|trans }}</th>
+        <th>  {{ "issue.grid.summary"|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for issue in issues %}
+        <tr>
+            <td><a href="{{ path('issue_show', { 'id': issue.id }) }}">{{ issue.summary }}</a></td>
+            <td><a href="{{ path('project_show', { 'projectId': issue.project.id }) }}">{{ issue.project.label }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

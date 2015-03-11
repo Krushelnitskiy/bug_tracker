@@ -1,5 +1,7 @@
 .idea
 # Cache and logs (Symfony2)
+/coverage
+/-c
 /app/cache/*
 /app/spool/*
 /app/logs/*

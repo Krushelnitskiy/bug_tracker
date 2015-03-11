@@ -21,7 +21,6 @@ use Tracker\IssueBundle\Entity\Priority;
 use Tracker\IssueBundle\Entity\Status;
 
 
-
 class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
 {
     /**

@@ -101,5 +101,14 @@ class DefaultControllerTest extends WebTestCase
 
         $client->request('GET', '/project/new');
         self::assertContains('Unauthorised access!', $crawler->html());
+
+        $client->request('GET', '/project/2231');
+        self::assertContains('Unauthorised access!', $crawler->html());
+
+        $client->request('GET', '/project/2231/edit');
+        self::assertContains('Unauthorised access!', $crawler->html());
+
+        $client->request('GET', '/project/'.$this->getReference('project.first')->getId().'/edit');
+        self::assertContains('Unauthorised access!', $crawler->html());
     }
 }

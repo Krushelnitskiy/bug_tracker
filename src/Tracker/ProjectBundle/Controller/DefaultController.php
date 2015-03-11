@@ -179,17 +179,11 @@ class DefaultController extends Controller
 
     /**
      * Creates a form to edit a Project entity.
-     *
      * @param Project $entity The entity
-     *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createEditForm(Project $entity)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', new Project())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $form = $this->createForm(new ProjectType(), $entity, array(
             'action' => $this->generateUrl('project_update', array('projectId' => $entity->getId())),
             'method' => 'PUT'

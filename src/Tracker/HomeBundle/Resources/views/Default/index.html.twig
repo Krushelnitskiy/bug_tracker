@@ -12,18 +12,12 @@
                 <div class="home-issue col-md-6">
                     {% if issues|length > 0 %}
                         <div class="block-with-title">
-                            {% block issues %}
-                                <h2>{{ 'layout.listIssue.title'|trans }}</h2>
-                                <ul>
-                                    {% for issue in issues %}
-                                        <li>
-                                            {% include 'TrackerHomeBundle:Default:issue.html.twig' with { 'issue': issue } %}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endblock issues %}
+                            <h2>{{ 'layout.listIssue.title'|trans }}</h2>
+                            {% include 'TrackerHomeBundle:Default:partial/issue.html.twig' with { 'issues': issues } %}
 
-                            <a href="{{ path("issue") }}">{{ "layout.listIssue.linkToAll"|trans }}</a>
+                            <div class="footer">
+                                <a href="{{ path("issue") }}">{{ "layout.listIssue.linkToAll"|trans }}</a>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
@@ -32,15 +26,7 @@
                     {% if activities|length > 0 %}
                         <div class="block-with-title">
                             <h2>{{ 'layout.listActivities.title'|trans }}</h2>
-                            {% block activities %}
-                                <ul>
-                                    {% for activity in activities %}
-                                        <li>
-                                            {% include 'TrackerHomeBundle:Default:activity.html.twig' with { 'activity': activity } %}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endblock activities %}
+                            {% include 'TrackerHomeBundle:Default:partial/activity.html.twig' with { 'activities': activities } %}
                         </div>
                     {% endif %}
                 </div>

@@ -32,7 +32,7 @@ class DefaultController extends Controller
              */
             $activityRepository = $em->getRepository('TrackerActivitiesBundle:Activity');
             if ($user instanceof User) {
-                $issues = $issueRepository->findByCollaborator($user);
+                $issues = $issueRepository->findByAssignee($user);
                 $activity = $activityRepository->findByUser($user);
             }
 

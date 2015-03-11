@@ -9,6 +9,10 @@ user:
     view:
       title: "User"
       activity: "Activity"
+    auth:
+      registration: "Registration"
+      forgotPssword: "Forgot password ?"
+      login: "Sign in"
   action:
     create: "Create new user"
     edit: "Edit"
@@ -19,3 +23,19 @@ user:
     email: "Email"
     lastLogin: "Last login"
     enabled: "Enable"
+
+
+security:
+  login:
+    username: "Username"
+    password: "Password"
+    remember_me: "Remember me"
+    submit: "Login"
+
+registration:
+  submit: "Register"
+
+resetting:
+  request:
+    username: "Username or email address:"
+    submit: "Reset password"

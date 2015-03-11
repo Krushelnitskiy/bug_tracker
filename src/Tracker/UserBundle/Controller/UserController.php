@@ -121,17 +121,11 @@ class UserController extends Controller
 
     /**
      * Creates a form to edit a User entity.
-     *
      * @param User $entity The entity
-     *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createEditForm(User $entity)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', new User())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $form = $this->createForm(new UserType(), $entity, array(
             'action' => $this->generateUrl('user_update', array('userId' => $entity->getId())),
             'method' => 'PUT'
@@ -214,8 +208,6 @@ class UserController extends Controller
         $entity = new User();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
-
 
         if ($form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
