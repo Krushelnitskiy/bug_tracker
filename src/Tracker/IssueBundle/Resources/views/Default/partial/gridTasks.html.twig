@@ -13,7 +13,7 @@
     <tbody>
     {% for entity in entities %}
         {% if is_granted('view', entity) %}
-            {% set pathIssueView = path('issue_show', { 'id': entity.id }) %}
+            {% set pathIssueView = path('issue_show', { 'issue': entity.id }) %}
             {% set pathProjectView = path('project_show', { 'project': entity.project.id }) %}
             <tr>
                 <td><a href="{{ pathIssueView }}">{{ entity.id }}</a></td>

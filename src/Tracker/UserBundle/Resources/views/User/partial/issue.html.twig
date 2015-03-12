@@ -8,7 +8,7 @@
     <tbody>
     {% for issue in issues %}
         <tr>
-            <td><a href="{{ path('issue_show', { 'id': issue.id }) }}">{{ issue.summary }}</a></td>
+            <td><a href="{{ path('issue_show', { 'issue': issue.id }) }}">{{ issue.summary }}</a></td>
             <td><a href="{{ path('project_show', { 'project': issue.project.id }) }}">{{ issue.project.label }}</a></td>
         </tr>
     {% endfor %}

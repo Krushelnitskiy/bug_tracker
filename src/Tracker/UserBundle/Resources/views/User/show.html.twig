@@ -13,7 +13,7 @@
         </a>
         {% if is_granted('edit', entity) %}
             |
-            <a href="{{ path("user_edit", {userId: entity.id}) }}">
+            <a href="{{ path("user_edit", {user: entity.id}) }}">
                 {{ "user.action.edit"|trans }}
             </a>
         {% endif %}

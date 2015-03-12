@@ -17,6 +17,20 @@ use Tracker\TestBundle\Test\WebTestCase;
 class OperatorTest extends WebTestCase
 {
 
+    public function testListIssue()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'operator.noProjects',
+            'PHP_AUTH_PW' => 'test'
+        ));
+
+        $crawler = $client->request('GET', '/issue/');
+        $this->assertContains('Unauthorised access!', $crawler->html());
+
+        $crawler = $client->request('POST', '/issue/');
+        $this->assertContains('Unauthorised access!', $crawler->html());
+    }
+
     public function testCreateIssue()
     {
         $client = static::createClient(array(), array(
@@ -48,6 +62,15 @@ class OperatorTest extends WebTestCase
 
         $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId() .'/edit');
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'operator.noProjects',
+            'PHP_AUTH_PW' => 'test'
+        ));
+
+
+        $crawler = $client->request('PUT', '/issue/'.$this->getReference('issue.story')->getId() );
+        $this->assertContains('Unauthorised access!', $crawler->html());
     }
 
 
@@ -83,5 +106,30 @@ class OperatorTest extends WebTestCase
 
         $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId() .'/edit');
         $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+    }
+
+    public function testIssueCreateComment()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'operator.noProjects',
+            'PHP_AUTH_PW' => 'test'
+        ));
+
+        $crawler = $client->request('POST', '/issue/comment/'.$this->getReference('issue.story')->getId() );
+        $this->assertContains('Unauthorised access!', $crawler->html());
+    }
+
+    public function testCreateSubTask()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'operator.noProjects',
+            'PHP_AUTH_PW' => 'test'
+        ));
+
+        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId().'/new' );
+        $this->assertContains('Unauthorised access!', $crawler->html());
+
+        $crawler = $client->request('POST', '/issue/'.$this->getReference('issue.story')->getId() );
+        $this->assertContains('Unauthorised access!', $crawler->html());
     }
 }

@@ -28,7 +28,7 @@
         </thead>
         <tbody>
         {% for entity in entities %}
-            {% set pathShowUser = path('user_show', { 'id': entity.id }) %}
+            {% set pathShowUser = path('user_show', { 'user': entity.id }) %}
             <tr>
                 <td><a href="{{ pathShowUser }}">{{ entity.id }}</a></td>
 

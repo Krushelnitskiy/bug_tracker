@@ -15,7 +15,7 @@
 
             {%  if is_granted("edit", entity) %}
                 |
-                <a href="{{ path('issue_edit', { 'id': entity.id }) }}">
+                <a href="{{ path('issue_edit', { 'issue': entity.id }) }}">
                     {{ "issue.action.edit"|trans }}
                 </a>
             {% endif %}
@@ -30,7 +30,7 @@
 
             {% if entity.parent %}
                 |
-                <a href="{{ path('issue_show', { 'id': entity.parent.id }) }}">
+                <a href="{{ path('issue_show', { 'issue': entity.parent.id }) }}">
                     {{ entity.parent.code }} - {{ entity.parent.summary }}
                 </a>
             {% endif %}

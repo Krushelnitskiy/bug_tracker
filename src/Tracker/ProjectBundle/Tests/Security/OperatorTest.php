@@ -27,6 +27,17 @@ class OperatorTest extends WebTestCase
         $client->request('GET', '/project');
         $crawler = $client->followRedirect();
         $this->assertContains('Unauthorised access!', $crawler->html());
+
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'operator',
+            'PHP_AUTH_PW'   => 'test'
+        ));
+
+        $client->request('GET', '/project');
+        $crawler = $client->followRedirect();
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertContains($this->getReference('project.first')->getLabel(), $crawler->html());
+
     }
 
     public function testCreateProject()
@@ -71,4 +82,6 @@ class OperatorTest extends WebTestCase
         $crawler = $client->request('PUT', '/project/'.$this->getReference('project.first')->getId());
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
+
+
 }

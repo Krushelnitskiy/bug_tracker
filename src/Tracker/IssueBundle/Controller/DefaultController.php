@@ -46,6 +46,7 @@ class DefaultController extends Controller
             'emptyEntity' => new Issue()
         );
     }
+
     /**
      * Creates a new Issue entity.
      * @param Request $request
@@ -93,7 +94,7 @@ class DefaultController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getId())));
         }
 
         return array(
@@ -140,29 +141,26 @@ class DefaultController extends Controller
     /**
      * Finds and displays a Issue entity.
      * @param integer $id
-     * @Route("/{id}", name="issue_show")
+     * @Route("/{issue}", name="issue_show")
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @Method("GET")
      * @Template()
      * @return array
      */
-    public function showAction($id)
+    public function showAction($issue)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
-        }
 
-        if (false === $this->get('security.authorization_checker')->isGranted('view', $entity)) {
+        if (false === $this->get('security.authorization_checker')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $createCommentForm = $this->createCreateCommentForm(new Comment(), $id);
-        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByIssue($entity);
+        $createCommentForm = $this->createCreateCommentForm(new Comment(), $issue->getId());
+        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByIssue($issue);
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $issue,
             'activity'      => $activity,
             'comment_form' => $createCommentForm->createView()
         );
@@ -170,60 +168,50 @@ class DefaultController extends Controller
 
     /**
      * Displays a form to edit an existing Issue entity.
-     * @param integer $id
-     * @Route("/{id}/edit", name="issue_edit")
+     * @param Issue $issue
+     * @Route("/{issue}/edit", name="issue_edit")
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @Method("GET")
      * @Template()
      * @return array
      */
-    public function editAction($id)
+    public function editAction($issue)
     {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
-        }
-
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createForm('tracker_issueBundle_issue', $entity, array(
-                'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
+        $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
+                'action' => $this->generateUrl('issue_update', array('issue' => $issue->getId())),
                 'method' => 'PUT'
             ));
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $issue,
             'edit_form'   => $editForm->createView()
         );
     }
 
     /**
      * Edits an existing Issue entity.
-     * @param integer $id
+     * @param Issue $issue
      * @param Request $request
-     * @Route("/{id}", name="issue_update")
+     * @Route("/{issue}", name="issue_update")
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @Method("PUT")
      * @Template("TrackerIssueBundle:Default:edit.html.twig")
      * @return array
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, $issue)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', new Issue())) {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('TrackerIssueBundle:Issue')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
-        }
-
-        $editForm = $this->createForm('tracker_issueBundle_issue', $entity, array(
-            'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
+        $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
+            'action' => $this->generateUrl('issue_update', array('issue' => $issue->getId())),
                 'method' => 'PUT'
             ));
         $editForm->handleRequest($request);
@@ -232,11 +220,11 @@ class DefaultController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $issue->getId())));
         }
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $issue,
             'edit_form'   => $editForm->createView()
         );
     }
@@ -254,7 +242,7 @@ class DefaultController extends Controller
      */
     public function createCommentAction(Request $request, Issue $issue)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
+        if (false === $this->get('security.authorization_checker')->isGranted('create', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
@@ -273,7 +261,7 @@ class DefaultController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getIssue()->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getIssue()->getId())));
         }
 
         return array(
@@ -301,14 +289,10 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        if (!$comment) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
-        }
-
         $em->remove($comment);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('issue_show', array('id'=>$issue->getId())));
+        return $this->redirect($this->generateUrl('issue_show', array('issue'=>$issue->getId())));
     }
 
     /**
@@ -398,7 +382,7 @@ class DefaultController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getId())));
         }
 
         return array(

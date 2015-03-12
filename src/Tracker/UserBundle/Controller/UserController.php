@@ -10,6 +10,7 @@ use Tracker\UserBundle\Entity\User;
 use Tracker\UserBundle\Form\UserType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * User controller.
@@ -65,56 +66,47 @@ class UserController extends Controller
 
     /**
      * Finds and displays a User entity.
-     * @param integer $id
-     * @Route("/{id}", name="user_show")
+     * @param User $user
+     * @Route("/{user}", name="user_show")
+     * @ParamConverter("user", class="TrackerUserBundle:User", options={"repository_method" = "find"})
      * @Method("GET")
      * @Template()
      * @return array
      */
-    public function showAction($id)
+    public function showAction($user)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('view', new User())) {
+        if (false === $this->get('security.authorization_checker')->isGranted('view', $user)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('TrackerUserBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByUser($entity);
+        $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByUser($user);
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $user,
             'activity'      => $activity
         );
     }
 
     /**
      * Displays a form to edit an existing User entity.
-     * @param $userId
+     * @param User $user
      * @return array
-     *
-     * @Route("/{userId}/edit", name="user_edit")
+     * @ParamConverter("user", class="TrackerUserBundle:User", options={"repository_method" = "find"})
+     * @Route("/{user}/edit", name="user_edit")
      * @Method("GET")
      * @Template()
      */
-    public function editAction($userId)
+    public function editAction($user)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', new User())) {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $user)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
-        $entityManager = $this->getDoctrine()->getManager();
-        $entity = $entityManager->getRepository('TrackerUserBundle:User')->find($userId);
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-        $editForm = $this->createEditForm($entity);
+
+        $editForm = $this->createEditForm($user);
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $user,
             'edit_form'   => $editForm->createView()
         );
     }
@@ -127,7 +119,7 @@ class UserController extends Controller
     private function createEditForm(User $entity)
     {
         $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_update', array('userId' => $entity->getId())),
+            'action' => $this->generateUrl('user_update', array('user' => $entity->getId())),
             'method' => 'PUT'
         ));
 
@@ -138,39 +130,35 @@ class UserController extends Controller
 
     /**
      * Edits an existing User entity.
-     * @param integer $userId,
+     * @param User $user,
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return array
      *
-     * @Route("/{userId}", name="user_update")
+     * @Route("/{user}", name="user_update")
+     * @ParamConverter("user", class="TrackerUserBundle:User", options={"repository_method" = "find"})
      * @Method("PUT")
      * @Template("TrackerUserBundle:User:edit.html.twig")
      */
-    public function updateAction(Request $request, $userId)
+    public function updateAction(Request $request, $user)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', new User())) {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $user)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
         $entityManager = $this->getDoctrine()->getManager();
-        $entity = $entityManager->getRepository('TrackerUserBundle:User')->find($userId);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($user);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('user_show', array('user' => $user->getId())));
         }
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $user,
             'edit_form'   => $editForm->createView()
         );
     }
@@ -214,7 +202,7 @@ class UserController extends Controller
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('user_show', array('user' => $entity->getId())));
         }
 
         return array(
