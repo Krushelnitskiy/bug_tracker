@@ -9,6 +9,7 @@
 namespace Tracker\ActivitiesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Tracker\UserBundle\Entity\User;
 use Tracker\IssueBundle\Entity\Issue;
 use \Tracker\ProjectBundle\Entity\Project;

@@ -5,6 +5,7 @@ namespace Tracker\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Tracker\UserBundle\Form\DataTransformer\StringToArrayTransformer;
 
 class UserType extends AbstractType

@@ -10,8 +10,10 @@ namespace Tracker\ActivitiesBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+
 use Tracker\ActivitiesBundle\Entity\Activity;
 use Tracker\IssueBundle\Entity\Issue;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IssueEventListener

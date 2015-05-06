@@ -10,6 +10,7 @@ namespace Tracker\IssueBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+
 use Tracker\IssueBundle\Entity\Comment;
 use Tracker\UserBundle\Entity\User;
 

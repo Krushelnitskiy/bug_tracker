@@ -8,20 +8,21 @@
 
 namespace Tracker\TestBundle\Test;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Doctrine\Common\DataFixtures\Loader;
-use Tracker\IssueBundle\DataFixtures\ORM\LoadPriorityData;
-use Tracker\IssueBundle\DataFixtures\ORM\LoadResolutionData;
-use Tracker\IssueBundle\DataFixtures\ORM\LoadStatusData;
-use Tracker\IssueBundle\DataFixtures\ORM\LoadTypeData;
-use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadCommentData;
-use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadIssueData;
-use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadProjectData;
-use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadUserData;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\ORM\Tools\SchemaTool;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+
+use Tracker\IssueBundle\DataFixtures\ORM\LoadPriorityData;
+use Tracker\IssueBundle\DataFixtures\ORM\LoadResolutionData;
+use Tracker\IssueBundle\DataFixtures\ORM\LoadStatusData;
+use Tracker\IssueBundle\DataFixtures\ORM\LoadTypeData;
+use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadIssueData;
+use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadProjectData;
+use Tracker\TestBundle\Tests\DataFixtures\ORM\LoadUserData;
 
 class WebTestCase extends BaseWebTestCase
 {
@@ -32,18 +33,10 @@ class WebTestCase extends BaseWebTestCase
 
     public function setUp()
     {
-
-
         $client = self::createClient();
         $container = $client->getKernel()->getContainer();
         $entityManager = $container->get('doctrine')->getManager();
 
-//        $schemaTool = new SchemaTool($entityManager);
-//        $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
-//        $schemaTool->dropSchema($metadata);
-//        $schemaTool->createSchema($metadata);
-
-        // Purge tables
         $purger = new ORMPurger($entityManager);
         $executor = new ORMExecutor($entityManager, $purger);
         $executor->purge();

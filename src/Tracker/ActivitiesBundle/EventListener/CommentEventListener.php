@@ -9,6 +9,7 @@
 namespace Tracker\ActivitiesBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+
 use Tracker\ActivitiesBundle\Entity\Activity;
 use Tracker\IssueBundle\Entity\Comment;
 

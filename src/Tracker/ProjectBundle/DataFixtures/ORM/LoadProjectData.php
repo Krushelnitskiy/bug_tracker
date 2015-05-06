@@ -8,11 +8,11 @@
 
 namespace Tracker\ProjectBundle\DataFixtures\ORM;
 
-use Tracker\ProjectBundle\Entity\Project;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Tracker\ProjectBundle\Entity\Project;
 
 class LoadProjectData extends AbstractFixture implements FixtureInterface
 {

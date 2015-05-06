@@ -9,8 +9,10 @@
 namespace Tracker\ActivitiesBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Tracker\ActivitiesBundle\Entity\Activity;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Tracker\ActivitiesBundle\Entity\Activity;
 use Tracker\UserBundle\Entity\User;
 
 class ActivityEventListener
@@ -35,7 +37,7 @@ class ActivityEventListener
         $activity = $eventArgs->getEntity();
 
         if ($activity instanceof Activity) {
-            $collaborateEmails = $activity->getIssue()->getCollaborators()->map(function(User $collaborate) {
+            $collaborateEmails = $activity->getIssue()->getCollaborators()->map(function (User $collaborate) {
                 return $collaborate->getEmail();
             })->getValues()
             ;

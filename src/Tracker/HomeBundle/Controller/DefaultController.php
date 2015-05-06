@@ -3,11 +3,13 @@
 namespace Tracker\HomeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tracker\UserBundle\Entity\User;
-use Tracker\IssueBundle\Entity\IssueRepository;
+
 use Tracker\ActivitiesBundle\Entity\ActivityRepository;
+use Tracker\IssueBundle\Entity\IssueRepository;
+use Tracker\UserBundle\Entity\User;
 
 class DefaultController extends Controller
 {

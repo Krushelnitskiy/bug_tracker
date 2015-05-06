@@ -10,6 +10,7 @@ namespace Tracker\ProjectBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\UserBundle\Entity\User;
 

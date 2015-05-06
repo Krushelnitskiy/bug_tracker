@@ -9,6 +9,7 @@
 namespace Tracker\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Tracker\UserBundle\Entity\User;
 use Tracker\IssueBundle\Entity\Issue;
 
@@ -20,7 +21,6 @@ use Tracker\IssueBundle\Entity\Issue;
  */
 class Comment
 {
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

@@ -4,13 +4,15 @@ namespace Tracker\ProjectBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\ProjectBundle\Form\ProjectType;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Project controller.
@@ -118,7 +120,7 @@ class DefaultController extends Controller
 
     /**
      * Finds and displays a Project entity.
-     * @param $projectId integer
+     * @param $project Project
      * @return array
      *
      * @Route("/{project}", name="project_show")
@@ -144,7 +146,7 @@ class DefaultController extends Controller
 
     /**
      * Displays a form to edit an existing Project entity.
-     * @param $projectId
+     * @param $project Project
      * @return array
      *
      * @Route("/{project}/edit", name="project_edit")
@@ -184,7 +186,7 @@ class DefaultController extends Controller
     }
     /**
      * Edits an existing Project entity.
-     * @param integer $projectId,
+     * @param $project Project,
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return array

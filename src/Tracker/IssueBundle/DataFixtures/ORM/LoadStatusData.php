@@ -8,10 +8,11 @@
 
 namespace Tracker\IssueBundle\DataFixtures\ORM;
 
-use Tracker\IssueBundle\Entity\Status;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Tracker\IssueBundle\Entity\Status;
 
 class LoadStatusData extends AbstractFixture implements FixtureInterface
 {

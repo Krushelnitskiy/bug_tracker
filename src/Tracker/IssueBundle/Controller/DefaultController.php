@@ -2,20 +2,24 @@
 
 namespace Tracker\IssueBundle\Controller;
 
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Validator\Constraints\DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+use Tracker\IssueBundle\Entity\Type;
 use Tracker\IssueBundle\Entity\Comment;
 use Tracker\IssueBundle\Entity\Issue;
 use Tracker\IssueBundle\Entity\Status;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Tracker\IssueBundle\Security\Authorization\Voter\IssueVoter;
 use Tracker\UserBundle\Entity\User;
-use Tracker\IssueBundle\Entity\Type;
 
 /**
  * Issue controller.
@@ -24,7 +28,6 @@ use Tracker\IssueBundle\Entity\Type;
  */
 class DefaultController extends Controller
 {
-
     /**
      * Lists all Issue entities.
      *
@@ -118,6 +121,9 @@ class DefaultController extends Controller
 
         $entity = new Issue();
 
+        /**
+         * @var $user User
+         */
         $user = $this->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
 
@@ -140,7 +146,7 @@ class DefaultController extends Controller
 
     /**
      * Finds and displays a Issue entity.
-     * @param integer $id
+     * @param $issue Issue
      * @Route("/{issue}", name="issue_show")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @Method("GET")
@@ -150,7 +156,6 @@ class DefaultController extends Controller
     public function showAction($issue)
     {
         $em = $this->getDoctrine()->getManager();
-
 
         if (false === $this->get('security.authorization_checker')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -216,7 +221,6 @@ class DefaultController extends Controller
             ));
         $editForm->handleRequest($request);
 
-
         if ($editForm->isValid()) {
             $em->flush();
 
@@ -274,7 +278,7 @@ class DefaultController extends Controller
      * Deletes a Issue entity.
      * @param Request $request
      * @param Issue $issue
-     * @param integer $id
+     * @param Comment $comment
      * @Route("/{issue}/comment/{comment}", name="issue_comment_delete")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
@@ -288,7 +292,6 @@ class DefaultController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-
         $em->remove($comment);
         $em->flush();
 
@@ -302,7 +305,6 @@ class DefaultController extends Controller
      */
     private function createCreateCommentForm(Comment $comment, $issueId)
     {
-
         $form = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
             'action' => $this->generateUrl('issue_comment_create', array('issue'=>$issueId)),
             'method' => 'POST'
@@ -314,13 +316,15 @@ class DefaultController extends Controller
 
     /**
      * Displays a form to create a new Issue entity.
+     * @param Request $request
+     * @param Issue $issue
      *
      * @Route("/{issue}/new", name="issue_new_sub_task")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @Method("GET")
      * @Template()
      */
-    public function newSubTaskAction (Request $request, $issue)
+    public function newSubTaskAction(Request $request, $issue)
     {
         if (false === $this->get('security.authorization_checker')->isGranted(IssueVoter::CREATE_SUB_TASK, $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -343,6 +347,8 @@ class DefaultController extends Controller
     /**
      * Creates a new Issue entity.
      * @param Request $request
+     * @param Issue $issue
+     *
      * @Route("/{issue}", name="issue_create_sub_task")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
      * @Method("POST")
@@ -366,7 +372,6 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $repositoryStatus = $em->getRepository('TrackerIssueBundle:Status');
             $repositoryType = $em->getRepository('TrackerIssueBundle:Type');
 

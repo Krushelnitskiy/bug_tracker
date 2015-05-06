@@ -1,4 +1,5 @@
 <?php
+
 namespace Tracker\UserBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
@@ -9,7 +10,7 @@ class StringToArrayTransformer implements DataTransformerInterface
     /**
      * Transforms an array to a string.
      * POSSIBLE LOSS OF DATA
-     *
+     * @param mixed $array
      * @return string
      */
     public function transform($array)

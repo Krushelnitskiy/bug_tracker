@@ -1,15 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 23.02.15
- * Time: 18:58
- */
 
 namespace Tracker\UserBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+
 use Tracker\UserBundle\Entity\User;
 
 class UserVoter implements VoterInterface

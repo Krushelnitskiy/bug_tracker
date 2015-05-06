@@ -3,12 +3,15 @@
 namespace Tracker\IssueBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tracker\IssueBundle\Entity\Comment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use Symfony\Component\HttpFoundation\Request;
+
+use Tracker\IssueBundle\Entity\Comment;
 
 /**
  * Comment controller.
@@ -41,7 +44,7 @@ class CommentController extends Controller
 
     /**
      * Edits an existing Issue entity.
-     * @param integer $id
+     * @param $comment Comment
      * @param Request $request
      * @Route("/{comment}", name="issue_comment_update")
      * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})

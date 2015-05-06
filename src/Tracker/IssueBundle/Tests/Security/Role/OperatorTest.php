@@ -68,8 +68,7 @@ class OperatorTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-
-        $crawler = $client->request('PUT', '/issue/'.$this->getReference('issue.story')->getId() );
+        $crawler = $client->request('PUT', '/issue/' . $this->getReference('issue.story')->getId());
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
 
@@ -115,7 +114,7 @@ class OperatorTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-        $crawler = $client->request('POST', '/issue/comment/'.$this->getReference('issue.story')->getId() );
+        $crawler = $client->request('POST', '/issue/comment/' . $this->getReference('issue.story')->getId());
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
 
@@ -126,10 +125,10 @@ class OperatorTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId().'/new' );
+        $crawler = $client->request('GET', '/issue/' . $this->getReference('issue.story')->getId().'/new');
         $this->assertContains('Unauthorised access!', $crawler->html());
 
-        $crawler = $client->request('POST', '/issue/'.$this->getReference('issue.story')->getId() );
+        $crawler = $client->request('POST', '/issue/' . $this->getReference('issue.story')->getId());
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
 }

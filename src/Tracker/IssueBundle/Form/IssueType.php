@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+
 use Tracker\UserBundle\Entity\User;
 use Tracker\IssueBundle\Entity\Type;
 
@@ -120,10 +121,8 @@ class IssueType extends AbstractType
             ->add('priority', 'entity', $attributePriority)
             ->add('code', 'text', $attribute)
             ->add('description', null, $attribute)
-//          ->add('resolution', null, $attribute)
             ->add('reporter', null, $attributeReporter)
-            ->add('assignee', null, $attributeAssign)
-            ;
+            ->add('assignee', null, $attributeAssign);
 
         if (!$builder->getData()->getid()) {
             $builder->add('save', 'submit', array('label' => 'issue.form.create'));

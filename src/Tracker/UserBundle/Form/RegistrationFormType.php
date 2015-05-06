@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 26.02.15
- * Time: 16:39
- */
-
 
 namespace Tracker\UserBundle\Form;
 

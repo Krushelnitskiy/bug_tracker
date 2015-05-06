@@ -8,10 +8,11 @@
 
 namespace Tracker\IssueBundle\DataFixtures\ORM;
 
-use Tracker\IssueBundle\Entity\Resolution;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Tracker\IssueBundle\Entity\Resolution;
 
 class LoadResolutionData extends AbstractFixture implements FixtureInterface
 {

@@ -8,18 +8,16 @@
 
 namespace Tracker\IssueBundle\DataFixtures\ORM;
 
-use Tracker\IssueBundle\Entity\Issue;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Tracker\UserBundle\Entity\User;
-use Tracker\ProjectBundle\Entity\Project;
+use Tracker\IssueBundle\Entity\Issue;
 use Tracker\IssueBundle\Entity\Type;
 use Tracker\IssueBundle\Entity\Priority;
 use Tracker\IssueBundle\Entity\Status;
-
+use Tracker\ProjectBundle\Entity\Project;
+use Tracker\UserBundle\Entity\User;
 
 class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
 {

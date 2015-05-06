@@ -8,6 +8,7 @@
 namespace Tracker\ProjectBundle\Tests\Security;
 
 use Symfony\Component\HttpFoundation\Response;
+
 use Tracker\TestBundle\Test\WebTestCase;
 
 /**
@@ -82,6 +83,4 @@ class OperatorTest extends WebTestCase
         $crawler = $client->request('PUT', '/project/'.$this->getReference('project.first')->getId());
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
-
-
 }

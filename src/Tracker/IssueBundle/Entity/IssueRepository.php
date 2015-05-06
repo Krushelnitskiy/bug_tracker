@@ -3,6 +3,7 @@
 namespace Tracker\IssueBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+
 use Tracker\UserBundle\Entity\User;
 
 /**
