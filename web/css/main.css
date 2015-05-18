@@ -8,6 +8,11 @@ nav a {
     color: #ffffff;
 }
 
+nav a:hover {
+    color: #d2e8f5;
+    text-decoration: none;
+}
+
 nav .logo{
     margin-right: 15px;
 

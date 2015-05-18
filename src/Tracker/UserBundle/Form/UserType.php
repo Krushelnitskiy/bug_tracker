@@ -5,11 +5,22 @@ namespace Tracker\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use Tracker\UserBundle\Form\DataTransformer\StringToArrayTransformer;
 
 class UserType extends AbstractType
 {
+    /**
+     * @var $translator TranslatorInterface
+     */
+    protected $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -21,7 +32,6 @@ class UserType extends AbstractType
         $attributeSubmit = $attributeDefault;
         unset($attributeSubmit['attr']);
 
-
         $builder->add('email', 'email', $attributeDefault)
             ->add('username', null, $attributeDefault)
             ->add($this->getPlainPassword($builder))
@@ -29,6 +39,12 @@ class UserType extends AbstractType
             ->add($this->getEnabled($builder))
             ->add('file', null, $attributeSubmit)
         ;
+
+        if (!$builder->getData()->getid()) {
+            $builder->add('save', 'submit', array('label' => 'issue.form.create'));
+        } else {
+            $builder->add('save', 'submit', array('label' => 'issue.form.update'));
+        }
     }
 
     /**
@@ -91,7 +107,7 @@ class UserType extends AbstractType
             'invalid_message' => 'fos_user.password.mismatch'
         );
 
-         return $builder->create('plainPassword', 'repeated', $attributes);
+        return $builder->create('plainPassword', 'repeated', $attributes);
     }
 
     /**
@@ -106,9 +122,9 @@ class UserType extends AbstractType
             $this->getDefaultAttributes(),
             array(
                 'choices' => array(
-                    'ROLE_ADMIN' => 'role.admin',
-                    'ROLE_MANAGER' => 'role.manager',
-                    'ROLE_OPERATOR' => 'role.operator'
+                    'ROLE_ADMIN' => $this->translator->trans('role.admin'),
+                    'ROLE_MANAGER' => $this->translator->trans('role.manager'),
+                    'ROLE_OPERATOR' => $this->translator->trans('role.operator')
                 ),
                 'label' => 'Roles',
                 'expanded' => false,

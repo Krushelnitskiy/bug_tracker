@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 
 use Tracker\UserBundle\Entity\User;
-use Tracker\UserBundle\Form\UserType;
 
 /**
  * User controller.
@@ -31,7 +30,6 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-
         if (false === $this->get('security.authorization_checker')->isGranted('view', new User())) {
             throw new AccessDeniedException('Unauthorised access!');
         }
@@ -58,7 +56,7 @@ class UserController extends Controller
         }
 
         $entity = new User();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
@@ -120,12 +118,10 @@ class UserController extends Controller
      */
     private function createEditForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm('tracker_userBundle_user', $entity, array(
             'action' => $this->generateUrl('user_update', array('user' => $entity->getId())),
             'method' => 'PUT'
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -174,12 +170,10 @@ class UserController extends Controller
      */
     private function createCreateForm(user $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm('tracker_userBundle_user', $entity, array(
             'action' => $this->generateUrl('user_create'),
-            'method' => 'POST'
+            'method' => 'PUT'
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -190,7 +184,7 @@ class UserController extends Controller
      * @return array
      *
      * @Route("/", name="user_create")
-     * @Method("POST")
+     * @Method("PUT")
      * @Template("TrackeruserBundle:User:new.html.twig")
      */
     public function createAction(Request $request)

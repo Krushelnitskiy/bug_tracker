@@ -15,7 +15,5 @@
         {% endif %}
     </p>
 
-    <div class="container">
-        {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'entities': entities } %}
-    </div>
+    {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'entities': entities } %}
 {% endblock %}

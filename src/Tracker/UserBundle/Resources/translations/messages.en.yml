@@ -39,3 +39,8 @@ resetting:
   request:
     username: "Username or email address:"
     submit: "Reset password"
+
+role:
+  admin: Administrator
+  manager: Manager
+  operator: Operator

@@ -5,14 +5,11 @@
 {% block body -%}
     <h3>{{ "project.create"|trans }}</h3>
 
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('project') }}">
-                {{ "project.back"|trans }}
-
-            </a>
-        </li>
-    </ul>
+    <p>
+        <a href="{{ path('project') }}">
+            {{ "project.back"|trans }}
+        </a>
+    </p>
 
     {{ form(form, {'attr':{'class':"form-horizontal"}}) }}
 

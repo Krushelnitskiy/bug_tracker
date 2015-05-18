@@ -19,7 +19,7 @@ issue:
     create: "Create"
     update: "Update"
   action:
-    create: "Create a new entry"
+    create: "Create Issue"
     edit: "Edit"
     back: "Back to the list"
     delete: "Delete"

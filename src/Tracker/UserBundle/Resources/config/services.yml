@@ -9,3 +9,10 @@ services:
         public:     false
         tags:
             - { name: security.voter }
+
+    tracker.registration.form.type:
+        class: Tracker\UserBundle\Form\UserType
+        arguments:
+            - @translator
+        tags:
+            - { name: form.type, alias: tracker_userBundle_user }
