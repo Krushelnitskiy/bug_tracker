@@ -107,12 +107,12 @@ class Issue
     protected $project;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      **/
     protected $created;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      **/
     protected $updated;
 

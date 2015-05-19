@@ -37,7 +37,7 @@ class IssueCommentType extends AbstractType
             )
         );
 
-        $builder->add('body', 'text', $attribute);
+        $builder->add('body', 'textarea', $attribute);
 
         if (!$builder->getData()->getid()) {
             $builder->add('save', 'submit', array('label' => 'issue.form.create'));

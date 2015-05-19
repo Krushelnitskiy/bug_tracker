@@ -91,8 +91,8 @@ class DefaultController extends Controller
             $entity->setCreated(new \DateTime());
             $entity->setUpdated(new \DateTime());
 
-            $entityStatus = $em->getRepository('TrackerIssueBundle:Status')->findByValue(Status::STATUS_OPEN);
-            $entity->setStatus($entityStatus[0]);
+            $entityStatus = $em->getRepository('TrackerIssueBundle:Status')->findOneByValue(Status::STATUS_OPEN);
+            $entity->setStatus($entityStatus);
 
             $em->persist($entity);
             $em->flush();

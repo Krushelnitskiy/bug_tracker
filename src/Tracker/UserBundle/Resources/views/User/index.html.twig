@@ -43,7 +43,7 @@
                 <td><a href="{{ pathShowUser }}">{{ entity.username }}</a></td>
                 <td><a href="{{ pathShowUser }}">{{ entity.email }}</a></td>
                 <td><a href="{{ pathShowUser }}">{{ entity.roles[0] }}</a></td>
-                <td><a href="{{ pathShowUser }}">{{ entity.lastLogin|date('d.m.Y') }}</a></td>
+                <td><a href="{{ pathShowUser }}">{{ entity.lastLogin|date('d.m.Y H:i:s') }}</a></td>
                 <td><a href="{{ pathShowUser }}">{{ entity.enabled }}</a></td>
             </tr>
         {% endfor %}
