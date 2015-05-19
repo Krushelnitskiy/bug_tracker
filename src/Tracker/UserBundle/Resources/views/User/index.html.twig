@@ -22,6 +22,7 @@
                 <th></th>
                 <th>{{ "user.grid.username"|trans }}</th>
                 <th>{{ "user.grid.email"|trans }}</th>
+                <th>{{ "user.grid.role"|trans }}</th>
                 <th>{{ "user.grid.lastLogin"|trans }}</th>
                 <th>{{ "user.grid.enabled"|trans }}</th>
             </tr>
@@ -29,9 +30,9 @@
         <tbody>
         {% for entity in entities %}
             {% set pathShowUser = path('user_show', { 'user': entity.id }) %}
+
             <tr>
                 <td><a href="{{ pathShowUser }}">{{ entity.id }}</a></td>
-
                 <td>
                     {% if entity.getWebPath() %}
                         <a href="{{ pathShowUser }}">
@@ -41,6 +42,7 @@
                 </td>
                 <td><a href="{{ pathShowUser }}">{{ entity.username }}</a></td>
                 <td><a href="{{ pathShowUser }}">{{ entity.email }}</a></td>
+                <td><a href="{{ pathShowUser }}">{{ entity.roles[0] }}</a></td>
                 <td><a href="{{ pathShowUser }}">{{ entity.lastLogin|date('d.m.Y') }}</a></td>
                 <td><a href="{{ pathShowUser }}">{{ entity.enabled }}</a></td>
             </tr>

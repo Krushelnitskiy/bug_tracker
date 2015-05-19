@@ -11,12 +11,12 @@
     </thead>
     <tbody>
     {% for collaborator in collaborators %}
-
         <tr>
             <td>{{ entity.id }}</td>
 
             <td>
                 {% if collaborator.getWebPath() %}
+                    {% set pathShowUser = path('user_show', { 'user': collaborator.id }) %}
                     <a href="{{ pathShowUser }}">
                         <img src="{{ collaborator.getWebPath() }}"  width="64"/>
                     </a>

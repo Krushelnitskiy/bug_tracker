@@ -1,17 +1,7 @@
-#tracker_test:
-#    resource: "@TrackerTestBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-
 tracker_home:
     resource: "@TrackerHomeBundle/Controller/"
     type:     annotation
     prefix:   /
-
-#tracker_activities:
-#    resource: "@TrackerActivitiesBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
 
 tracker_issue:
     resource: "@TrackerIssueBundle/Controller/"
@@ -27,10 +17,6 @@ tracker_user:
     resource: "@TrackerUserBundle/Controller/"
     type:     annotation
     prefix:   /
-
-#app:
-#    resource: @AppBundle/Controller/
-#    type:     annotation
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
