@@ -30,7 +30,7 @@ class DefaultControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
+        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getCode());
         self::assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
     }
 
@@ -53,8 +53,9 @@ class DefaultControllerTest extends WebTestCase
         $form['tracker_issueBundle_issue[description]'] = 'issue test description 1';
         $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.manager')->getId();
         $form['tracker_issueBundle_issue[assignee]'] = $this->getReference('user.operator')->getId();
+        $client->followRedirects();
         $client->submit($form);
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         self::assertContains('issue test summary 1', $crawler->html());
     }
@@ -66,18 +67,18 @@ class DefaultControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $issueId = $this->getReference('issue.story')->getId();
+        $issueId = $this->getReference('issue.story')->getCode();
         $crawler = $client->request('GET', '/issue/'.$issueId.'/edit');
 
         $form = $crawler->selectButton('Update')->form();
         $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 2';
         $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.manager')->getId();
         $form['tracker_issueBundle_issue[status]'] = $this->getReference('status.inProgress')->getId();
+        $client->followRedirects();
         $client->submit($form);
 
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
-        self::assertContains('manager', $crawler->html());
         self::assertContains('manager', $crawler->html());
         self::assertContains('In progress', $crawler->html());
     }
@@ -89,20 +90,21 @@ class DefaultControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $issueId = $this->getReference('issue.story')->getId();
-        $crawler = $client->request('GET', '/issue/'.$issueId);
+        $issueCode = $this->getReference('issue.story')->getCode();
+        $crawler = $client->request('GET', '/issue/'.$issueCode);
 
         $form = $crawler->selectButton('Create')->form();
         $form['tracker_issueBundle_comment_form[body]'] = 'issue test comment';
+        $client->followRedirects();
         $client->submit($form);
 
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         $this->assertContains('issue test comment', $crawler->html());
 
         $link = $crawler->filter('a:contains("Delete")')->eq(0)->link();
         $client->click($link);
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         $this->assertEquals(0, $crawler->filter('a:contains("Delete")')->count());
     }
@@ -114,14 +116,15 @@ class DefaultControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $issueId = $this->getReference('issue.story')->getId();
+        $issueId = $this->getReference('issue.story')->getCode();
         $crawler = $client->request('GET', '/issue/'.$issueId);
 
         $form = $crawler->selectButton('Create')->form();
         $form['tracker_issueBundle_comment_form[body]'] = 'issue test comment';
+        $client->followRedirects();
         $client->submit($form);
 
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         $this->assertContains('issue test comment', $crawler->html());
         $link = $crawler->filter('.comment a:contains("Edit")')->link();
@@ -130,7 +133,7 @@ class DefaultControllerTest extends WebTestCase
         $form['tracker_issueBundle_comment_form[body]'] = 'issue test comment 222';
         $client->submit($form);
 
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
         $this->assertContains('issue test comment 222', $crawler->html());
     }
 
@@ -141,7 +144,7 @@ class DefaultControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $issueId = $this->getReference('issue.story')->getId();
+        $issueId = $this->getReference('issue.story')->getCode();
         $crawler = $client->request('GET', '/issue/'.$issueId);
         $link = $crawler->filter('a:contains("Create sub task")')->link();
         $crawler= $client->click($link);
@@ -153,8 +156,9 @@ class DefaultControllerTest extends WebTestCase
         $form['tracker_issueBundle_issueSubTask_form[description]'] = 'issue test description 1';
         $form['tracker_issueBundle_issueSubTask_form[reporter]'] = $this->getReference('user.manager')->getId();
         $form['tracker_issueBundle_issueSubTask_form[assignee]'] = $this->getReference('user.operator')->getId();
+        $client->followRedirects();
         $client->submit($form);
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         $this->assertEquals(0, $crawler->filter('a:contains("Delete")')->count());
     }

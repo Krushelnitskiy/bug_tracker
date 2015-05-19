@@ -35,7 +35,7 @@ class ManagerTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-        $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
+        $client->request('GET', '/issue/'.$this->getReference('issue.story')->getCode());
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
@@ -46,7 +46,7 @@ class ManagerTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-        $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId() .'/edit');
+        $client->request('GET', '/issue/'.$this->getReference('issue.story')->getCode() .'/edit');
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 }

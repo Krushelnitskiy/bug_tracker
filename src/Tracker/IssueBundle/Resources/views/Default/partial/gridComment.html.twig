@@ -15,7 +15,7 @@
             <td>{{ comment.author.username }}</td>
             <td>
                 {% if is_granted("delete", comment) %}
-                    <a href="{{ path('issue_comment_delete', {"issue":entity.id, "comment":comment.id}) }}">{{ "issue.action.delete"|trans }}</a>
+                    <a href="{{ path('issue_comment_delete', {"issue":entity.code, "comment":comment.id}) }}">{{ "issue.action.delete"|trans }}</a>
                 {% endif %}
 
                 {% if is_granted("delete", comment) and is_granted("edit", comment) %}

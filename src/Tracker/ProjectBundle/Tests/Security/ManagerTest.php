@@ -39,7 +39,7 @@ class ManagerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $crawler = $client->request('GET', '/project/'.$this->getReference('project.first')->getId().'/edit');
+        $crawler = $client->request('GET', '/project/'.$this->getReference('project.first')->getCode().'/edit');
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertContains('Edit this project', $crawler->html());
     }

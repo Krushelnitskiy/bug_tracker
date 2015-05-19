@@ -50,3 +50,4 @@ issue:
       created: "Created"
       author: "Author"
       action: "Action"
+  parent: "Parent Issue:"

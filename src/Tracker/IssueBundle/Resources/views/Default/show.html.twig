@@ -15,14 +15,14 @@
 
             {%  if is_granted("edit", entity) %}
                 |
-                <a href="{{ path('issue_edit', { 'issue': entity.id }) }}">
+                <a href="{{ path('issue_edit', { 'issue': entity.code }) }}">
                     {{ "issue.action.edit"|trans }}
                 </a>
             {% endif %}
 
             {% if is_granted("create_sub_task", entity) %}
                 |
-                <a href="{{ path('issue_new_sub_task', { 'issue': entity.id }) }}">
+                <a href="{{ path('issue_new_sub_task', { 'issue': entity.code }) }}">
                     {{ "issue.action.create_sub_task"|trans }}
                 </a>
             {% endif %}
@@ -30,7 +30,7 @@
 
             {% if entity.parent %}
                 |
-                <a href="{{ path('issue_show', { 'issue': entity.parent.id }) }}">
+                {{ "issue.parent"|trans }} <a href="{{ path('issue_show', { 'issue': entity.parent.code }) }}">
                     {{ entity.parent.code }} - {{ entity.parent.summary }}
                 </a>
             {% endif %}
@@ -39,8 +39,8 @@
     <table class="record_properties table">
         <tbody>
             <tr>
-                <th>{{ "issue.grid.id"|trans }}</th>
-                <td>{{ entity.id }}</td>
+                <th>{{ "issue.grid.type"|trans }}</th>
+                <td>{{ entity.type.value }}</td>
             </tr>
             <tr>
                 <th>{{ "issue.grid.summary"|trans }}</th>
@@ -76,7 +76,7 @@
             </tr>
             <tr>
                 <th>{{ "issue.grid.project"|trans }}</th>
-                <td><a href="{{ path("project_show", {"project":entity.project.id }) }}">{{ entity.project.label }}</a></td>
+                <td><a href="{{ path("project_show", {"project":entity.project.code }) }}">{{ entity.project.label }}</a></td>
             </tr>
         </tbody>
     </table>

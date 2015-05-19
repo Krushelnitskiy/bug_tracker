@@ -18,12 +18,13 @@ class CommentControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
+        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getCode());
 
         $form = $crawler->selectButton('Create')->form();
         $form['tracker_issueBundle_comment_form[body]'] = 'You need add description.';
+        $client->followRedirects();
         $client->submit($form);
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         $html = $crawler->html();
         self::assertContains('Delete', $html);
@@ -37,12 +38,13 @@ class CommentControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
-        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getId());
+        $crawler = $client->request('GET', '/issue/'.$this->getReference('issue.story')->getCode());
 
         $form = $crawler->selectButton('Create')->form();
         $form['tracker_issueBundle_comment_form[body]'] = 'You need add description.';
+        $client->followRedirects();
         $client->submit($form);
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         $html = $crawler->html();
         self::assertContains('Delete', $html);

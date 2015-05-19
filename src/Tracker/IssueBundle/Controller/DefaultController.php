@@ -97,7 +97,7 @@ class DefaultController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getCode())));
         }
 
         return array(
@@ -148,7 +148,7 @@ class DefaultController extends Controller
      * Finds and displays a Issue entity.
      * @param $issue Issue
      * @Route("/{issue}", name="issue_show")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
      * @return array
@@ -161,12 +161,12 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $createCommentForm = $this->createCreateCommentForm(new Comment(), $issue->getId());
+        $createCommentForm = $this->createCreateCommentForm(new Comment(), $issue->getCode());
         $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByIssue($issue);
 
         return array(
-            'entity'      => $issue,
-            'activity'      => $activity,
+            'entity' => $issue,
+            'activity' => $activity,
             'comment_form' => $createCommentForm->createView()
         );
     }
@@ -175,7 +175,7 @@ class DefaultController extends Controller
      * Displays a form to edit an existing Issue entity.
      * @param Issue $issue
      * @Route("/{issue}/edit", name="issue_edit")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
      * @return array
@@ -187,7 +187,7 @@ class DefaultController extends Controller
         }
 
         $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
-                'action' => $this->generateUrl('issue_update', array('issue' => $issue->getId())),
+                'action' => $this->generateUrl('issue_update', array('issue' => $issue->getCode())),
                 'method' => 'PUT'
             ));
 
@@ -202,7 +202,7 @@ class DefaultController extends Controller
      * @param Issue $issue
      * @param Request $request
      * @Route("/{issue}", name="issue_update")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("PUT")
      * @Template("TrackerIssueBundle:Default:edit.html.twig")
      * @return array
@@ -216,7 +216,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
-            'action' => $this->generateUrl('issue_update', array('issue' => $issue->getId())),
+            'action' => $this->generateUrl('issue_update', array('issue' => $issue->getCode())),
                 'method' => 'PUT'
             ));
         $editForm->handleRequest($request);
@@ -224,7 +224,7 @@ class DefaultController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('issue' => $issue->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $issue->getCode())));
         }
 
         return array(
@@ -239,7 +239,7 @@ class DefaultController extends Controller
      * @param Request $request
      * @param Issue $issue
      * @Route("/comment/{issue}", name="issue_comment_create")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("POST")
      * @Template("TrackerIssueBundle:Issue:edit.html.twig")
      * @return array
@@ -251,7 +251,7 @@ class DefaultController extends Controller
         }
 
         $entity = new Comment();
-        $form = $this->createCreateCommentForm($entity, $issue->getId());
+        $form = $this->createCreateCommentForm($entity, $issue->getCode());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -265,7 +265,7 @@ class DefaultController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getIssue()->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getIssue()->getCode())));
         }
 
         return array(
@@ -280,7 +280,7 @@ class DefaultController extends Controller
      * @param Issue $issue
      * @param Comment $comment
      * @Route("/{issue}/comment/{comment}", name="issue_comment_delete")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
      * @Method("GET")
      * @return array
@@ -295,7 +295,7 @@ class DefaultController extends Controller
         $em->remove($comment);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('issue_show', array('issue'=>$issue->getId())));
+        return $this->redirect($this->generateUrl('issue_show', array('issue'=>$issue->getCode())));
     }
 
     /**
@@ -320,7 +320,7 @@ class DefaultController extends Controller
      * @param Issue $issue
      *
      * @Route("/{issue}/new", name="issue_new_sub_task")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
      */
@@ -333,7 +333,7 @@ class DefaultController extends Controller
         $entity = new Issue();
 
         $form  = $this->createForm('tracker_issueBundle_issueSubTask_form', $entity, array(
-            'action' => $this->generateUrl('issue_create_sub_task', array('issue'=>$issue->getId())),
+            'action' => $this->generateUrl('issue_create_sub_task', array('issue'=>$issue->getCode())),
             'method' => 'POST',
             'issueStory' => $issue
         ));
@@ -350,7 +350,7 @@ class DefaultController extends Controller
      * @param Issue $issue
      *
      * @Route("/{issue}", name="issue_create_sub_task")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "find"})
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("POST")
      * @Template("TrackerIssueBundle:Issue:new.html.twig")
      * @return array
@@ -363,7 +363,7 @@ class DefaultController extends Controller
 
         $entity = new Issue();
         $form  = $this->createForm('tracker_issueBundle_issueSubTask_form', $entity, array(
-            'action' => $this->generateUrl('issue_create_sub_task', array('issue'=>$issue->getId())),
+            'action' => $this->generateUrl('issue_create_sub_task', array('issue'=>$issue->getCode())),
             'method' => 'POST',
             'issueStory' => $issue
         ));
@@ -387,7 +387,7 @@ class DefaultController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getCode())));
         }
 
         return array(

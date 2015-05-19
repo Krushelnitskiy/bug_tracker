@@ -13,7 +13,6 @@ use Tracker\UserBundle\Entity\User;
 
 class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
 {
-
     /**
      * @var ContainerInterface
      */
@@ -32,26 +31,65 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
      */
     public function load(ObjectManager $manager)
     {
+        $managerUsers = $this->container->get('fos_user.user_manager');
+
+        $data = $this->getData();
+
+        foreach ($data as $item) {
+            /**
+             * @var $user User
+             */
+            $user = $managerUsers->createUser();
+            $user->setUsername($item['userName']);
+            $user->setEmail($item['email']);
+            $user->addRole(User::ROLE_ADMIN);
+            $user->setPassword($this->generatePassword($user));
+            $user->setEnabled(1);
+
+            $managerUsers->updateUser($user);
+            $this->addReference($item['referenceKey'], $user);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @return string
+     */
+    protected function generatePassword(User $user)
+    {
+        $encoderFactory = $this->container->get('security.encoder_factory');
         $password = 'test';
 
-        $userManager = $this->container->get('fos_user.user_manager');
-        $encoder_factory = $this->container->get('security.encoder_factory');
+        $encoder = $encoderFactory->getEncoder($user);
+        return $encoder->encodePassword($password, $user->getSalt());
+    }
 
-        /**
-         * @var $userAdmin User
-         */
-        $userAdmin = $userManager->createUser();
-        $encoder = $encoder_factory->getEncoder($userAdmin);
-        $encodedPass = $encoder->encodePassword($password, $userAdmin->getSalt());
+    /**
+     * @return array
+     */
+    protected function getData()
+    {
+        $data = [
+            [
+                'userName'=> 'admin',
+                'email'=>'test@test.test',
+                'role'=>User::ROLE_ADMIN,
+                'referenceKey'=>'admin-user'
+            ],
+            [
+                'userName'=> 'manager',
+                'email'=>'manager@test.test',
+                'role'=>User::ROLE_MANAGER,
+                'referenceKey'=>'user.manager'
+            ],
+            [
+                'userName'=> 'operator',
+                'email'=>'operator@test.test',
+                'role'=>User::ROLE_OPERATOR,
+                'referenceKey'=>'user.operator'
+            ]
+        ];
 
-        $userAdmin->setUsername('admin');
-        $userAdmin->setEmail('test@test.test');
-        $userAdmin->addRole('ROLE_ADMIN');
-        $userAdmin->setPassword($encodedPass);
-        $userAdmin->setEnabled(1);
-
-        $userManager->updateUser($userAdmin);
-
-        $this->addReference('admin-user', $userAdmin);
+        return $data;
     }
 }

@@ -19,7 +19,7 @@ class DefaultControllerTest extends WebTestCase
          */
         $project = $this->getReference('project.first');
 
-        $crawler = $client->request('GET', '/project/'.$project->getId());
+        $crawler = $client->request('GET', '/project/'.$project->getCode());
         self::assertContains($project->getLabel(), $crawler->html());
 
         $crawler = $client->request('GET', '/project/testtest');
@@ -76,14 +76,14 @@ class DefaultControllerTest extends WebTestCase
          * @var $project Project
          */
         $project = $this->getReference('project.first');
-
-        $crawler = $client->request('GET', '/project/'.$project->getId().'/edit');
+        $crawler = $client->request('GET', '/project/'.$project->getCode().'/edit');
 
         $form = $crawler->selectButton('Update')->form();
         $form['tracker_projectBundle_project[label]'] = 'label2222';
+        $client->followRedirects();
         $client->submit($form);
 
-        $crawler = $client->followRedirect();
+        $crawler  = $client->getCrawler();
 
         self::assertContains('label2222', $crawler->html());
     }

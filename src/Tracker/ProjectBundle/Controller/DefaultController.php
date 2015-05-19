@@ -21,7 +21,6 @@ use Tracker\ProjectBundle\Form\ProjectType;
  */
 class DefaultController extends Controller
 {
-
     /**
      * Lists all Project entities.
      *
@@ -68,7 +67,7 @@ class DefaultController extends Controller
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('project_show', array('project' => $entity->getId())));
+            return $this->redirect($this->generateUrl('project_show', array('project' => $entity->getCode())));
         }
 
         return array(
@@ -124,7 +123,7 @@ class DefaultController extends Controller
      * @return array
      *
      * @Route("/{project}", name="project_show")
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "find"})
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
      */
@@ -139,8 +138,8 @@ class DefaultController extends Controller
         $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByProject($project);
 
         return array(
-            'entity'      => $project,
-            'activity'      => $activity
+            'entity' => $project,
+            'activity' => $activity
         );
     }
 
@@ -150,7 +149,7 @@ class DefaultController extends Controller
      * @return array
      *
      * @Route("/{project}/edit", name="project_edit")
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "find"})
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
      */
@@ -176,7 +175,7 @@ class DefaultController extends Controller
     private function createEditForm(Project $entity)
     {
         $form = $this->createForm(new ProjectType(), $entity, array(
-            'action' => $this->generateUrl('project_update', array('project' => $entity->getId())),
+            'action' => $this->generateUrl('project_update', array('project' => $entity->getCode())),
             'method' => 'PUT'
         ));
 
@@ -192,7 +191,7 @@ class DefaultController extends Controller
      * @return array
      *
      * @Route("/{project}", name="project_update")
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "find"})
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method("PUT")
      * @Template("TrackerProjectBundle:Default:edit.html.twig")
      */
@@ -210,7 +209,7 @@ class DefaultController extends Controller
         if ($editForm->isValid()) {
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('project_show', array('project' => $project->getId())));
+            return $this->redirect($this->generateUrl('project_show', array('project' => $project->getCode())));
         }
 
         return array(

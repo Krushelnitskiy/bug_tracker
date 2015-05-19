@@ -14,7 +14,7 @@ use Tracker\UserBundle\Entity\User;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="home_page")
      * @Template()
      */
     public function indexAction()

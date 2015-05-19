@@ -70,7 +70,7 @@ class CommentController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('issue' => $comment->getIssue()->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $comment->getIssue()->getCode())));
         }
 
         return array(
