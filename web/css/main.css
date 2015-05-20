@@ -59,3 +59,7 @@ nav .auth img{
     padding-left: 30px;
     margin-top: 5px;
 }
+
+.grid-user .status {
+    text-align: center;
+}

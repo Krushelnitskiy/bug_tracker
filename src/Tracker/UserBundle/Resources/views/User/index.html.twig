@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block title %}
-    {{ "user.page.list"|trans }}
+    {{ "user.page.list.title"|trans }}
 {% endblock title %}
 
 
@@ -15,7 +15,7 @@
     </p>
 
 
-    <table class="records_list table table-bordered">
+    <table class="records_list table table-bordered grid-user">
         <thead>
             <tr>
                 <th>{{ "user.grid.id"|trans }}</th>
@@ -24,12 +24,22 @@
                 <th>{{ "user.grid.email"|trans }}</th>
                 <th>{{ "user.grid.role"|trans }}</th>
                 <th>{{ "user.grid.lastLogin"|trans }}</th>
-                <th>{{ "user.grid.enabled"|trans }}</th>
+                <th>{{ "user.grid.status"|trans }}</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             {% set pathShowUser = path('user_show', { 'user': entity.id }) %}
+
+            {% if (entity.enabled) %}
+                {% set statusClass = 'success' %}
+                {% set statusTitle = 'Activated' %}
+                {% set statusValue = '✔' %}
+            {% else %}
+                {% set statusClass = 'danger' %}
+                {% set statusTitle = 'Disabled' %}
+                {% set statusValue = '' %}
+            {% endif %}
 
             <tr>
                 <td><a href="{{ pathShowUser }}">{{ entity.id }}</a></td>
@@ -41,10 +51,10 @@
                     {% endif %}
                 </td>
                 <td><a href="{{ pathShowUser }}">{{ entity.username }}</a></td>
-                <td><a href="{{ pathShowUser }}">{{ entity.email }}</a></td>
-                <td><a href="{{ pathShowUser }}">{{ entity.roles[0] }}</a></td>
-                <td><a href="{{ pathShowUser }}">{{ entity.lastLogin|date('d.m.Y H:i:s') }}</a></td>
-                <td><a href="{{ pathShowUser }}">{{ entity.enabled }}</a></td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.roles[0]|trans }}</td>
+                <td>{{ entity.lastLogin|date('d.m.Y H:i:s') }}</td>
+                <td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
             </tr>
         {% endfor %}
         </tbody>

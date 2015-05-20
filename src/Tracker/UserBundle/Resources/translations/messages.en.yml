@@ -23,7 +23,8 @@ user:
     email: "Email"
     lastLogin: "Last login"
     enabled: "Enable"
-
+    role: "Role"
+    status: "Status"
 
 security:
   login:
@@ -44,3 +45,8 @@ role:
   admin: Administrator
   manager: Manager
   operator: Operator
+
+ROLE_ADMIN: Administrator
+ROLE_MANAGER: Manager
+ROLE_OPERATOR: Operator
+ROLE_USER: User
