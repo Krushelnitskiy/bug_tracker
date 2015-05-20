@@ -96,7 +96,8 @@ class ResettingController extends BaseController
         $user = $userManager->findUserByConfirmationToken($token);
 
         if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with "confirmation token" does not exist for value "%s"', $token));
+            $message = sprintf('The user with "confirmation token" does not exist for value "%s"', $token);
+            throw new NotFoundHttpException($message);
         }
 
         $event = new GetResponseUserEvent($user, $request);
@@ -122,7 +123,10 @@ class ResettingController extends BaseController
                 $response = new RedirectResponse($url);
             }
 
-            $dispatcher->dispatch(FOSUserEvents::RESETTING_RESET_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+            $dispatcher->dispatch(
+                FOSUserEvents::RESETTING_RESET_COMPLETED,
+                new FilterUserResponseEvent($user, $request, $response)
+            );
 
             return $response;
         }
