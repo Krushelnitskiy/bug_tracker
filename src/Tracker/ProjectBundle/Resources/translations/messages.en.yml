@@ -35,3 +35,5 @@ project:
   action:
     edit: "Edit"
     create: "Create a new project"
+  error:
+    invalidCodeValue: "Code can contain symbols a-zA-Z0-9-"

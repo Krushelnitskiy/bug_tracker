@@ -11,6 +11,9 @@ namespace Tracker\ProjectBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Tracker\UserBundle\Entity\User;
 
 /**
@@ -18,6 +21,7 @@ use Tracker\UserBundle\Entity\User;
  * @package Tracker\ProjectBundle\Entity
  * @ORM\Entity(repositoryClass="Tracker\ProjectBundle\Entity\ProjectRepository")
  * @ORM\Table(name="project")
+ * @UniqueEntity("code")
  */
 class Project
 {
@@ -39,7 +43,11 @@ class Project
     protected $summary;
 
     /**
-     *
+     * @Assert\Regex(
+     *      pattern="/^[\w\-]+$/",
+     *      match = true,
+     *      message="project.error.invalidCodeValue"
+     * )
      * @ORM\Column(type="string", length=100, unique=true)
      */
     protected $code;

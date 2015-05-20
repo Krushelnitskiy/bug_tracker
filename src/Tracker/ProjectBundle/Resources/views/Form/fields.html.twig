@@ -6,6 +6,7 @@
     {% else %}
         <div class="col-sm-6">
             {{- block('form_widget_simple') -}}
+            {{- form_errors(form) -}}
         </div>
     {% endif %}
 {%- endblock form_widget -%}
@@ -13,10 +14,20 @@
 {%- block form_row -%}
     <div class="form-group">
         {{- form_label(form) -}}
-        {{- form_errors(form) -}}
         {{- form_widget(form) -}}
     </div>
 {%- endblock form_row -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <ul class="error">
+            {%- for error in errors -%}
+                <li>{{ error.message|trans }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
 
 {%- block textarea_widget -%}
     <div class="col-sm-6">

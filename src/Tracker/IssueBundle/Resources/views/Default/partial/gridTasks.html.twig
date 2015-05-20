@@ -2,9 +2,9 @@
     <thead>
     <tr>
         <th>  {{ "issue.grid.code"|trans }}</th>
-        <th>  {{ "issue.grid.type"|trans }}</th>
         <th>  {{ "issue.grid.summary"|trans }}</th>
         <th>  {{ "issue.grid.description"|trans }}</th>
+        <th>  {{ "issue.grid.type"|trans }}</th>
         <th>  {{ "issue.grid.created"|trans }}</th>
         <th>  {{ "issue.grid.updated"|trans }}</th>
         <th>  {{ "issue.grid.project"|trans }}</th>
@@ -17,9 +17,9 @@
             {% set pathProjectView = path('project_show', { 'project': entity.project.code }) %}
             <tr>
                 <td><a href="{{ pathIssueView }}">{{ entity.code }}</a></td>
-                <td> {{ entity.type.value }}</td>
                 <td><a href="{{ pathIssueView }}">{{ entity.summary }}</a></td>
                 <td>{{ entity.description }}</td>
+                <td> {{ entity.type.value }}</td>
                 <td>{% if entity.created %}{{ entity.created|date('d.m.Y H:i:s') }}{% endif %}</td>
                 <td>{% if entity.updated %}{{ entity.updated|date('d.m.Y H:i:s') }}{% endif %}</td>
                 <td><a href="{{ pathProjectView }}">{{ entity.project.label }}</a></td>

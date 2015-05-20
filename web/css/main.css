@@ -53,3 +53,9 @@ nav .menu {
 nav .auth img{
     border-radius: 24px;
 }
+
+.form-group .error {
+    color:#a94442;
+    padding-left: 30px;
+    margin-top: 5px;
+}

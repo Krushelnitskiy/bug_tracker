@@ -18,9 +18,10 @@
     <table class="records_list table table-bordered">
         <thead>
             <tr>
+                <th>{{ 'project.grid.code'|trans }}</th>
                 <th>{{ 'project.grid.label'|trans }}</th>
                 <th>{{ 'project.grid.summary'|trans }}</th>
-                <th>{{ 'project.grid.code'|trans }}</th>
+
             </tr>
         </thead>
         <tbody>
@@ -28,9 +29,9 @@
             {% set pathProject = path('project_show', { 'project': entity.code }) %}
             {% if is_granted ('view', entity) %}
                 <tr>
-                    <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
-                    <td><a href="{{ pathProject }}">{{ entity.summary }}</a></td>
                     <td><a href="{{ pathProject }}">{{ entity.code }}</a></td>
+                    <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
+                    <td>{{ entity.summary }}</td>
                 </tr>
             {% endif %}
         {% endfor %}

@@ -51,3 +51,5 @@ issue:
       author: "Author"
       action: "Action"
   parent: "Parent Issue:"
+  error:
+    invalidCodeValue: "Code can contain symbols a-zA-Z0-9-"
