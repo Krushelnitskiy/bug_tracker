@@ -31,8 +31,14 @@ class RegistrationFormType extends AbstractType
             'label' => 'form.password_confirmation'
         ));
 
+        $attributeFullName = array_merge($attributeDefault, array(
+            'label' => 'profile.show.fullName',
+            'translation_domain' => 'TrackerUserBundle',
+        ));
+
         $builder
             ->add('email', 'email', $attributeEmail)
+            ->add('fullName', null, $attributeFullName)
             ->add('username', null, $attributeUserName)
             ->add('file', null, $attributeDefault)
             ->add('plainPassword', 'repeated', array(
@@ -52,6 +58,6 @@ class RegistrationFormType extends AbstractType
 
     public function getName()
     {
-        return 'acme_user_registration';
+        return 'tracker_user_registration';
     }
 }

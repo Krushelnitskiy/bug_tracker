@@ -13,12 +13,12 @@ nav a:hover {
     text-decoration: none;
 }
 
-nav .logo{
+nav .logo {
     margin-right: 15px;
 
 }
 
-nav .logo a{
+nav .logo a {
     font-size: 40px;
 }
 
@@ -32,12 +32,12 @@ nav .menu {
     font-size: 18px;
 }
 
-.block-with-title{
+.block-with-title {
     border: 1px solid #3B73AF;
     margin: 20px;
 }
 
-.block-with-title .footer{
+.block-with-title .footer {
     padding: 0 10px 10px;
 }
 
@@ -49,17 +49,24 @@ nav .menu {
     font-size: 16px;
 }
 
-
-nav .auth img{
+nav .auth img {
     border-radius: 24px;
 }
 
 .form-group .error {
-    color:#a94442;
+    color: #a94442;
     padding-left: 30px;
     margin-top: 5px;
 }
 
 .grid-user .status {
     text-align: center;
+}
+
+.fos_user_user_show img {
+    margin-bottom: 20px;
+}
+
+.user-page-image {
+    margin-bottom: 20px;
 }

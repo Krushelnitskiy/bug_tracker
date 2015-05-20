@@ -17,15 +17,16 @@
 
     <table class="records_list table table-bordered grid-user">
         <thead>
-            <tr>
-                <th>{{ "user.grid.id"|trans }}</th>
-                <th></th>
-                <th>{{ "user.grid.username"|trans }}</th>
-                <th>{{ "user.grid.email"|trans }}</th>
-                <th>{{ "user.grid.role"|trans }}</th>
-                <th>{{ "user.grid.lastLogin"|trans }}</th>
-                <th>{{ "user.grid.status"|trans }}</th>
-            </tr>
+        <tr>
+            <th>{{ "user.grid.id"|trans }}</th>
+            <th></th>
+            <th>{{ "user.grid.username"|trans }}</th>
+            <th>{{ "user.grid.fullName"|trans }}</th>
+            <th>{{ "user.grid.email"|trans }}</th>
+            <th>{{ "user.grid.role"|trans }}</th>
+            <th>{{ "user.grid.lastLogin"|trans }}</th>
+            <th>{{ "user.grid.status"|trans }}</th>
+        </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
@@ -46,11 +47,12 @@
                 <td>
                     {% if entity.getWebPath() %}
                         <a href="{{ pathShowUser }}">
-                            <img src="{{ entity.getWebPath() }}"  width="64"/>
+                            <img src="{{ entity.getWebPath() }}" width="64"/>
                         </a>
                     {% endif %}
                 </td>
                 <td><a href="{{ pathShowUser }}">{{ entity.username }}</a></td>
+                <td>{{ entity.fullName }}</td>
                 <td>{{ entity.email }}</td>
                 <td>{{ entity.roles[0]|trans }}</td>
                 <td>{{ entity.lastLogin|date('d.m.Y H:i:s') }}</td>

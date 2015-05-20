@@ -42,6 +42,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
             $user = $managerUsers->createUser();
             $user->setUsername($item['userName']);
             $user->setEmail($item['email']);
+            $user->setFullName($item['fullName']);
             $user->addRole($item['role']);
             $user->setPassword($this->generatePassword($user));
             $user->setEnabled(1);
@@ -74,18 +75,21 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
                 'userName'=> 'admin',
                 'email'=>'test@test.test',
                 'role'=>User::ROLE_ADMIN,
+                'fullName'=>'First name Second name',
                 'referenceKey'=>'admin-user'
             ],
             [
                 'userName'=> 'manager',
                 'email'=>'manager@test.test',
                 'role'=>User::ROLE_MANAGER,
+                'fullName'=>'First name Second name',
                 'referenceKey'=>'user.manager'
             ],
             [
                 'userName'=> 'operator',
                 'email'=>'operator@test.test',
                 'role'=>User::ROLE_OPERATOR,
+                'fullName'=>'First name Second name',
                 'referenceKey'=>'user.operator'
             ]
         ];

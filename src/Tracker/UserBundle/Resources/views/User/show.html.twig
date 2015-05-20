@@ -19,6 +19,12 @@
         {% endif %}
     </p>
 
+    {% if entity.getWebPath() %}
+        <div class="user-page-image">
+            <img src="{{ entity.getWebPath() }}" width="240"/>
+        </div>
+    {% endif %}
+
     <table class="record_properties table">
         <tbody>
             <tr>
@@ -29,6 +35,11 @@
             <tr>
                 <th>{{ "user.grid.username"|trans }}</th>
                 <td>{{ entity.username }}</td>
+            </tr>
+
+            <tr>
+                <th>{{ "user.grid.fullName"|trans }}</th>
+                <td>{{ entity.fullName }}</td>
             </tr>
 
             <tr>

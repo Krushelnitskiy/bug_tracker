@@ -81,4 +81,7 @@ fos_user:
     user_class: Tracker\UserBundle\Entity\User
     registration:
       form:
-        type: acme_user_registration
+        type: tracker_user_registration
+    profile:
+      form:
+        type: tracker_user_profile

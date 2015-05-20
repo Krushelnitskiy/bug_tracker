@@ -2,7 +2,7 @@ services:
     acme_user.registration.form.type:
         class: Tracker\UserBundle\Form\RegistrationFormType
         tags:
-            - { name: form.type, alias: acme_user_registration }
+            - { name: form.type, alias: tracker_user_registration }
 
     tracker.user.security.voter:
         class:      Tracker\UserBundle\Security\Authorization\Voter\UserVoter
@@ -16,3 +16,8 @@ services:
             - @translator
         tags:
             - { name: form.type, alias: tracker_userBundle_user }
+
+    tracker.profile.form.type:
+        class: Tracker\UserBundle\Form\ProfileFormType
+        tags:
+            - { name: form.type, alias: tracker_user_profile }

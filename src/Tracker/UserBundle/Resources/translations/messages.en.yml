@@ -25,6 +25,7 @@ user:
     enabled: "Enable"
     role: "Role"
     status: "Status"
+    fullName: "Full Name"
 
 security:
   login:
@@ -50,3 +51,10 @@ ROLE_ADMIN: Administrator
 ROLE_MANAGER: Manager
 ROLE_OPERATOR: Operator
 ROLE_USER: User
+
+
+profile:
+  show:
+    email: "Email"
+    fullname: "Full Name"
+    username: "Username"

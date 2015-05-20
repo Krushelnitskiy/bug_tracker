@@ -34,6 +34,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $fullName;
+
+    /**
      * @ORM\ManyToMany(targetEntity="\Tracker\ProjectBundle\Entity\Project", mappedBy="members")
      **/
     protected $project;
@@ -249,4 +254,29 @@ class User extends BaseUser
     {
         $this->project->removeElement($project);
     }
+
+
+    /**
+     * Set fullName
+     *
+     * @param string $fullName
+     * @return User
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    /**
+     * Get fullName
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
 }
