@@ -15,20 +15,22 @@ class ProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $attribute = array(
-            'attr'=>array(
-                'class'=>'form-control'
+            'attr' => array(
+                'class' => 'form-control'
             ),
-            'label_attr'=>array(
-                'class'=>'col-sm-4 control-label'
+            'label_attr' => array(
+                'class' => 'col-sm-4 control-label'
             )
         );
 
         $builder->add('label', null, $attribute)
-            ->add('summary', null, $attribute)
-            ->add('code', null, $attribute)
-            ->add('code', null, $attribute)
-            ->add('members', null, $attribute)
-        ;
+            ->add('summary', null, $attribute);
+
+        if (!$builder->getData()->getid()) {
+            $builder->add('code', null, $attribute);
+        }
+
+        $builder->add('members', null, $attribute);
     }
     
     /**

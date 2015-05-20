@@ -3,6 +3,7 @@
 namespace Tracker\ActivitiesBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Tracker\UserBundle\Entity\User;
 
 /**
  * ActivityRepository
@@ -12,4 +13,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class ActivityRepository extends EntityRepository
 {
+    public function findAvailableForUser(User $user)
+    {
+        $qb = $this->createQueryBuilder('activity');
+
+        $query = $qb
+            ->leftJoin('activity.project', 'p')
+            ->leftJoin('p.members', 'm')
+            ->where('m.id = :user_id')
+            ->setParameter('user_id', $user->getId())
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

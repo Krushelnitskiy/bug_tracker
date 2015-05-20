@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Tracker\ActivitiesBundle\Entity\ActivityRepository;
 use Tracker\IssueBundle\Entity\IssueRepository;
 use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\StatusRepository;
+use Tracker\IssueBundle\Entity\Status;
 
 class DefaultController extends Controller
 {
@@ -33,9 +35,15 @@ class DefaultController extends Controller
              * @var $activityRepository ActivityRepository
              */
             $activityRepository = $em->getRepository('TrackerActivitiesBundle:Activity');
+            /**
+             * @var $statusRepository StatusRepository
+             */
+            $statusRepository = $em->getRepository('TrackerIssueBundle:Status');
+            $status = $statusRepository->findByValue(Status::STATUS_CLOSED);
+
             if ($user instanceof User) {
-                $issues = $issueRepository->findByAssignee($user);
-                $activity = $activityRepository->findByUser($user);
+                $issues = $issueRepository->findAvailableForUser($user, $status);
+                $activity = $activityRepository->findAvailableForUser($user);
             }
 
             return array(

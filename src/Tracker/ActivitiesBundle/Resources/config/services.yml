@@ -5,22 +5,16 @@ services:
           - @service_container
       tags:
       - { name: doctrine.event_listener, event: preUpdate }
-#     - { name: doctrine.event_listener, event: prePersist }
+      - { name: doctrine.event_listener, event: prePersist }
       - { name: doctrine.event_listener, event: postPersist }
       - { name: doctrine.event_listener, event: postUpdate }
    tracker.comment.lifecycle.event_listener:
       class: Tracker\ActivitiesBundle\EventListener\CommentEventListener
       tags:
-#      - { name: doctrine.event_listener, event: preUpdate }
-#      - { name: doctrine.event_listener, event: prePersist }
       - { name: doctrine.event_listener, event: postPersist }
-#      - { name: doctrine.event_listener, event: postUpdate }
    tracker.activity.lifecycle.event_listener:
       class: Tracker\ActivitiesBundle\EventListener\ActivityEventListener
       arguments:
             - @service_container
       tags:
-#      - { name: doctrine.event_listener, event: preUpdate }
-#      - { name: doctrine.event_listener, event: prePersist }
       - { name: doctrine.event_listener, event: postPersist }
-#      - { name: doctrine.event_listener, event: postUpdate }

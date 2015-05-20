@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Status
  * @package Tracker\IssueBundle\Entity
  * @ORM\Table(name="issue_status")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Tracker\IssueBundle\Entity\StatusRepository")
  */
 
 class Status
