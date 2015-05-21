@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Tracker\ProjectBundle\Entity\Project;
+use Tracker\ProjectBundle\Entity\ProjectRepository;
 use Tracker\ProjectBundle\Form\ProjectType;
 
 /**
@@ -30,12 +31,14 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('view', new Project())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $entityManager = $this->getDoctrine()->getManager();
-        $entities = $entityManager->getRepository('TrackerProjectBundle:Project')->findAll();
+        $user = $this->getUser();
+
+        /**
+         * @var $projectRepository ProjectRepository
+         */
+        $projectRepository = $entityManager->getRepository('TrackerProjectBundle:Project');
+        $entities = $projectRepository->findByCollaborator($user);
 
         return array (
             'entities' => $entities,

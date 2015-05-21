@@ -4,8 +4,10 @@ namespace Tracker\IssueBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -20,6 +22,7 @@ use Tracker\IssueBundle\Entity\Issue;
 use Tracker\IssueBundle\Entity\Status;
 use Tracker\IssueBundle\Security\Authorization\Voter\IssueVoter;
 use Tracker\UserBundle\Entity\User;
+use Tracker\ProjectBundle\Entity\Project;
 
 /**
  * Issue controller.
@@ -37,17 +40,52 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('view', new Issue())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('TrackerIssueBundle:Issue')->findAll();
+        $user = $this->getUser();
+        $entities = $em->getRepository('TrackerIssueBundle:Issue')->findByCollaborator($user);
 
         return array(
             'entities' => $entities,
             'emptyEntity' => new Issue()
         );
+    }
+
+    /**
+     * Lists all Issue entities.
+     *
+     * @Route("/form", name="issue_form_data")
+     * @Method("POST")
+     */
+    public function formAction(Request $request)
+    {
+        $projectId = $request->get('projectId');
+
+        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        /**
+         * @var $project Project
+         */
+        $project = $em->getRepository('TrackerProjectBundle:Project')->find($projectId);
+        $members = [];
+
+        if (false !== $this->get('security.authorization_checker')->isGranted('view', $project)) {
+            /**
+             * @var $member User
+             */
+            foreach ($project->getMembers() as $member) {
+                $members[] = [
+                    'fullName' => $member->getFullName(),
+                    'id' => $member->getId()
+                ];
+            }
+        }
+
+        return new JsonResponse(array(
+            'members'   => $members
+        ));
     }
 
     /**
@@ -124,7 +162,7 @@ class DefaultController extends Controller
         /**
          * @var $user User
          */
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
         $projects = array();

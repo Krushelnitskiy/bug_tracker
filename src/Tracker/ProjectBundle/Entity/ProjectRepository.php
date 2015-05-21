@@ -4,6 +4,8 @@ namespace Tracker\ProjectBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+use Tracker\UserBundle\Entity\User;
+
 /**
  * ProjectRepository
  *
@@ -12,4 +14,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProjectRepository extends EntityRepository
 {
+    public function findByCollaborator(User $user)
+    {
+        $query = $this->createQueryBuilder('project');
+
+        if (!$user->hasRole(User::ROLE_ADMIN) && !$user->hasRole(User::ROLE_MANAGER)) {
+            $query->leftJoin('project.members', 'members')
+                ->where('members.id = :member_id')
+                ->setParameter('member_id', $user->getId());
+        }
+
+        return $query->getQuery()->getResult();
+    }
 }

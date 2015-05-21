@@ -27,13 +27,12 @@
         <tbody>
         {% for entity in entities %}
             {% set pathProject = path('project_show', { 'project': entity.code }) %}
-            {% if is_granted ('view', entity) %}
-                <tr>
-                    <td><a href="{{ pathProject }}">{{ entity.code }}</a></td>
-                    <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
-                    <td>{{ entity.summary }}</td>
-                </tr>
-            {% endif %}
+
+            <tr>
+                <td><a href="{{ pathProject }}">{{ entity.code }}</a></td>
+                <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
+                <td>{{ entity.summary }}</td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>

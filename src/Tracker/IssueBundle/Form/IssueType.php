@@ -33,28 +33,31 @@ class IssueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $projects = $options['projects'];
+        $project = isset($options['selectedProject']) ? $options['selectedProject'] : null ;
 
         /**
          * @var $user User
          */
         $user = $this->securityContext->getToken()->getUser();
 
-        if ($builder->getData()->getId() == null) {
-            if (count($projects) === 0) {
-                $project = $user->getProject()->first();
+        if (!$project) {
+            if ($builder->getData()->getId() == null) {
+                if (count($projects) === 0) {
+                    $project = $user->getProject()->first();
+                } else {
+                    $project = $projects[0];
+                }
             } else {
-                $project = $projects[0];
+                $project = $builder->getData()->getProject();
             }
-        } else {
-            $project = $builder->getData()->getProject();
         }
 
         $attribute = $this->getDefaultAttribute();
         $attributeProject = $this->getAttributeProject($project, $user);
         $attributePriority = $this->getAttributePriority();
         $attributeStatus = $this->getAttributeStatus();
-        $attributeReporter = $this->getAttributeReporter($builder, $user);
-        $attributeAssign = $this->getAttributeAssign($builder, $user);
+        $attributeReporter = $this->getAttributeReporter($builder, $project, $user);
+        $attributeAssign = $this->getAttributeAssign($builder, $project, $user);
         $attributeType = $this->getAttributeType();
         $attributeSubmit = $this->getAttributeSubmit($builder);
 
@@ -76,13 +79,12 @@ class IssueType extends AbstractType
             ->add('reporter', null, $attributeReporter)
             ->add('assignee', null, $attributeAssign)
             ->add('save', 'submit', $attributeSubmit);
+
+
+
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @return array
-     */
-    protected function getAttributeSubmit(FormBuilderInterface $builder)
+    protected function getAttributeSubmit($builder)
     {
         if (!$builder->getData()->getid()) {
             $attributes = array('label' => 'issue.form.create');
@@ -120,36 +122,38 @@ class IssueType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
+     * @param Project $project
      * @param User $user
-     *
      * @return array
      */
-    protected function getAttributeReporter(FormBuilderInterface $builder, User $user)
+    protected function getAttributeReporter(FormBuilderInterface $builder, Project $project, User $user)
     {
         $attribute = $this->getDefaultAttribute();
         $reporter = $builder->getData()->getReporter();
         return array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
-            'data' => $reporter ? $reporter : $user
+            'data' => $reporter ? $reporter : $user,
+            'choices' => $project->getMembers()
         ));
     }
 
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param User $user
-     *
+     * @param Project $project
      * @return array
      */
-    protected function getAttributeAssign(FormBuilderInterface $builder, User $user)
+    protected function getAttributeAssign(FormBuilderInterface $builder, Project $project, User $user)
     {
         $attribute = $this->getDefaultAttribute();
-        $assignee = $builder->getData()->getAssignee();
+
+        $assign = $builder->getData()->getAssignee();
+
         return array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
-            'data' => $assignee ? $assignee : $user
+            'data' => $assign ? $assign : $user,
+            'choices' => $project->getMembers()
         ));
     }
 
@@ -199,7 +203,8 @@ class IssueType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Tracker\IssueBundle\Entity\Issue',
-            'projects' => array()
+            'projects' => array(),
+            'selectedProject' => null
         ));
     }
 
