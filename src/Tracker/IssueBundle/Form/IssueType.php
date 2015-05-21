@@ -53,8 +53,8 @@ class IssueType extends AbstractType
         $attributeProject = $this->getAttributeProject($project, $user);
         $attributePriority = $this->getAttributePriority();
         $attributeStatus = $this->getAttributeStatus();
-        $attributeReporter = $this->getAttributeReporter($project);
-        $attributeAssign = $this->getAttributeAssign($project);
+        $attributeReporter = $this->getAttributeReporter($builder, $user);
+        $attributeAssign = $this->getAttributeAssign($builder, $user);
         $attributeType = $this->getAttributeType();
         $attributeSubmit = $this->getAttributeSubmit($builder);
 
@@ -119,33 +119,37 @@ class IssueType extends AbstractType
     }
 
     /**
-     * @param Project $project
+     * @param FormBuilderInterface $builder
+     * @param User $user
+     *
      * @return array
      */
-    protected function getAttributeReporter(Project $project)
+    protected function getAttributeReporter(FormBuilderInterface $builder, User $user)
     {
         $attribute = $this->getDefaultAttribute();
-
+        $reporter = $builder->getData()->getReporter();
         return array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
-            'data' => $project->getMembers()->first()
+            'data' => $reporter ? $reporter : $user
         ));
     }
 
 
     /**
-     * @param Project $project
+     * @param FormBuilderInterface $builder
+     * @param User $user
+     *
      * @return array
      */
-    protected function getAttributeAssign(Project $project)
+    protected function getAttributeAssign(FormBuilderInterface $builder, User $user)
     {
         $attribute = $this->getDefaultAttribute();
-
+        $assignee = $builder->getData()->getAssignee();
         return array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
-            'data' => $project->getMembers()->first()
+            'data' => $assignee ? $assignee : $user
         ));
     }
 

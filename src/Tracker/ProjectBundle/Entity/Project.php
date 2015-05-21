@@ -129,7 +129,7 @@ class Project
      */
     public function setCode($code)
     {
-        $this->code = $code;
+        $this->code = strtoupper($code);
 
         return $this;
     }
