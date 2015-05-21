@@ -50,8 +50,8 @@ class DefaultController extends Controller
                 'issues' => $issues,
                 'activities'=>$activity
             );
-        } else {
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
+
+        return $this->redirect($this->generateUrl('fos_user_security_login'));
     }
 }

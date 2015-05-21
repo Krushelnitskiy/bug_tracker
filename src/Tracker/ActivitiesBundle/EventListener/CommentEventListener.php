@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 24.02.15
- * Time: 17:25
- */
 
 namespace Tracker\ActivitiesBundle\EventListener;
 

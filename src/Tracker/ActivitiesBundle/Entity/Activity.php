@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 20.02.15
- * Time: 12:11
- */
 
 namespace Tracker\ActivitiesBundle\Entity;
 
@@ -12,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Tracker\UserBundle\Entity\User;
 use Tracker\IssueBundle\Entity\Issue;
-use \Tracker\ProjectBundle\Entity\Project;
-use \Tracker\ActivitiesBundle\Entity;
+use Tracker\ProjectBundle\Entity\Project;
+use Tracker\ActivitiesBundle\Entity;
 
 /**
  * Class Issue
@@ -90,7 +84,7 @@ class Activity
     /**
      * Set user
      *
-     * @param \Tracker\UserBundle\Entity\User $user
+     * @param User $user
      * @return Activity
      */
     public function setUser(User $user = null)
@@ -103,7 +97,7 @@ class Activity
     /**
      * Get user
      *
-     * @return \Tracker\UserBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -113,7 +107,7 @@ class Activity
     /**
      * Set issue
      *
-     * @param \Tracker\IssueBundle\Entity\Issue $issue
+     * @param Issue $issue
      * @return Activity
      */
     public function setIssue(Issue $issue = null)
@@ -126,7 +120,7 @@ class Activity
     /**
      * Get issue
      *
-     * @return \Tracker\IssueBundle\Entity\Issue
+     * @return Issue
      */
     public function getIssue()
     {
@@ -136,7 +130,7 @@ class Activity
     /**
      * Set project
      *
-     * @param \Tracker\ProjectBundle\Entity\Project $project
+     * @param Project $project
      * @return Activity
      */
     public function setProject(Project $project = null)
@@ -149,7 +143,7 @@ class Activity
     /**
      * Get project
      *
-     * @return \Tracker\ProjectBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {

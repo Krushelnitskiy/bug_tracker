@@ -1,13 +1,13 @@
 layout:
-  menu:
-    projects: "Projects"
-    issues: "Issue"
-    users: "Users"
-  title: "Home page"
-  logged_in_as: "Logged in as"
-  listIssue:
-    title: "List opened/ reopened issue"
-    linkToAll: "All issues >>"
-  listActivities:
-    title: "Activities in projects"
-    linkToAll: "All ativity >>"
+    menu:
+        projects: "Projects"
+        issues: "Issue"
+        users: "Users"
+    title: "Home page"
+    logged_in_as: "Logged in as"
+    listIssue:
+        title: "List opened/ reopened issue"
+        linkToAll: "All issues >>"
+    listActivities:
+        title: "Activities in projects"
+        linkToAll: "All ativity >>"

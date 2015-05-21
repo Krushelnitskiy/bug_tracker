@@ -25,6 +25,7 @@ class IssueEventListener
      * @var ContainerInterface
      */
     private $container;
+
     /**
      * @param ContainerInterface $serviceContainer
      */
@@ -33,7 +34,9 @@ class IssueEventListener
         $this->container = $serviceContainer;
     }
 
-
+    /**
+     * @param LifecycleEventArgs $eventArgs
+     */
     public function prePersist(LifecycleEventArgs $eventArgs)
     {
         $issue = $eventArgs->getEntity();
@@ -76,11 +79,11 @@ class IssueEventListener
         $entityManager = $eventArgs->getEntityManager();
 
         if ($issue instanceof Issue) {
-            if ($this->isChangeReporter($eventArgs)) {
+            if ($this->hasChangedReporter($eventArgs)) {
                 $issue->getCollaborators()->add($issue->getReporter());
             }
 
-            if ($this->isChangeAssignee($eventArgs)) {
+            if ($this->hasChangedAssignee($eventArgs)) {
                 $issue->getCollaborators()->add($issue->getAssignee());
             }
 
@@ -102,10 +105,18 @@ class IssueEventListener
     }
 
     /**
+     * @param LifecycleEventArgs $event
+     */
+    public function postUpdate(LifecycleEventArgs $event)
+    {
+        $event->getEntityManager()->flush();
+    }
+
+    /**
      * @param PreUpdateEventArgs $eventArgs
      * @return bool
      */
-    private function isChangeAssignee(PreUpdateEventArgs $eventArgs)
+    private function hasChangedAssignee(PreUpdateEventArgs $eventArgs)
     {
         $issue = $eventArgs->getEntity();
 
@@ -116,18 +127,10 @@ class IssueEventListener
      * @param PreUpdateEventArgs $eventArgs
      * @return bool
      */
-    private function isChangeReporter(PreUpdateEventArgs $eventArgs)
+    private function hasChangedReporter(PreUpdateEventArgs $eventArgs)
     {
         $issue = $eventArgs->getEntity();
 
         return $eventArgs->hasChangedField('reporter') && !$issue->getCollaborators()->contains($issue->getReporter());
-    }
-
-    /**
-     * @param LifecycleEventArgs $event
-     */
-    public function postUpdate(LifecycleEventArgs $event)
-    {
-        $event->getEntityManager()->flush();
     }
 }

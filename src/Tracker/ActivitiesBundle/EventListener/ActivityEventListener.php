@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 24.02.15
- * Time: 17:25
- */
 
 namespace Tracker\ActivitiesBundle\EventListener;
 
@@ -21,6 +15,7 @@ class ActivityEventListener
      * @var ContainerInterface
      */
     protected $container;
+
     /**
      * @param ContainerInterface $serviceContainer
      */
@@ -39,23 +34,21 @@ class ActivityEventListener
         if ($activity instanceof Activity) {
             $collaborateEmails = $activity->getIssue()->getCollaborators()->map(function (User $collaborate) {
                 return $collaborate->getEmail();
-            })->getValues()
-            ;
+            })->getValues();
 
             $mailer = $this->container->get('mailer');
 
             $message = $mailer->createMessage()
-                ->setSubject('Activity by Issue:'. $activity->getIssue()->getSummary())
+                ->setSubject('Activity by Issue:' . $activity->getIssue()->getSummary())
                 ->setFrom('send@example.com')
                 ->setTo($collaborateEmails)
                 ->setBody(
                     $this->container->get('twig')->render(
                         'TrackerActivitiesBundle:Emails:eventOfIssue.html.twig',
-                        array('activity'=>$activity )
+                        array('activity' => $activity)
                     ),
                     'text/html'
-                )
-            ;
+                );
 
             $mailer->send($message);
         }

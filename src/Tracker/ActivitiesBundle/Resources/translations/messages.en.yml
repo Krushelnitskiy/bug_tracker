@@ -1,10 +1,10 @@
 activity:
-  grid:
-    event: "Event"
-    user: "User"
-    issue: "Issue"
-    project: "Project"
+    grid:
+        event: "Event"
+        user: "User"
+        issue: "Issue"
+        project: "Project"
 event:
-  create_new_issue: "Created new issue"
-  changed_status_to: "Changed status"
-  created_comment: "Created comment"
+    create_new_issue: "Created new issue"
+    changed_status_to: "Changed status"
+    created_comment: "Created comment"
