@@ -21,10 +21,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $securityContext = $this->container->get('security.context');
+        $securityContext = $this->container->get('security.authorization_checker');
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $user = $this->container->get('security.context')->getToken()->getUser();
-            $em = $this->getDoctrine()->getEntityManager();
+            $user = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
             $issues = array();
             $activity = array();
             /**

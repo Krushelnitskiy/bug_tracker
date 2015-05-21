@@ -42,15 +42,15 @@ class DefaultControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
         $crawler = $client->request('GET', '/project/new');
-
+        $code = 'code111';
         $form = $crawler->selectButton('Create')->form();
         $form['tracker_projectBundle_project[label]'] = 'label';
         $form['tracker_projectBundle_project[summary]']='summary';
-        $form['tracker_projectBundle_project[code]']= 'code111';
+        $form['tracker_projectBundle_project[code]']= $code;
 
         $client->submit($form);
         $crawler = $client->followRedirect();
-        self::assertContains('code111', $crawler->html());
+        self::assertContains(strtoupper($code), $crawler->html());
     }
 
     public function testViewList()
