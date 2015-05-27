@@ -57,6 +57,12 @@ class Project
      * @ORM\JoinTable(name="projects_users")
      **/
     protected $members;
+
+    /**
+     * @ORM\Column(type="datetime")
+     **/
+    protected $created;
+
     /**
      * Constructor
      */
@@ -181,4 +187,28 @@ class Project
     {
         return $this->label;
     }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Project
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
 }

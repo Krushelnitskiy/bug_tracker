@@ -4,6 +4,7 @@ activity:
         user: "User"
         issue: "Issue"
         project: "Project"
+        createAt: "Created"
 event:
     create_new_issue: "Created new issue"
     changed_status_to: "Changed status"

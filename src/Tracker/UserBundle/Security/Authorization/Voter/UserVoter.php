@@ -38,7 +38,6 @@ class UserVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $user, array $attributes)
     {
-
         if (!$this->supportsClass(get_class($user))) {
             return self::ACCESS_ABSTAIN;
         }
@@ -54,7 +53,7 @@ class UserVoter implements VoterInterface
         }
 
         // get current logged in user
-        $user = $token->getUser();
+        $currentUser = $token->getUser();
 
         // make sure there is a user object (i.e. that the user is logged in)
         if (!$user instanceof User) {
@@ -63,17 +62,17 @@ class UserVoter implements VoterInterface
 
         switch($attribute) {
             case self::VIEW:
-                if ($this->userCanView($user)) {
+                if ($this->userCanView($currentUser, $user)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
             case self::CREATE:
-                if ($this->userCanCreate($user)) {
+                if ($this->userCanCreate($currentUser)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
             case self::EDIT:
-                if ($this->userCanEdit($user)) {
+                if ($this->userCanEdit($currentUser)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
@@ -82,9 +81,11 @@ class UserVoter implements VoterInterface
         return self::ACCESS_DENIED;
     }
 
-    public function userCanView(User $user)
+    public function userCanView(User $currentUser, User $user)
     {
-        if ($user->hasRole(User::ROLE_ADMIN)) {
+        if ($currentUser->hasRole(User::ROLE_ADMIN) ||
+            $currentUser->getId() == $user->getId() ||
+            $currentUser->hasRole(User::ROLE_MANAGER)) {
             return true;
         }
 

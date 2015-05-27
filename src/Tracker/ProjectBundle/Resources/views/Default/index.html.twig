@@ -21,7 +21,7 @@
                 <th>{{ 'project.grid.code'|trans }}</th>
                 <th>{{ 'project.grid.label'|trans }}</th>
                 <th>{{ 'project.grid.summary'|trans }}</th>
-
+                <th>{{ 'project.grid.created'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +32,7 @@
                 <td><a href="{{ pathProject }}">{{ entity.code }}</a></td>
                 <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
                 <td>{{ entity.summary }}</td>
+                <td>{{ entity.created|date('d.m.Y H:i:s') }}</td>
             </tr>
         {% endfor %}
         </tbody>

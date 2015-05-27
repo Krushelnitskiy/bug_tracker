@@ -49,6 +49,11 @@ class Activity
     protected $project;
 
     /**
+     * @ORM\Column(type="datetime")
+     **/
+    protected $created;
+
+    /**
      * Get id
      *
      * @return integer
@@ -148,5 +153,28 @@ class Activity
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Issue
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
     }
 }

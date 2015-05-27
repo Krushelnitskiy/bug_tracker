@@ -65,6 +65,7 @@ class IssueEventListener
                 $eventEntity->setProject($issue->getProject());
                 $eventEntity->setUser($issue->getReporter());
                 $eventEntity->setEvent(self::CREATE_NEW_ISSUE);
+                $eventEntity->setCreated(new \DateTime());
                 $entityManager->persist($eventEntity);
                 $entityManager->flush();
         }
@@ -95,6 +96,7 @@ class IssueEventListener
                 $eventEntity->setProject($issue->getProject());
                 $eventEntity->setUser($user);
                 $eventEntity->setEvent(self::CHANGED_STATUS_TO);
+                $eventEntity->setCreated(new \DateTime());
                 $entityManager->persist($eventEntity);
 
                 if (!$issue->getCollaborators()->contains($user)) {

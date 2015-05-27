@@ -28,6 +28,8 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
     {
         /**
          * @var $user User
+         * @var $userOperator User
+         * @var $userManager User
          * @var $project Project
          * @var $priorityTrivial Priority
          * @var $status Status
@@ -35,6 +37,8 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
          * @var $typeSubTask Type
          */
         $user = $this->getReference('admin-user');
+        $userManager = $this->getReference('user.manager');
+        $userOperator = $this->getReference('user.operator');
         $project = $this->getReference('project.first');
         $priorityTrivial = $this->getReference('priority.trivial');
         $status = $this->getReference('status.open');
@@ -52,8 +56,8 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
         $issueStory->setType($typeStory);
         $issueStory->setPriority($priorityTrivial);
         $issueStory->setProject($project);
-        $issueStory->setReporter($user);
-        $issueStory->setAssignee($user);
+        $issueStory->setReporter($userManager);
+        $issueStory->setAssignee($userOperator);
 
         $manager->persist($issueStory);
 
@@ -69,8 +73,8 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
         $issueStorySubTask->setType($typeSubTask);
         $issueStorySubTask->setPriority($priorityTrivial);
         $issueStorySubTask->setProject($project);
-        $issueStorySubTask->setReporter($user);
-        $issueStorySubTask->setAssignee($user);
+        $issueStorySubTask->setReporter($userManager);
+        $issueStorySubTask->setAssignee($userOperator);
 
         $manager->persist($issueStorySubTask);
 

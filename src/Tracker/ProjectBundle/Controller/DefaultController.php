@@ -2,6 +2,7 @@
 
 namespace Tracker\ProjectBundle\Controller;
 
+use Proxies\__CG__\Tracker\IssueBundle\Entity\Issue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -11,6 +12,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+use Symfony\Component\Validator\Constraints\DateTime;
+
+use Tracker\UserBundle\Entity\User;
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\ProjectBundle\Entity\ProjectRepository;
 use Tracker\ProjectBundle\Form\ProjectType;
@@ -66,6 +70,7 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $entity->setCreated(new \DateTime());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($entity);
             $entityManager->flush();
@@ -145,6 +150,75 @@ class DefaultController extends Controller
             'activity' => $activity
         );
     }
+
+    /**
+     * Finds and displays a Project entity.
+     * @param $project Project
+     * @return array
+     *
+     * @Route("/{project}/issues", name="project_issues")
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
+     * @Method("GET")
+     * @Template()
+     */
+    public function issuesAction($project)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if (false === $this->get('security.authorization_checker')->isGranted('view', $project)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $issues = $em->getRepository('TrackerIssueBundle:Issue')->findByProject($project);
+        return  array(
+            'entity' => $project,
+            'entities' => $issues,
+            'emptyEntity' => new Issue()
+        );
+    }
+
+    /**
+     * Finds and displays a Project entity.
+     * @param $project Project
+     * @return array
+     *
+     * @Route("/{project}/issue/new", name="project_issues")
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
+     * @Method("GET")
+     * @Template()
+     */
+    public function newIssueAction($project)
+    {
+        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $entity = new Issue();
+
+        /**
+         * @var $user User
+         */
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $projects = array();
+        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
+            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
+        }
+
+        $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
+            'action' => $this->generateUrl('issue_create'),
+            'method' => 'POST',
+            'projects' => $projects
+        ));
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView()
+        );
+    }
+
+
 
     /**
      * Displays a form to edit an existing Project entity.

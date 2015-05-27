@@ -19,6 +19,7 @@ project:
       label: 'Label'
       summary: 'Summary'
       actions: ""
+      created: "Created"
   view:
     code: 'Code:'
     label: 'Label:'
@@ -28,6 +29,8 @@ project:
     users:
         username: "User name"
         email: "Email"
+        status: "Status"
+        lastLogin: "Last login"
   editPage:
       submit: "Save"
   validation:

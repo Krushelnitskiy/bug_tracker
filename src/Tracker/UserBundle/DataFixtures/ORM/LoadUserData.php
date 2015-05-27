@@ -11,7 +11,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Tracker\UserBundle\Entity\User;
 
-class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
+class LoadUserData extends AbstractFixture implements
+    FixtureInterface,
+    ContainerAwareInterface
 {
     /**
      * @var ContainerInterface

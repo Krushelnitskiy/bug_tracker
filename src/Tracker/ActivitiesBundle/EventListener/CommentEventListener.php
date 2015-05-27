@@ -27,6 +27,7 @@ class CommentEventListener
             $eventEntity->setProject($issue->getProject());
             $eventEntity->setUser($comment->getAuthor());
             $eventEntity->setEvent(self::CREATED_COMMENT);
+            $eventEntity->setCreated(new \DateTime());
             $entityManager->persist($eventEntity);
             $entityManager->flush();
 

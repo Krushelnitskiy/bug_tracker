@@ -40,7 +40,7 @@ class Comment
     protected $body;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     protected $created;
 

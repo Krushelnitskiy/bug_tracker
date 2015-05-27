@@ -6,11 +6,22 @@
         <th>{{ "user.grid.username"|trans }}</th>
         <th>{{ "user.grid.email"|trans }}</th>
         <th>{{ "user.grid.lastLogin"|trans }}</th>
-        <th>{{ "user.grid.enabled"|trans }}</th>
+        <th>{{ "user.grid.status"|trans }}</th>
     </tr>
     </thead>
     <tbody>
     {% for collaborator in collaborators %}
+
+        {% if (collaborator.enabled) %}
+            {% set statusClass = 'success' %}
+            {% set statusTitle = 'Activated' %}
+            {% set statusValue = '✔' %}
+        {% else %}
+            {% set statusClass = 'danger' %}
+            {% set statusTitle = 'Disabled' %}
+            {% set statusValue = '' %}
+        {% endif %}
+
         <tr>
             <td>{{ entity.id }}</td>
 
@@ -24,8 +35,8 @@
             </td>
             <td>{{ collaborator.username }}</td>
             <td>{{ collaborator.email }}</td>
-            <td>{{ collaborator.lastLogin|date('d.m.Y') }}</td>
-            <td>{{ collaborator.enabled }}</td>
+            <td>{{ collaborator.lastLogin|date('d.m.Y H:i:s') }}</td>
+            <td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
         </tr>
     {% endfor %}
     </tbody>
