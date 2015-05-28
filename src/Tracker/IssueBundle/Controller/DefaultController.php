@@ -2,8 +2,6 @@
 
 namespace Tracker\IssueBundle\Controller;
 
-use Doctrine\ORM\EntityRepository;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -53,8 +51,12 @@ class DefaultController extends Controller
     /**
      * Lists all Issue entities.
      *
+     * @param Request $request
+     *
      * @Route("/form", name="issue_form_data")
      * @Method("POST")
+     *
+     * @return JsonResponse
      */
     public function formAction(Request $request)
     {
@@ -108,7 +110,7 @@ class DefaultController extends Controller
         /**
          * @var $user User
          */
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
         $projects = array();
@@ -165,9 +167,10 @@ class DefaultController extends Controller
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
-        $projects = array();
         if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
             $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
+        } else {
+            $projects = $user->getProject();
         }
 
         $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
@@ -224,10 +227,20 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
+            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
+        } else {
+            $projects = $user->getProject();
+        }
+
+
         $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
                 'action' => $this->generateUrl('issue_update', array('issue' => $issue->getCode())),
-                'method' => 'PUT'
-            ));
+                'method' => 'PUT',
+                'projects' => $projects
+        ));
 
         return array(
             'entity'      => $issue,
@@ -271,7 +284,6 @@ class DefaultController extends Controller
         );
     }
 
-
     /**
      * Edits an existing Issue entity.
      * @param Request $request
@@ -296,7 +308,7 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $entity->setCreated(new \DateTime());
-            $author = $this->get('security.context')->getToken()->getUser();
+            $author = $this->getUser();
             $entity->setAuthor($author);
             $entity->setIssue($issue);
 
@@ -350,7 +362,6 @@ class DefaultController extends Controller
 
         return $form;
     }
-
 
     /**
      * Displays a form to create a new Issue entity.

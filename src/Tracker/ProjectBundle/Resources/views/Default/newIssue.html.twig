@@ -6,7 +6,7 @@
     <h3>{{ "issue.page.create.title"|trans }}</h3>
 
     <p>
-        <a href="{{ path('issue') }}">
+        <a href="{{ path('project_issues', { 'project': project.code }) }}">
             {{ "issue.action.back"|trans }}
         </a>
     </p>

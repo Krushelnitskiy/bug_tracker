@@ -9,7 +9,7 @@
     <h4>{{ "issue.page.list.title"|trans }} </h4>
     <p>
         {% if is_granted('create', emptyEntity) %}
-            <a href="{{ path('issue_new') }}">
+            <a href="{{ path('project_new_issue', {project:entity.code}) }}">
                 {{ "issue.action.create"|trans }}
             </a>
         {% endif %}

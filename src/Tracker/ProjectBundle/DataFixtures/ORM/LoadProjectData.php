@@ -13,7 +13,6 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Symfony\Component\Validator\Constraints\DateTime;
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\UserBundle\Entity\User;
 

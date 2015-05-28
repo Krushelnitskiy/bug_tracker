@@ -39,21 +39,16 @@ class IssueType extends AbstractType
          * @var $user User
          */
         $user = $this->securityContext->getToken()->getUser();
-
         if (!$project) {
             if ($builder->getData()->getId() == null) {
-                if (count($projects) === 0) {
-                    $project = $user->getProject()->first();
-                } else {
                     $project = $projects[0];
-                }
             } else {
                 $project = $builder->getData()->getProject();
             }
         }
 
         $attribute = $this->getDefaultAttribute();
-        $attributeProject = $this->getAttributeProject($project, $user);
+        $attributeProject = $this->getAttributeProject($project, $projects);
         $attributePriority = $this->getAttributePriority();
         $attributeStatus = $this->getAttributeStatus();
         $attributeReporter = $this->getAttributeReporter($builder, $project, $user);
@@ -79,12 +74,9 @@ class IssueType extends AbstractType
             ->add('reporter', null, $attributeReporter)
             ->add('assignee', null, $attributeAssign)
             ->add('save', 'submit', $attributeSubmit);
-
-
-
     }
 
-    protected function getAttributeSubmit($builder)
+    protected function getAttributeSubmit(FormBuilderInterface $builder)
     {
         if (!$builder->getData()->getid()) {
             $attributes = array('label' => 'issue.form.create');
@@ -97,10 +89,10 @@ class IssueType extends AbstractType
 
     /**
      * @param Project $project
-     * @param User $user
+     * @param Project[] $projects
      * @return array
      */
-    protected function getAttributeProject(Project $project, User $user)
+    protected function getAttributeProject(Project $project, $projects)
     {
         $attribute = $this->getDefaultAttribute();
 
@@ -108,15 +100,7 @@ class IssueType extends AbstractType
             'class' => 'TrackerProjectBundle:Project',
             'property' => 'label',
             'data' => $project,
-            'query_builder' => function ($er) use ($user) {
-                $query = $er->createQueryBuilder('p');
-                if (!$user->hasRole(User::ROLE_ADMIN) && !$user->hasRole(User::ROLE_MANAGER)) {
-                    $query = $query->join('p.members', 'pu')
-                        ->where('pu.id = :user')
-                        ->setParameter('user', $user->getId());
-                }
-                return $query;
-            }
+            'choices'=>$projects
         ));
     }
 
@@ -130,33 +114,52 @@ class IssueType extends AbstractType
     {
         $attribute = $this->getDefaultAttribute();
         $reporter = $builder->getData()->getReporter();
+        $selectedUser = $this->getSelectedUser($project, $user, $reporter);
+
         return array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
-            'data' => $reporter ? $reporter : $user,
+            'data' => $selectedUser,
             'choices' => $project->getMembers()
         ));
     }
 
-
     /**
+     * @param FormBuilderInterface $builder
      * @param Project $project
+     * @param User $user
      * @return array
      */
     protected function getAttributeAssign(FormBuilderInterface $builder, Project $project, User $user)
     {
         $attribute = $this->getDefaultAttribute();
-
         $assign = $builder->getData()->getAssignee();
+        $selectedUser = $this->getSelectedUser($project, $user, $assign);
 
         return array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
-            'data' => $assign ? $assign : $user,
+            'data' => $selectedUser,
             'choices' => $project->getMembers()
         ));
     }
 
+    /**
+     * @param Project $project
+     * @param User $authUser
+     * @param User|null $candidateUser
+     * @return User|User
+     */
+    protected function getSelectedUser(Project $project, User $authUser, $candidateUser)
+    {
+        $members = $project->getMembers();
+        $selectedUser = $candidateUser ? $candidateUser : $authUser;
+        if (!$members->contains($selectedUser)) {
+            $selectedUser = $members->first();
+        }
+
+        return $selectedUser;
+    }
 
     /**
      * @return array

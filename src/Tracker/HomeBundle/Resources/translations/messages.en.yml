@@ -2,6 +2,7 @@ layout:
     menu:
         projects: "Projects"
         issues: "Issue"
+        myIssues: "My Issues"
         users: "Users"
     title: "Home page"
     logged_in_as: "Logged in as"

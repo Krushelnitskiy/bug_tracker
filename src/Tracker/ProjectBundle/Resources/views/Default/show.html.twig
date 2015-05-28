@@ -9,18 +9,19 @@
 
     <p>
         <a href="{{ path('project') }}">
-            Back to the list
+            {{ "project.action.back"|trans }}
         </a>
 
         {% if is_granted('edit', entity) %}
             |
             <a href="{{ path('project_edit', { 'project': entity.code }) }}">
-                Edit
+	            {{ "project.action.edit"|trans }}
             </a>
         {% endif %}
 
+	    |
         <a href="{{ path('project_issues', { 'project': entity.code }) }}">
-            {{ "ListIssue"|trans }}
+	        {{ "project.listIssue"|trans }}
         </a>
 
     </p>

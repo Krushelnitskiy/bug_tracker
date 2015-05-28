@@ -39,7 +39,7 @@ class OperatorTest extends WebTestCase
     public function testShowUser()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'operator',
+            'PHP_AUTH_USER' => 'operator.noProjects',
             'PHP_AUTH_PW' => 'test'
         ));
 

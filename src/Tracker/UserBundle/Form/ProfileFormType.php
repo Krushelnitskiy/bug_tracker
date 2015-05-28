@@ -3,14 +3,13 @@ namespace Tracker\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ProfileFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->buildUserForm($builder, $options);
+        $this->buildUserForm($builder);
 
         $builder->add('current_password', 'password', array(
             'label' => 'form.current_password',
@@ -44,9 +43,8 @@ class ProfileFormType extends AbstractType
      * Builds the embedded form representing the user.
      *
      * @param FormBuilderInterface $builder
-     * @param array                $options
      */
-    protected function buildUserForm(FormBuilderInterface $builder, array $options)
+    protected function buildUserForm(FormBuilderInterface $builder)
     {
         $builder
             ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))

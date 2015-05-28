@@ -24,14 +24,18 @@ class LoadProjectData extends AbstractFixture implements FixtureInterface
     {
         /**
          * @var $userOperator User
+         * @var $userManager User
          */
         $userOperator = $this->getReference('user.operator');
+        $userManager = $this->getReference('user.manager');
 
         $project = new Project();
         $project->setCode('11');
         $project->setLabel('First project');
         $project->setSummary('First project with test data');
         $project->addMember($userOperator);
+        $project->addMember($userManager);
+        $project->setCreated(new \DateTime());
         $manager->persist($project);
         $manager->flush();
 

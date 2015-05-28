@@ -70,3 +70,8 @@ nav .auth img {
 .user-page-image {
     margin-bottom: 20px;
 }
+
+table td.status {
+    text-align: center;
+    width: 60px;
+}

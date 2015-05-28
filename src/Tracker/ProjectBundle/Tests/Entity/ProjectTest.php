@@ -31,7 +31,6 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testMembers()
     {
-
         $user = $this->getMockBuilder('Tracker\UserBundle\Entity\User')
                     ->setMethods(array('getId', 'getLabel'))
                     ->getMock();

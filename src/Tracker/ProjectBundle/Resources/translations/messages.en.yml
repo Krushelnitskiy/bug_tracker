@@ -4,6 +4,7 @@ project:
       activity: "Activity"
 
   project: 'Project'
+  listIssue: "List Issues"
   page: 'Project code'
   list: 'Projects list'
   create: 'Create Project'
@@ -36,6 +37,7 @@ project:
   validation:
     codde: 'This code is already in use.'
   action:
+    back: "Back to the list"
     edit: "Edit"
     create: "Create a new project"
   error:

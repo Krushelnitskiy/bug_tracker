@@ -12,9 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-use Symfony\Component\Validator\Constraints\DateTime;
-
-use Tracker\UserBundle\Entity\User;
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\ProjectBundle\Entity\ProjectRepository;
 use Tracker\ProjectBundle\Form\ProjectType;
@@ -182,7 +179,7 @@ class DefaultController extends Controller
      * @param $project Project
      * @return array
      *
-     * @Route("/{project}/issue/new", name="project_issues")
+     * @Route("/{project}/issue/new", name="project_new_issue")
      * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
@@ -195,30 +192,19 @@ class DefaultController extends Controller
 
         $entity = new Issue();
 
-        /**
-         * @var $user User
-         */
-        $user = $this->getUser();
-        $em = $this->getDoctrine()->getManager();
-
-        $projects = array();
-        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
-            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
-        }
-
-        $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
+        $form = $this->createForm('tracker_issueBundle_issue', $entity, array(
             'action' => $this->generateUrl('issue_create'),
             'method' => 'POST',
-            'projects' => $projects
+            'projects' => [$project],
+            'selectedProject' => $project
         ));
 
         return array(
+            'project' => $project,
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         );
     }
-
-
 
     /**
      * Displays a form to edit an existing Project entity.

@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Form;
 
 use Tracker\UserBundle\Entity\User;
 
@@ -114,7 +115,7 @@ class UserController extends Controller
     /**
      * Creates a form to edit a User entity.
      * @param User $entity The entity
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createEditForm(User $entity)
     {
@@ -129,7 +130,7 @@ class UserController extends Controller
     /**
      * Edits an existing User entity.
      * @param User $user,
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return array
      *
@@ -166,7 +167,7 @@ class UserController extends Controller
      *
      * @param User $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createCreateForm(user $entity)
     {
@@ -185,7 +186,7 @@ class UserController extends Controller
      *
      * @Route("/", name="user_create")
      * @Method("PUT")
-     * @Template("TrackeruserBundle:User:new.html.twig")
+     * @Template("TrackerUserBundle:User:new.html.twig")
      */
     public function createAction(Request $request)
     {

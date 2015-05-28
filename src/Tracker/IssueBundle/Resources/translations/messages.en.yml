@@ -1,7 +1,7 @@
 issue:
   page:
     list:
-      title: "Issue list"
+      title: "My Issue"
     create:
       title: "Issue creation"
     createSubTask:

@@ -12,7 +12,7 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
-use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\EntityManager;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
@@ -35,6 +35,9 @@ class WebTestCase extends BaseWebTestCase
     {
         $client = self::createClient();
         $container = $client->getKernel()->getContainer();
+        /**
+         * @var $entityManager EntityManager
+         */
         $entityManager = $container->get('doctrine')->getManager();
 
         $purger = new ORMPurger($entityManager);
