@@ -10,9 +10,6 @@ class ProjectType extends AbstractType
 {
     /**
      * {@inheritDoc}
-     *
-     * @param FormBuilderInterface $builder
-     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -37,8 +34,6 @@ class ProjectType extends AbstractType
     
     /**
      * {@inheritDoc}
-     *
-     * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -48,7 +43,7 @@ class ProjectType extends AbstractType
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

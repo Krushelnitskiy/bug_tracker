@@ -1,13 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 05.03.15
- * Time: 19:12
- */
+
 namespace Tracker\IssueBundle\Tests\Security\Role;
 
 use Symfony\Component\HttpFoundation\Response;
+
 use Tracker\TestBundle\Test\WebTestCase;
 
 /**
@@ -68,8 +64,6 @@ class OperatorTest extends WebTestCase
         $crawler = $client->request('PUT', '/issue/' . $this->getReference('issue.story')->getCode());
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
-
-
 
     public function testCreateIssueNoProject()
     {

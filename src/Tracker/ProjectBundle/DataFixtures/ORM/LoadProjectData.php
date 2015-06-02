@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 20.02.15
- * Time: 17:32
- */
 
 namespace Tracker\ProjectBundle\DataFixtures\ORM;
 
@@ -39,7 +33,6 @@ class LoadProjectData extends AbstractFixture implements FixtureInterface, Depen
 
         $this->addReference('project.first', $project);
     }
-
 
     public function getDependencies()
     {

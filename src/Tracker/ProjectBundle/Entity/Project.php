@@ -1,15 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 19.02.15
- * Time: 18:22
- */
 
 namespace Tracker\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -18,6 +13,7 @@ use Tracker\UserBundle\Entity\User;
 
 /**
  * Class Project
+ *
  * @package Tracker\ProjectBundle\Entity
  * @ORM\Entity(repositoryClass="Tracker\ProjectBundle\Entity\ProjectRepository")
  * @ORM\Table(name="project")
@@ -26,6 +22,8 @@ use Tracker\UserBundle\Entity\User;
 class Project
 {
     /**
+     * @var integer $id
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -33,16 +31,22 @@ class Project
     protected $id;
 
     /**
+     * @var string $label
+     *
      * @ORM\Column(type="string", length=100)
      */
     protected $label;
 
     /**
+     * @var string $summary
+     *
      * @ORM\Column(type="text")
      */
     protected $summary;
 
     /**
+     * @var string $code
+     *
      * @Assert\Regex(
      *      pattern="/^[\w\-]+$/",
      *      match = true,
@@ -53,12 +57,16 @@ class Project
     protected $code;
 
     /**
+     * @var User[] $code
+     *
      * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="project")
      * @ORM\JoinTable(name="projects_users")
      **/
     protected $members;
 
     /**
+     * @var \DateTime $created
+     *
      * @ORM\Column(type="datetime")
      **/
     protected $created;
@@ -85,6 +93,7 @@ class Project
      * Set label
      *
      * @param string $label
+     *
      * @return Project
      */
     public function setLabel($label)
@@ -108,6 +117,7 @@ class Project
      * Set summary
      *
      * @param string $summary
+     *
      * @return Project
      */
     public function setSummary($summary)
@@ -131,6 +141,7 @@ class Project
      * Set code
      *
      * @param string $code
+     *
      * @return Project
      */
     public function setCode($code)
@@ -153,7 +164,8 @@ class Project
     /**
      * Add members
      *
-     * @param \Tracker\UserBundle\Entity\User $members
+     * @param User $members
+     *
      * @return Project
      */
     public function addMember(User $members)
@@ -166,7 +178,7 @@ class Project
     /**
      * Remove members
      *
-     * @param \Tracker\UserBundle\Entity\User $members
+     * @param User $members
      */
     public function removeMember(User $members)
     {
@@ -176,13 +188,16 @@ class Project
     /**
      * Get members
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getMembers()
     {
         return $this->members;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->label;
@@ -192,6 +207,7 @@ class Project
      * Set created
      *
      * @param \DateTime $created
+     *
      * @return Project
      */
     public function setCreated($created)

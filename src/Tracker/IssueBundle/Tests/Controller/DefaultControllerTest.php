@@ -106,7 +106,7 @@ class DefaultControllerTest extends WebTestCase
         $client->click($link);
         $crawler = $client->getCrawler();
 
-        $this->assertEquals(0, $crawler->filter('a:contains("Delete")')->count());
+        $this->assertCount(0, $crawler->filter('a:contains("Delete")'));
     }
 
     public function testEditComment()

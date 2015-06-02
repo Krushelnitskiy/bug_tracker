@@ -14,6 +14,11 @@ use Tracker\UserBundle\Entity\User;
  */
 class ProjectRepository extends EntityRepository
 {
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
     public function findByCollaborator(User $user)
     {
         $query = $this->createQueryBuilder('project');

@@ -1,87 +1,87 @@
 {% extends '::base.html.twig' %}
 
 {% block title %}
-  {{ 'project.project'|trans }} - {{ entity.label }}
+	{{ 'project.project'|trans }} - {{ entity.label }}
 {% endblock title %}
 
 {% block body -%}
-    <h3>{{ "project.project"|trans }} - {{ entity.label }}</h3>
+	<h3>{{ "project.project"|trans }} - {{ entity.label }}</h3>
 
-    <p>
-        <a href="{{ path('project') }}">
-            {{ "project.action.back"|trans }}
-        </a>
+	<p>
+		<a href="{{ path('project') }}">
+			{{ "project.action.back"|trans }}
+		</a>
 
-        {% if is_granted('edit', entity) %}
-            |
-            <a href="{{ path('project_edit', { 'project': entity.code }) }}">
-	            {{ "project.action.edit"|trans }}
-            </a>
-        {% endif %}
+		{% if is_granted('edit', entity) %}
+			|
+			<a href="{{ path('project_edit', { 'project': entity.code }) }}">
+				{{ "project.action.edit"|trans }}
+			</a>
+		{% endif %}
 
-	    |
-        <a href="{{ path('project_issues', { 'project': entity.code }) }}">
-	        {{ "project.listIssue"|trans }}
-        </a>
+		|
+		<a href="{{ path('project_issues', { 'project': entity.code }) }}">
+			{{ "project.listIssue"|trans }}
+		</a>
 
-    </p>
+	</p>
 
-    <table class="record_properties table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Label</th>
-                <td>{{ entity.label }}</td>
-            </tr>
-            <tr>
-                <th>Summary</th>
-                <td>{{ entity.summary }}</td>
-            </tr>
-            <tr>
-                <th>Code</th>
-                <td>{{ entity.code }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="record_properties table">
+		<tbody>
+		<tr>
+			<th>Id</th>
+			<td>{{ entity.id }}</td>
+		</tr>
+		<tr>
+			<th>Label</th>
+			<td>{{ entity.label }}</td>
+		</tr>
+		<tr>
+			<th>Summary</th>
+			<td>{{ entity.summary }}</td>
+		</tr>
+		<tr>
+			<th>Code</th>
+			<td>{{ entity.code }}</td>
+		</tr>
+		</tbody>
+	</table>
 
-    <h3>Users</h3>
-    <table class="record_properties table-bordered table">
-        <thead>
-            <tr>
-                <td>{{ "project.view.users.username"|trans }}</td>
-                <td>{{ "project.view.users.email"|trans }}</td>
-                <td>{{ "project.view.users.lastLogin"|trans }}</td>
-                <td>{{ "project.view.users.status"|trans }}</td>
-            </tr>
-        </thead>
-        <tbody class="table-striped">
-        {% for member in entity.members %}
-            {% if (member.enabled) %}
-                {% set statusClass = 'success' %}
-                {% set statusTitle = 'Activated' %}
-                {% set statusValue = '✔' %}
-            {% else %}
-                {% set statusClass = 'danger' %}
-                {% set statusTitle = 'Disabled' %}
-                {% set statusValue = '' %}
-            {% endif %}
+	<h3>Users</h3>
+	<table class="record_properties table-bordered table">
+		<thead>
+		<tr>
+			<td>{{ "project.view.users.username"|trans }}</td>
+			<td>{{ "project.view.users.email"|trans }}</td>
+			<td>{{ "project.view.users.lastLogin"|trans }}</td>
+			<td>{{ "project.view.users.status"|trans }}</td>
+		</tr>
+		</thead>
+		<tbody class="table-striped">
+		{% for member in entity.members %}
+			{% if (member.enabled) %}
+				{% set statusClass = 'success' %}
+				{% set statusTitle = 'Activated' %}
+				{% set statusValue = '✔' %}
+			{% else %}
+				{% set statusClass = 'danger' %}
+				{% set statusTitle = 'Disabled' %}
+				{% set statusValue = '' %}
+			{% endif %}
 
-            <tr>
-                <td>{{ member.username }}</td>
-                <td>{{ member.email }}</td>
-                <td>{{ member.lastLogin|date('d.m.Y H:i:s') }}</td>
-                <td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+			<tr>
+				<td>{{ member.username }}</td>
+				<td>{{ member.email }}</td>
+				<td>{{ member.lastLogin|date('d.m.Y H:i:s') }}</td>
+				<td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
 
-    {% if activity|length > 0 %}
-        <h4>{{ "project.page.view.activity"|trans }}</h4>
-        {% include 'TrackerProjectBundle:Default:partial/gridActivity.html.twig' with { 'activities': activity } %}
-    {% endif %}
+	{% if activity|length > 0 %}
+		<h4>{{ "project.page.view.activity"|trans }}</h4>
+		{% include 'TrackerProjectBundle:Default:partial/gridActivity.html.twig' with { 'activities': activity } %}
+	{% endif %}
 
 {% endblock %}

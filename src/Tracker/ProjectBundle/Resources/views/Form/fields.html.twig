@@ -105,9 +105,7 @@
 {%- endblock email_widget -%}
 
 {%- block checkbox_widget -%}
-    {#<div class="col-sm-6">#}
-        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
-    {#</div>#}
+	<input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {%- endblock checkbox_widget -%}
 
 {%- block password_widget -%}

@@ -1,44 +1,44 @@
 project:
-  page:
-    view:
-      activity: "Activity"
+    page:
+        view:
+            activity: "Activity"
 
-  project: 'Project'
-  listIssue: "List Issues"
-  page: 'Project code'
-  list: 'Projects list'
-  create: 'Create Project'
-  edit: 'Edit this project'
-  createIssue: 'Create Issue'
-  not_activity: 'Not Activity yet!'
-  not_issues: 'No Issues yet!'
-  management: 'Project Management'
-  actions: "Actions"
-  back: "Back to the list"
-  grid:
-      code: 'Code'
-      label: 'Label'
-      summary: 'Summary'
-      actions: ""
-      created: "Created"
-  view:
-    code: 'Code:'
-    label: 'Label:'
-    summary: 'Summary:'
-    issues: 'Project issues:'
-    activity: 'Project Activity:'
-    users:
-        username: "User name"
-        email: "Email"
-        status: "Status"
-        lastLogin: "Last login"
-  editPage:
-      submit: "Save"
-  validation:
-    codde: 'This code is already in use.'
-  action:
+    project: 'Project'
+    listIssue: "List Issues"
+    page: 'Project code'
+    list: 'Projects list'
+    create: 'Create Project'
+    edit: 'Edit this project'
+    createIssue: 'Create Issue'
+    not_activity: 'Not Activity yet!'
+    not_issues: 'No Issues yet!'
+    management: 'Project Management'
+    actions: "Actions"
     back: "Back to the list"
-    edit: "Edit"
-    create: "Create a new project"
-  error:
-    invalidCodeValue: "Code can contain symbols a-zA-Z0-9-"
+    grid:
+        code: 'Code'
+        label: 'Label'
+        summary: 'Summary'
+        actions: ""
+        created: "Created"
+    view:
+        code: 'Code:'
+        label: 'Label:'
+        summary: 'Summary:'
+        issues: 'Project issues:'
+        activity: 'Project Activity:'
+        users:
+            username: "User name"
+            email: "Email"
+            status: "Status"
+            lastLogin: "Last login"
+    editPage:
+        submit: "Save"
+    validation:
+        codde: 'This code is already in use.'
+    action:
+        back: "Back to the list"
+        edit: "Edit"
+        create: "Create a new project"
+    error:
+        invalidCodeValue: "Code can contain symbols a-zA-Z0-9-"

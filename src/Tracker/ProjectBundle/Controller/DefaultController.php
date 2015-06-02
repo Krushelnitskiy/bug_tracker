@@ -56,7 +56,9 @@ class DefaultController extends Controller
 
     /**
      * Creates a new Project entity.
+     *
      * @param Request $request
+     *
      * @return array
      *
      * @Route("/", name="project_create")
@@ -131,7 +133,9 @@ class DefaultController extends Controller
 
     /**
      * Finds and displays a Project entity.
+     *
      * @param $project Project
+     *
      * @return array
      *
      * @Route("/{project}", name="project_show")
@@ -157,7 +161,9 @@ class DefaultController extends Controller
 
     /**
      * Finds and displays a Project entity.
+     *
      * @param $project Project
+     *
      * @return array
      *
      * @Route("/{project}/issues", name="project_issues")
@@ -183,7 +189,9 @@ class DefaultController extends Controller
 
     /**
      * Finds and displays a Project entity.
+     *
      * @param $project Project
+     *
      * @return array
      *
      * @Route("/{project}/issue/new", name="project_new_issue")
@@ -193,11 +201,11 @@ class DefaultController extends Controller
      */
     public function newIssueAction($project)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
+        $entity = new Issue();
+
+        if (false === $this->get('security.authorization_checker')->isGranted('create', $entity)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
-
-        $entity = new Issue();
 
         $form = $this->createForm('tracker_issueBundle_issue', $entity, array(
             'action' => $this->generateUrl('project_create_issue', ['project'=>$project->getCode()]),
@@ -215,6 +223,7 @@ class DefaultController extends Controller
 
     /**
      * Creates a new Issue entity.
+     *
      * @param Request $request
      * @param $project Project
      *
@@ -275,7 +284,9 @@ class DefaultController extends Controller
 
     /**
      * Displays a form to edit an existing Project entity.
+     *
      * @param $project Project
+     *
      * @return array
      *
      * @Route("/{project}/edit", name="project_edit")
@@ -299,7 +310,9 @@ class DefaultController extends Controller
 
     /**
      * Creates a form to edit a Project entity.
+     *
      * @param Project $entity The entity
+     *
      * @return Form The form
      */
     private function createEditForm(Project $entity)
@@ -315,6 +328,7 @@ class DefaultController extends Controller
     }
     /**
      * Edits an existing Project entity.
+     *
      * @param $project Project,
      * @param Request $request
      *

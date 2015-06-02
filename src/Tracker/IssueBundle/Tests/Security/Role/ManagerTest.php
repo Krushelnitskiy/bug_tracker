@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 05.03.15
- * Time: 19:12
- */
+
 namespace Tracker\IssueBundle\Tests\Security\Role;
 
 use Symfony\Component\HttpFoundation\Response;

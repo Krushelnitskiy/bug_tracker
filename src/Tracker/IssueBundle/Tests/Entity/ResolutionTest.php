@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 11.03.15
- * Time: 14:06
- */
 
 namespace Tracker\IssueBundle\Tests\Entity;
 
