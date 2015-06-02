@@ -32,7 +32,6 @@ class RegistrationFormType extends AbstractType
         ));
 
         $attributeFullName = array_merge($attributeDefault, array(
-            'label' => 'profile.show.fullName',
             'translation_domain' => 'TrackerUserBundle',
         ));
 

@@ -75,3 +75,11 @@ table td.status {
     text-align: center;
     width: 60px;
 }
+
+td {
+    vertical-align: middle !important;
+}
+
+td .avatar{
+    margin-right: 5px;
+}

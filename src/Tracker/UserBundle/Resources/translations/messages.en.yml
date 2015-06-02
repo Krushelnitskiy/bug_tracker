@@ -56,5 +56,5 @@ ROLE_USER: User
 profile:
   show:
     email: "Email"
-    fullname: "Full Name"
+    fullName: "Full Name"
     username: "Username"

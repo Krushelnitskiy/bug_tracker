@@ -1,8 +1,6 @@
 <table class="records_list table table-bordered">
     <thead>
     <tr>
-        <th>{{ "user.grid.id"|trans }}</th>
-        <th></th>
         <th>{{ "user.grid.username"|trans }}</th>
         <th>{{ "user.grid.email"|trans }}</th>
         <th>{{ "user.grid.lastLogin"|trans }}</th>
@@ -23,17 +21,17 @@
         {% endif %}
 
         <tr>
-            <td>{{ entity.id }}</td>
-
             <td>
-                {% if collaborator.getWebPath() %}
-                    {% set pathShowUser = path('user_show', { 'user': collaborator.id }) %}
-                    <a href="{{ pathShowUser }}">
-                        <img src="{{ collaborator.getWebPath() }}"  width="64"/>
-                    </a>
-                {% endif %}
+	            {% if collaborator.getWebPath() %}
+		            {% set pathShowUser = path('user_show', { 'user': collaborator.id }) %}
+
+			            <a href="{{ pathShowUser }}" class="avatar">
+				            <img src="{{ collaborator.getWebPath() }}"  width="64"/>
+			            </a>
+
+	            {% endif %}
+	            {{ collaborator.username }}
             </td>
-            <td>{{ collaborator.username }}</td>
             <td>{{ collaborator.email }}</td>
             <td>{{ collaborator.lastLogin|date('d.m.Y H:i:s') }}</td>
             <td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
