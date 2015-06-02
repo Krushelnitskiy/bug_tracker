@@ -27,7 +27,7 @@ class IssueType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -202,7 +202,7 @@ class IssueType extends AbstractType
 
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @return array
      */
@@ -217,7 +217,7 @@ class IssueType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @return array
      */

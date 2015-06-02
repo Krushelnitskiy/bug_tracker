@@ -3,14 +3,15 @@
 namespace Tracker\UserBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class StringToArrayTransformer implements DataTransformerInterface
 {
     /**
      * Transforms an array to a string.
      * POSSIBLE LOSS OF DATA
+     *
      * @param mixed $array
+     *
      * @return string
      */
     public function transform($array)

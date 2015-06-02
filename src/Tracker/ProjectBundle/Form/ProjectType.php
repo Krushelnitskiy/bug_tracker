@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProjectType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -36,7 +36,7 @@ class ProjectType extends AbstractType
     }
     
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param OptionsResolverInterface $resolver
      */

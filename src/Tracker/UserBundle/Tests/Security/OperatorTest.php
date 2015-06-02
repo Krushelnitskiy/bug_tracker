@@ -2,8 +2,6 @@
 
 namespace Tracker\UserBundle\Tests\Security;
 
-use Symfony\Component\HttpFoundation\Response;
-
 use Tracker\TestBundle\Test\WebTestCase;
 
 /**

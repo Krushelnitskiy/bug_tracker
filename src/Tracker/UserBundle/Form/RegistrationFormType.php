@@ -7,6 +7,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $attributeDefault = array(
@@ -46,15 +52,24 @@ class RegistrationFormType extends AbstractType
                 'first_options' => $attrPasswordFirst,
                 'second_options' => $attrPasswordSecond,
                 'invalid_message' => 'fos_user.password.mismatch'
-            ))
-        ;
+            ));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return string
+     */
     public function getParent()
     {
         return 'fos_user_registration';
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return string
+     */
     public function getName()
     {
         return 'tracker_user_registration';

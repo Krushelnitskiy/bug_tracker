@@ -47,6 +47,7 @@ class Resolution
      * Set value
      *
      * @param string $value
+     *
      * @return Resolution
      */
     public function setValue($value)

@@ -13,6 +13,11 @@ class UserVoter implements VoterInterface
     const EDIT = 'edit';
     const CREATE = 'create';
 
+    /**
+     * @param string $attribute
+     *
+     * @return bool
+     */
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
@@ -22,19 +27,20 @@ class UserVoter implements VoterInterface
         ), false);
     }
 
+    /**
+     * @param string $class
+     *
+     * @return bool
+     */
     public function supportsClass($class)
     {
-
         $supportedClass = 'Tracker\UserBundle\Entity\User';
 
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
     }
 
     /**
-     * @param TokenInterface $token
-     * @param null|User $user
-     * @param array $attributes
-     * @return int
+     * {@inheritdoc}
      */
     public function vote(TokenInterface $token, $user, array $attributes)
     {
@@ -81,17 +87,28 @@ class UserVoter implements VoterInterface
         return self::ACCESS_DENIED;
     }
 
+    /**
+     * @param User $currentUser
+     * @param User $user
+     *
+     * @return bool
+     */
     public function userCanView(User $currentUser, User $user)
     {
+        $response = false;
         if ($currentUser->hasRole(User::ROLE_ADMIN) ||
-            $currentUser->getId() == $user->getId() ||
+            $currentUser->getId() === $user->getId() ||
             $currentUser->hasRole(User::ROLE_MANAGER)) {
-            return true;
+            $response = true;
         }
 
-        return false;
+        return $response;
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function userCanEdit(User $user)
     {
         if ($user->hasRole(User::ROLE_ADMIN)) {
@@ -101,6 +118,10 @@ class UserVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function userCanCreate(User $user)
     {
         if ($user->hasRole(User::ROLE_ADMIN)) {

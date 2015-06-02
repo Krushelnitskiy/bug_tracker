@@ -67,11 +67,14 @@ class UserController extends Controller
 
     /**
      * Finds and displays a User entity.
+     *
      * @param User $user
+     *
      * @Route("/{user}", name="user_show")
      * @ParamConverter("user", class="TrackerUserBundle:User", options={"repository_method" = "find"})
      * @Method("GET")
      * @Template()
+     *
      * @return array
      */
     public function showAction($user)
@@ -91,7 +94,9 @@ class UserController extends Controller
 
     /**
      * Displays a form to edit an existing User entity.
+     *
      * @param User $user
+     *
      * @return array
      * @ParamConverter("user", class="TrackerUserBundle:User", options={"repository_method" = "find"})
      * @Route("/{user}/edit", name="user_edit")
@@ -114,7 +119,9 @@ class UserController extends Controller
 
     /**
      * Creates a form to edit a User entity.
+     *
      * @param User $entity The entity
+     *
      * @return Form The form
      */
     private function createEditForm(User $entity)
@@ -128,7 +135,8 @@ class UserController extends Controller
     }
 
     /**
-     * Edits an existing User entity.
+     * Edits an existing User entity..
+     *
      * @param User $user,
      * @param Request $request
      *
@@ -181,7 +189,9 @@ class UserController extends Controller
 
     /**
      * Creates a new User entity.
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return array
      *
      * @Route("/", name="user_create")

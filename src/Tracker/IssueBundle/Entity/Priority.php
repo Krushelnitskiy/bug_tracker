@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 19.02.15
- * Time: 18:59
- */
 
 namespace Tracker\IssueBundle\Entity;
 
@@ -26,6 +20,8 @@ class Priority
     const PRIORITY_BLOCKER = 'Blocker';
 
     /**
+     * @var integer $id
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -53,6 +49,7 @@ class Priority
      * Set value
      *
      * @param string $value
+     *
      * @return Priority
      */
     public function setValue($value)

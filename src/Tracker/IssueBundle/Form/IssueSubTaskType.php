@@ -25,7 +25,7 @@ class IssueSubTaskType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -74,7 +74,7 @@ class IssueSubTaskType extends AbstractType
     }
     
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param OptionsResolverInterface $resolver
      */

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 11.03.15
- * Time: 14:06
- */
 
 namespace Tracker\ProjectBundle\Tests\Entity;
 
@@ -38,12 +32,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $user->method('getId')->willReturn('1');
         $user->method('getLabel')->willReturn('project 1');
 
-        $this->assertEquals(0, $this->project->getMembers()->count());
+        $this->assertCount(0, $this->project->getMembers());
 
         $this->project->addMember($user);
-        $this->assertEquals(1, $this->project->getMembers()->count());
+        $this->assertCount(1, $this->project->getMembers());
 
         $this->project->removeMember($user);
-        $this->assertEquals(0, $this->project->getMembers()->count());
+        $this->assertCount(0, $this->project->getMembers());
     }
 }

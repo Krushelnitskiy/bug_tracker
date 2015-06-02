@@ -1,51 +1,51 @@
 user:
-  page:
-    list:
-      title: "Users list"
-    create:
-      title: "Create User"
-    edit:
-      title: "Edit user"
-    view:
-      title: "User"
-      activity: "Activity"
-    auth:
-      registration: "Registration"
-      forgotPssword: "Forgot password ?"
-      login: "Sign in"
-  action:
-    create: "Create new user"
-    edit: "Edit"
-    backToList: "Back to the list"
-  grid:
-    id: "Id"
-    username: "User name"
-    email: "Email"
-    lastLogin: "Last login"
-    enabled: "Enable"
-    role: "Role"
-    status: "Status"
-    fullName: "Full Name"
+    page:
+        list:
+            title: "Users list"
+        create:
+            title: "Create User"
+        edit:
+            title: "Edit user"
+        view:
+            title: "User"
+            activity: "Activity"
+        auth:
+            registration: "Registration"
+            forgotPssword: "Forgot password ?"
+            login: "Sign in"
+    action:
+        create: "Create new user"
+        edit: "Edit"
+        backToList: "Back to the list"
+    grid:
+        id: "Id"
+        username: "User name"
+        email: "Email"
+        lastLogin: "Last login"
+        enabled: "Enable"
+        role: "Role"
+        status: "Status"
+        fullName: "Full Name"
 
 security:
-  login:
-    username: "Username"
-    password: "Password"
-    remember_me: "Remember me"
-    submit: "Login"
+    login:
+        username: "Username"
+        password: "Password"
+        remember_me: "Remember me"
+        submit: "Login"
 
 registration:
-  submit: "Register"
+    submit: "Register"
 
 resetting:
-  request:
-    username: "Username or email address:"
-    submit: "Reset password"
+    request:
+        username: "Username or email address:"
+        submit: "Reset password"
 
 role:
-  admin: Administrator
-  manager: Manager
-  operator: Operator
+    admin: Administrator
+    manager: Manager
+    operator: Operator
 
 ROLE_ADMIN: Administrator
 ROLE_MANAGER: Manager
@@ -54,7 +54,7 @@ ROLE_USER: User
 
 
 profile:
-  show:
-    email: "Email"
-    fullName: "Full Name"
-    username: "Username"
+    show:
+        email: "Email"
+        fullName: "Full Name"
+        username: "Username"

@@ -1,17 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 20.02.15
- * Time: 17:32
- */
 
 namespace Tracker\IssueBundle\DataFixtures\ORM;
 
-use Tracker\IssueBundle\Entity\Priority;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Tracker\IssueBundle\Entity\Priority;
 
 class LoadPriorityData extends AbstractFixture implements FixtureInterface
 {

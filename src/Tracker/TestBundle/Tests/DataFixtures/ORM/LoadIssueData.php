@@ -1,26 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 20.02.15
- * Time: 17:32
- */
 
 namespace Tracker\TestBundle\Tests\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Tracker\IssueBundle\Entity\Issue;
 use Tracker\IssueBundle\Entity\Status;
 use Tracker\IssueBundle\Entity\Type;
 use Tracker\IssueBundle\Entity\Priority;
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\userBundle\Entity\User;
-
-// implements OrderedFixtureInterface
 
 class LoadIssueData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
 {

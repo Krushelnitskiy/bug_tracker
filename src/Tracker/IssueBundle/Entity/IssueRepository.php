@@ -8,6 +8,11 @@ use Tracker\UserBundle\Entity\User;
 
 class IssueRepository extends EntityRepository
 {
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
     public function findByCollaborator(User $user)
     {
         $qb = $this->createQueryBuilder('issue');
@@ -23,6 +28,7 @@ class IssueRepository extends EntityRepository
     /**
      * @param User $user
      * @param Status[] $skipStatus
+     *
      * @return array
      */
     public function findAvailableForUser(User $user, $skipStatus)

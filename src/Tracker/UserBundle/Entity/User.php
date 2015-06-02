@@ -27,6 +27,8 @@ class User extends BaseUser
     const ROLE_OPERATOR = 'ROLE_OPERATOR';
 
     /**
+     * @var integer $id
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -34,16 +36,22 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var string $fullName
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $fullName;
 
     /**
+     * @var Project $project
+     *
      * @ORM\ManyToMany(targetEntity="\Tracker\ProjectBundle\Entity\Project", mappedBy="members")
      **/
     protected $project;
 
     /**
+     * @var string $path
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $path;
@@ -55,6 +63,8 @@ class User extends BaseUser
     protected $file;
 
     /**
+     * @var Issue[] $assignedIssue
+     *
      * @ORM\OneToMany(targetEntity="\Tracker\IssueBundle\Entity\Issue", mappedBy="assignee")
      **/
     protected $assignedIssue;
@@ -113,6 +123,7 @@ class User extends BaseUser
      * Add product
      *
      * @param \Tracker\ProjectBundle\Entity\Project $product
+     *
      * @return User
      */
     public function addProduct(Project $product)
@@ -165,7 +176,6 @@ class User extends BaseUser
         return $this->path;
     }
 
-
     /**
      * @ORM\PostPersist()
      * @ORM\PostUpdate()
@@ -192,6 +202,9 @@ class User extends BaseUser
         }
     }
 
+    /**
+     * @return null|string
+     */
     public function getAbsolutePath()
     {
         return null === $this->path
@@ -199,6 +212,9 @@ class User extends BaseUser
             : $this->getUploadRootDir() . '/' . $this->path;
     }
 
+    /**
+     * @return null|string
+     */
     public function getWebPath()
     {
         return null === $this->path
@@ -206,6 +222,9 @@ class User extends BaseUser
             : '/' . $this->getUploadDir() . '/' . $this->path;
     }
 
+    /**
+     * @return string
+     */
     protected function getUploadRootDir()
     {
         // the absolute directory path where uploaded
@@ -213,6 +232,9 @@ class User extends BaseUser
         return __DIR__ . '/../../../../web/' . $this->getUploadDir();
     }
 
+    /**
+     * @return string
+     */
     protected function getUploadDir()
     {
         // get rid of the __DIR__ so it doesn't screw up
@@ -220,11 +242,19 @@ class User extends BaseUser
         return 'uploads/profile';
     }
 
+    /**
+     * @return mixed
+     */
     public function getFile()
     {
         return $this->file;
     }
 
+    /**
+     * @param UploadedFile $file
+     *s
+     * @return $this
+     */
     public function setFile(UploadedFile $file = null)
     {
         $this->file = $file;
@@ -236,6 +266,7 @@ class User extends BaseUser
      * Add project
      *
      * @param \Tracker\ProjectBundle\Entity\Project $project
+     *
      * @return User
      */
     public function addProject(Project $project)
@@ -255,11 +286,11 @@ class User extends BaseUser
         $this->project->removeElement($project);
     }
 
-
     /**
      * Set fullName
      *
      * @param string $fullName
+     *
      * @return User
      */
     public function setFullName($fullName)

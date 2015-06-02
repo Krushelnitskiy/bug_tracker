@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 20.02.15
- * Time: 17:32
- */
 
 namespace Tracker\IssueBundle\DataFixtures\ORM;
 

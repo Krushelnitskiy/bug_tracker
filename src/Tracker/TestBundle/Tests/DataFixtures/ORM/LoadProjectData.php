@@ -1,19 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 20.02.15
- * Time: 17:32
- */
 
 namespace Tracker\TestBundle\Tests\DataFixtures\ORM;
-
-use Tracker\ProjectBundle\Entity\Project;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Tracker\UserBundle\Entity\User;
+use Tracker\ProjectBundle\Entity\Project;
 
 class LoadProjectData extends AbstractFixture implements FixtureInterface
 {

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 03.03.15
- * Time: 12:47
- */
 
 namespace Tracker\TestBundle\Test;
 

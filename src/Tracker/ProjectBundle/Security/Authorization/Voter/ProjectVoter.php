@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 23.02.15
- * Time: 18:58
- */
 
 namespace Tracker\ProjectBundle\Security\Authorization\Voter;
 
@@ -20,6 +14,10 @@ class ProjectVoter implements VoterInterface
     const EDIT = 'edit';
     const CREATE = 'create';
 
+    /**
+     * @param string $attribute
+     * @return bool
+     */
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
@@ -29,6 +27,11 @@ class ProjectVoter implements VoterInterface
         ), false);
     }
 
+    /**
+     * @param string $class
+     *
+     * @return bool
+     */
     public function supportsClass($class)
     {
         $supportedClass = 'Tracker\ProjectBundle\Entity\Project';
@@ -37,10 +40,7 @@ class ProjectVoter implements VoterInterface
     }
 
     /**
-     * @param TokenInterface $token
-     * @param null|Project $project
-     * @param array $attributes
-     * @return int
+     * {@inheritdoc}
      */
     public function vote(TokenInterface $token, $project, array $attributes)
     {
@@ -87,13 +87,15 @@ class ProjectVoter implements VoterInterface
         return self::ACCESS_DENIED;
     }
 
-    public function userCanView(User $user, Project $project)
+    /**
+     * @param User $user
+     * @param Project $project
+     *
+     * @return bool
+     */
+    protected function userCanView(User $user, Project $project)
     {
-        if ($user->hasRole(User::ROLE_ADMIN)) {
-            return true;
-        }
-
-        if ($user->hasRole(User::ROLE_MANAGER)) {
+        if ($this->isSuperUser($user)) {
             return true;
         }
 
@@ -112,19 +114,40 @@ class ProjectVoter implements VoterInterface
         return false;
     }
 
-    public function userCanEdit(User $user)
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    protected function userCanEdit(User $user)
     {
-        if ($user->hasRole(User::ROLE_ADMIN)) {
+        if ($this->isSuperUser($user)) {
             return true;
         }
 
-        if ($user->hasRole(User::ROLE_MANAGER)) {
-            return true;
-        }
         return false;
     }
 
-    public function userCanCreate(User $user)
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    protected function userCanCreate(User $user)
+    {
+        if ($this->isSuperUser($user)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    protected function isSuperUser(User $user)
     {
         if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;

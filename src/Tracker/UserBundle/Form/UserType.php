@@ -16,12 +16,17 @@ class UserType extends AbstractType
      */
     protected $translator;
 
+    /**
+     * @param TranslatorInterface $translator
+     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -38,8 +43,7 @@ class UserType extends AbstractType
             ->add($this->getPlainPassword($builder))
             ->add($this->getRoles($builder))
             ->add($this->getEnabled($builder))
-            ->add('file', null, $attributeSubmit)
-        ;
+            ->add('file', null, $attributeSubmit);
 
         if (!$builder->getData()->getid()) {
             $builder->add('save', 'submit', array('label' => 'issue.form.create'));
@@ -138,6 +142,8 @@ class UserType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -148,6 +154,8 @@ class UserType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return string
      */
     public function getName()

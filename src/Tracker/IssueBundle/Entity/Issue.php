@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 19.02.15
- * Time: 18:22
- */
 
 namespace Tracker\IssueBundle\Entity;
 
@@ -27,6 +21,8 @@ use Tracker\ProjectBundle\Entity\Project;
 class Issue
 {
     /**
+     * @var integer $id
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -39,6 +35,8 @@ class Issue
     protected $summary;
 
     /**
+     * @var string $code
+     *
      * @Assert\Regex(
      *      pattern="/^[\w\-]+$/",
      *      match = true,
@@ -49,83 +47,108 @@ class Issue
     protected $code;
 
     /**
+     * @var string $description
+     *
      * @ORM\Column(type="text")
      */
     protected $description;
 
-
     /**
+     * @var Type $type
+     *
      * @ORM\ManyToOne(targetEntity="Type")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      **/
     protected $type;
 
     /**
+     * @var Priority $priority
+     *
      * @ORM\ManyToOne(targetEntity="Priority")
      * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
      **/
     protected $priority;
 
     /**
+     * @var Status $status
+     *
      * @ORM\ManyToOne(targetEntity="Status")
      * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
      **/
     protected $status;
 
     /**
+     * @var Resolution $resolution
+     *
      * @ORM\ManyToOne(targetEntity="Resolution")
      * @ORM\JoinColumn(name="resolution_id", referencedColumnName="id")
      **/
     protected $resolution;
 
     /**
+     * @var User $reporter
+     *
      * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
      **/
     protected $reporter;
 
     /**
+     * @var User $assignee
+     *
      * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="assignedIssue")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
      **/
     protected $assignee;
 
     /**
+     * @var User[] $children
+     *
      * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="issue")
      * @ORM\JoinTable(name="issue_collaborator")
      **/
     protected $collaborators;
 
-
     /**
+     * @var Issue[] $children
+     *
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
      **/
     protected $children;
 
     /**
+     * @var Issue $parent
+     *
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     protected $parent;
 
-
     /**
+     * @var Project $project
+     *
      * @ORM\ManyToOne(targetEntity="\Tracker\ProjectBundle\Entity\Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      **/
     protected $project;
 
     /**
+     * @var \DateTime $created
+     *
      * @ORM\Column(type="datetime")
      **/
     protected $created;
 
     /**
+     * @var \DateTime $updated
+     *
      * @ORM\Column(type="datetime")
      **/
     protected $updated;
 
     /**
+     * @var Comment[] $comment
+     *
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="issue")
      **/
     protected $comment;
@@ -265,7 +288,8 @@ class Issue
     /**
      * Set type
      *
-     * @param \Tracker\IssueBundle\Entity\Type $type
+     * @param Type $type
+     *
      * @return Issue
      */
     public function setType(Type $type = null)
@@ -278,7 +302,7 @@ class Issue
     /**
      * Get type
      *
-     * @return \Tracker\IssueBundle\Entity\Type
+     * @return Type
      */
     public function getType()
     {
@@ -288,7 +312,7 @@ class Issue
     /**
      * Set priority
      *
-     * @param \Tracker\IssueBundle\Entity\Priority $priority
+     * @param Priority $priority
      * @return Issue
      */
     public function setPriority(Priority $priority = null)
@@ -301,7 +325,7 @@ class Issue
     /**
      * Get priority
      *
-     * @return \Tracker\IssueBundle\Entity\Priority
+     * @return Priority
      */
     public function getPriority()
     {
@@ -311,7 +335,7 @@ class Issue
     /**
      * Set status
      *
-     * @param \Tracker\IssueBundle\Entity\Status $status
+     * @param Status $status
      * @return Issue
      */
     public function setStatus(Status $status = null)
@@ -324,7 +348,7 @@ class Issue
     /**
      * Get status
      *
-     * @return \Tracker\IssueBundle\Entity\Status
+     * @return Status
      */
     public function getStatus()
     {
@@ -334,7 +358,7 @@ class Issue
     /**
      * Set resolution
      *
-     * @param \Tracker\IssueBundle\Entity\Resolution $resolution
+     * @param Resolution $resolution
      * @return Issue
      */
     public function setResolution(Resolution $resolution = null)
@@ -347,7 +371,7 @@ class Issue
     /**
      * Get resolution
      *
-     * @return \Tracker\IssueBundle\Entity\Resolution
+     * @return Resolution
      */
     public function getResolution()
     {
@@ -357,7 +381,7 @@ class Issue
     /**
      * Set reporter
      *
-     * @param \Tracker\UserBundle\Entity\User $reporter
+     * @param User $reporter
      * @return Issue
      */
     public function setReporter(User $reporter = null)
@@ -370,7 +394,7 @@ class Issue
     /**
      * Get reporter
      *
-     * @return \Tracker\UserBundle\Entity\User
+     * @return User
      */
     public function getReporter()
     {
@@ -380,7 +404,7 @@ class Issue
     /**
      * Set assignee
      *
-     * @param \Tracker\UserBundle\Entity\User $assignee
+     * @param User $assignee
      * @return Issue
      */
     public function setAssignee(User $assignee = null)
@@ -393,7 +417,7 @@ class Issue
     /**
      * Get assignee
      *
-     * @return \Tracker\UserBundle\Entity\User
+     * @return User
      */
     public function getAssignee()
     {
@@ -403,7 +427,7 @@ class Issue
     /**
      * Add collaborators
      *
-     * @param \Tracker\UserBundle\Entity\User $collaborators
+     * @param User $collaborators
      * @return Issue
      */
     public function addCollaborator(User $collaborators)
@@ -414,19 +438,19 @@ class Issue
     }
 
     /**
-     * Remove collaborators
+     * Remove collaborator
      *
-     * @param \Tracker\UserBundle\Entity\User $collaborators
+     * @param User $collaborator
      */
-    public function removeCollaborator(User $collaborators)
+    public function removeCollaborator(User $collaborator)
     {
-        $this->collaborators->removeElement($collaborators);
+        $this->collaborators->removeElement($collaborator);
     }
 
     /**
      * Get collaborators
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getCollaborators()
     {
@@ -436,7 +460,7 @@ class Issue
     /**
      * Add children
      *
-     * @param \Tracker\IssueBundle\Entity\Issue $children
+     * @param Issue $children
      * @return Issue
      */
     public function addChild(Issue $children)
@@ -449,7 +473,7 @@ class Issue
     /**
      * Remove children
      *
-     * @param \Tracker\IssueBundle\Entity\Issue $children
+     * @param Issue $children
      */
     public function removeChild(Issue $children)
     {
@@ -459,7 +483,7 @@ class Issue
     /**
      * Get children
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getChildren()
     {
@@ -469,7 +493,7 @@ class Issue
     /**
      * Set parent
      *
-     * @param \Tracker\IssueBundle\Entity\Issue $parent
+     * @param Issue $parent
      * @return Issue
      */
     public function setParent(Issue $parent = null)
@@ -482,7 +506,7 @@ class Issue
     /**
      * Get parent
      *
-     * @return \Tracker\IssueBundle\Entity\Issue
+     * @return Issue
      */
     public function getParent()
     {
@@ -492,7 +516,7 @@ class Issue
     /**
      * Set project
      *
-     * @param \Tracker\ProjectBundle\Entity\Project $project
+     * @param Project $project
      * @return Issue
      */
     public function setProject(Project $project = null)
@@ -505,7 +529,7 @@ class Issue
     /**
      * Get project
      *
-     * @return \Tracker\ProjectBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
@@ -515,7 +539,7 @@ class Issue
     /**
      * Add commet
      *
-     * @param \Tracker\IssueBundle\Entity\Comment $comment
+     * @param Comment $comment
      * @return Issue
      */
     public function addComment(Comment $comment)
@@ -528,7 +552,7 @@ class Issue
     /**
      * Remove comment
      *
-     * @param \Tracker\IssueBundle\Entity\Comment $comment
+     * @param Comment $comment
      */
     public function removeComment(Comment $comment)
     {
@@ -538,7 +562,7 @@ class Issue
     /**
      * Get comment
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getComment()
     {

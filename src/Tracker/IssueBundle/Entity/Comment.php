@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 20.02.15
- * Time: 11:44
- */
 
 namespace Tracker\IssueBundle\Entity;
 
@@ -22,6 +16,8 @@ use Tracker\IssueBundle\Entity\Issue;
 class Comment
 {
     /**
+     * @var integer $id
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -29,22 +25,30 @@ class Comment
     protected $id;
 
     /**
+     * @var User $author
+     *
      * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      **/
     protected $author;
 
     /**
+     * @var string $body
+     *
      * @ORM\Column(type="text", nullable=false)
      */
     protected $body;
 
     /**
+     * @var \DateTime $created
+     *
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
+     * @var Issue $issue
+     *
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="comment")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
      **/
@@ -54,6 +58,7 @@ class Comment
      * Set body
      *
      * @param string $body
+     *
      * @return Comment
      */
     public function setBody($body)
@@ -77,6 +82,7 @@ class Comment
      * Set created
      *
      * @param \DateTime $created
+     *
      * @return Comment
      */
     public function setCreated($created)
@@ -100,6 +106,7 @@ class Comment
      * Set author
      *
      * @param \Tracker\UserBundle\Entity\User $author
+     *
      * @return Comment
      */
     public function setAuthor(User $author = null)
@@ -133,6 +140,7 @@ class Comment
      * Set issue
      *
      * @param \Tracker\IssueBundle\Entity\Issue $issue
+     *
      * @return Comment
      */
     public function setIssue(Issue $issue = null)

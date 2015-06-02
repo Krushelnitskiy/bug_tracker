@@ -59,7 +59,6 @@
         </tbody>
     </table>
 
-
     {% if activity|length > 0 %}
         <h4>{{ "user.page.view.activity"|trans }}</h4>
         {% include 'TrackerUserBundle:User:partial/gridActivity.html.twig' with { 'activities': activity } %}
@@ -69,6 +68,4 @@
         <h4>{{ 'layout.listIssue.title'|trans }}</h4>
         {% include 'TrackerUserBundle:User:partial/issue.html.twig' with { 'issues': entity.assignedIssue  } %}
     {% endif %}
-
-
 {% endblock %}

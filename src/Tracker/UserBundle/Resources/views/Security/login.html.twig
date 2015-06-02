@@ -1,7 +1,5 @@
 {% extends "base.html.twig" %}
 
-{#{% trans_default_domain 'FOSUserBundle' %}#}
-
 {% block content %}
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -9,7 +7,6 @@
 
 <a href="{{ path('fos_user_registration_register') }}">{{ "user.page.auth.registration"|trans }}</a> |
 <a href="{{ path('fos_user_resetting_request') }}">{{ "user.page.auth.forgotPssword"|trans }}</a>
-
 
 <form action="{{ path("fos_user_security_check") }}" method="post" class="form-horizontal">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
@@ -39,12 +36,10 @@
         </div>
     </div>
 
-
     <div class="form-group">
         <div class="col-sm-offset-4 col-sm-6">
             <input type="submit" class="btn btn-default" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
         </div>
     </div>
-
 </form>
 {% endblock content %}

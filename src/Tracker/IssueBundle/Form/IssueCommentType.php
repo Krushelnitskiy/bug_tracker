@@ -23,7 +23,7 @@ class IssueCommentType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -49,7 +49,7 @@ class IssueCommentType extends AbstractType
     }
     
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param OptionsResolverInterface $resolver
      */
