@@ -23,6 +23,8 @@ class IssueCommentType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -39,7 +41,7 @@ class IssueCommentType extends AbstractType
 
         $builder->add('body', 'textarea', $attribute);
 
-        if (!$builder->getData()->getid()) {
+        if (!$builder->getData()->getId()) {
             $builder->add('save', 'submit', array('label' => 'issue.form.create'));
         } else {
             $builder->add('save', 'submit', array('label' => 'issue.form.update'));
@@ -47,6 +49,8 @@ class IssueCommentType extends AbstractType
     }
     
     /**
+     * {@inheritdoc}
+     *
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)

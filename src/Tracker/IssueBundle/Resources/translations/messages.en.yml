@@ -1,55 +1,55 @@
 issue:
-  page:
-    list:
-      title: "My Issue"
-    create:
-      title: "Issue creation"
-    createSubTask:
-      title: "Sub task creation"
-    edit:
-      title: "Issue edit"
-    view:
-      title: "Issue"
-      collaborators: "Collaborators List"
-      subTask: "Sub tasks"
-      comment: "Comments"
-      sendComment: "Send comment"
-      activity: "Activity"
-  form:
-    create: "Create"
-    update: "Update"
-  action:
-    create: "Create Issue"
-    edit: "Edit"
-    back: "Back to the list"
-    delete: "Delete"
-    create_sub_task: "Create sub task"
-  grid:
-    id: "Id"
-    summary: "Summary"
-    code: "Code"
-    description: "Description"
-    created: "Created"
-    updated: "Updated"
-    actions: "Actions"
-    status: "Status"
-    type: "Type"
-    priority: "Priority"
-    resolution: "Resolution"
-    resolution: "Resolution"
-    assignee: "Assignee"
-    reporter: "Reporter"
-    collaborators: "Collaborators"
-    project: "Project"
-  comment:
     page:
-      edit:
-        title: "Commnet edit"
+        list:
+            title: "My Issue"
+        create:
+            title: "Issue creation"
+        createSubTask:
+            title: "Sub task creation"
+        edit:
+            title: "Issue edit"
+        view:
+            title: "Issue"
+            collaborators: "Collaborators List"
+            subTask: "Sub tasks"
+            comment: "Comments"
+            sendComment: "Send comment"
+            activity: "Activity"
+    form:
+        create: "Create"
+        update: "Update"
+    action:
+        create: "Create Issue"
+        edit: "Edit"
+        back: "Back to the list"
+        delete: "Delete"
+        create_sub_task: "Create sub task"
     grid:
-      body: "Message"
-      created: "Created"
-      author: "Author"
-      action: "Action"
-  parent: "Parent Issue:"
-  error:
-    invalidCodeValue: "Code can contain symbols a-zA-Z0-9-"
+        id: "Id"
+        summary: "Summary"
+        code: "Code"
+        description: "Description"
+        created: "Created"
+        updated: "Updated"
+        actions: "Actions"
+        status: "Status"
+        type: "Type"
+        priority: "Priority"
+        resolution: "Resolution"
+        resolution: "Resolution"
+        assignee: "Assignee"
+        reporter: "Reporter"
+        collaborators: "Collaborators"
+        project: "Project"
+    comment:
+        page:
+            edit:
+                title: "Commnet edit"
+        grid:
+            body: "Message"
+            created: "Created"
+            author: "Author"
+            action: "Action"
+    parent: "Parent Issue:"
+    error:
+        invalidCodeValue: "Code can contain symbols a-zA-Z0-9-"

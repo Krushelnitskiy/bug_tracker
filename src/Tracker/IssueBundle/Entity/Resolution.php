@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 19.02.15
- * Time: 18:59
- */
 
 namespace Tracker\IssueBundle\Entity;
 
@@ -16,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="issue_resolution")
  * @ORM\Entity
  */
-
 class Resolution
 {
     const RESOLUTION_FIXED = 'Fixed';
@@ -25,6 +18,8 @@ class Resolution
     const RESOLUTION_WONT_DO = 'Won`t done';
 
     /**
+     * @var integer $id
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -32,7 +27,7 @@ class Resolution
     protected $id;
 
     /**
-     * @var string
+     * @var string $value
      *
      * @ORM\Column(name="value", type="string", unique=true)
      */

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 19.02.15
- * Time: 18:59
- */
 
 namespace Tracker\IssueBundle\Entity;
 
@@ -16,15 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="issue_status")
  * @ORM\Entity(repositoryClass="Tracker\IssueBundle\Entity\StatusRepository")
  */
-
 class Status
 {
     const STATUS_OPEN = 'Open';
     const STATUS_IN_PROGRESS = 'In progress';
     const STATUS_CLOSED = 'Closed';
 
-
     /**
+     * @var integer $id
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -32,7 +26,7 @@ class Status
     protected $id;
 
     /**
-     * @var string
+     * @var string $value
      *
      * @ORM\Column(name="value", type="string", unique=true, nullable=false)
      */
@@ -52,6 +46,7 @@ class Status
      * Set value
      *
      * @param string $value
+     *
      * @return Status
      */
     public function setValue($value)

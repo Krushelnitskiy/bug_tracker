@@ -27,20 +27,22 @@ class IssueType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $projects = $options['projects'];
-        $project = isset($options['selectedProject']) ? $options['selectedProject'] : null ;
+        $project = array_key_exists('selectedProject', $options) ? $options['selectedProject'] : null ;
 
         /**
          * @var $user User
          */
         $user = $this->securityContext->getToken()->getUser();
         if (!$project) {
-            if ($builder->getData()->getId() == null) {
+            if ($builder->getData()->getId() === null) {
                     $project = $projects[0];
             } else {
                 $project = $builder->getData()->getProject();
@@ -57,7 +59,7 @@ class IssueType extends AbstractType
         $attributeType = $this->getAttributeType();
         $attributeSubmit = $this->getAttributeSubmit($builder);
 
-        if ($builder->getData()->getId() != null) {
+        if ($builder->getData()->getId() !== null) {
             $builder->add('status', 'entity', $attributeStatus);
             $builder->add('resolution', 'entity', $attributeResolution);
             if (Type::TYPE_STORY !== $builder->getData()->getType()->getValue()) {
@@ -78,6 +80,11 @@ class IssueType extends AbstractType
             ->add('save', 'submit', $attributeSubmit);
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     *
+     * @return array
+     */
     protected function getAttributeSubmit(FormBuilderInterface $builder)
     {
         if (!$builder->getData()->getid()) {
@@ -92,6 +99,7 @@ class IssueType extends AbstractType
     /**
      * @param Project $project
      * @param Project[] $projects
+     *
      * @return array
      */
     protected function getAttributeProject(Project $project, $projects)
@@ -110,6 +118,7 @@ class IssueType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param Project $project
      * @param User $user
+     *
      * @return array
      */
     protected function getAttributeReporter(FormBuilderInterface $builder, Project $project, User $user)
@@ -130,6 +139,7 @@ class IssueType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param Project $project
      * @param User $user
+     *
      * @return array
      */
     protected function getAttributeAssign(FormBuilderInterface $builder, Project $project, User $user)
@@ -150,6 +160,7 @@ class IssueType extends AbstractType
      * @param Project $project
      * @param User $authUser
      * @param User|null $candidateUser
+     *
      * @return User|User
      */
     protected function getSelectedUser(Project $project, User $authUser, $candidateUser)
@@ -191,6 +202,8 @@ class IssueType extends AbstractType
 
 
     /**
+     * {@inheritdoc}
+     *
      * @return array
      */
     protected function getAttributeResolution()
@@ -204,6 +217,8 @@ class IssueType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return array
      */
     protected function getDefaultAttribute()
@@ -219,6 +234,8 @@ class IssueType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -25,6 +25,8 @@ class IssueSubTaskType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -54,7 +56,7 @@ class IssueSubTaskType extends AbstractType
             'property' => 'username',
             'data' => $issueStory->getProject()->getMembers()->first()
         ));
-//
+
         $attributeAssign = array_merge($attribute, array(
             'class' => 'TrackerUserBundle:User',
             'property' => 'username',
@@ -68,11 +70,12 @@ class IssueSubTaskType extends AbstractType
             ->add('description', null, $attribute)
             ->add('reporter', null, $attributeReporter)
             ->add('assignee', null, $attributeAssign)
-            ->add('save', 'submit')
-            ;
+            ->add('save', 'submit');
     }
     
     /**
+     * {@inheritdoc}
+     *
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
