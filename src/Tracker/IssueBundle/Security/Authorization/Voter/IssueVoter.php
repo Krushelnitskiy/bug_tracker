@@ -23,7 +23,9 @@ class IssueVoter implements VoterInterface
     const CREATE_SUB_TASK = 'create_sub_task';
 
     /**
+     * {@inheritdoc }
      * @param string $attribute
+     *
      * @return bool
      */
     public function supportsAttribute($attribute)
@@ -37,7 +39,9 @@ class IssueVoter implements VoterInterface
     }
 
     /**
+     * {@inheritdoc }
      * @param string $class
+     *
      * @return bool
      */
     public function supportsClass($class)
@@ -48,9 +52,11 @@ class IssueVoter implements VoterInterface
     }
 
     /**
+     * {@inheritdoc }
      * @param TokenInterface $token
      * @param Issue $issue
      * @param array $attributes
+     *
      * @return int
      */
     public function vote(TokenInterface $token, $issue, array $attributes)

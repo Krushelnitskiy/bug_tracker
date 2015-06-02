@@ -5,6 +5,7 @@ namespace Tracker\ProjectBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Form\Form;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -55,7 +56,7 @@ class DefaultController extends Controller
 
     /**
      * Creates a new Project entity.
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @return array
      *
      * @Route("/", name="project_create")
@@ -92,7 +93,7 @@ class DefaultController extends Controller
      *
      * @param Project $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createCreateForm(Project $entity)
     {
@@ -299,7 +300,7 @@ class DefaultController extends Controller
     /**
      * Creates a form to edit a Project entity.
      * @param Project $entity The entity
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createEditForm(Project $entity)
     {
@@ -315,7 +316,7 @@ class DefaultController extends Controller
     /**
      * Edits an existing Project entity.
      * @param $project Project,
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return array
      *

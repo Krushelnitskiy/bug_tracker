@@ -203,8 +203,9 @@ class IssueType extends AbstractType
         ));
     }
 
-
-
+    /**
+     * @return array
+     */
     protected function getDefaultAttribute()
     {
         return array(

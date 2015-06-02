@@ -22,7 +22,9 @@ class CommentVoter implements VoterInterface
     const DELETE = 'delete';
 
     /**
+     * {@inheritdoc}
      * @param string $attribute
+     *
      * @return bool
      */
     public function supportsAttribute($attribute)
@@ -36,7 +38,9 @@ class CommentVoter implements VoterInterface
     }
 
     /**
+     * {@inheritdoc}
      * @param string $class
+     *
      * @return bool
      */
     public function supportsClass($class)
@@ -47,9 +51,11 @@ class CommentVoter implements VoterInterface
     }
 
     /**
+     * {@inheritdoc}
      * @param TokenInterface $token
      * @param Comment $comment
      * @param array $attributes
+     *
      * @return int
      */
     public function vote(TokenInterface $token, $comment, array $attributes)
@@ -114,24 +120,6 @@ class CommentVoter implements VoterInterface
 
         return false;
     }
-
-//    public function userCanCreate(User $user, $issue)
-//    {
-//        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_ADMINISTRATOR')) {
-//            return true;
-//        }
-//        if ($user->hasRole('ROLE_MANAGER')) {
-//            return true;
-//        }
-//
-//        if ($user->hasRole("ROLE_OPERATOR") && $issue->getProject()->getMembers()->contains($user)) {
-//            return true;
-//        }
-//
-//
-//        return false;
-//    }
-
 
     /**
      * @param User $user

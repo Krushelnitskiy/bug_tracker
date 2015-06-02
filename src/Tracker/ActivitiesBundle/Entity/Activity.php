@@ -29,7 +29,6 @@ class Activity
      */
     protected $event;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")

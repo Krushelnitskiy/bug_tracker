@@ -515,12 +515,12 @@ class Issue
     /**
      * Add commet
      *
-     * @param \Tracker\IssueBundle\Entity\Comment $commet
+     * @param \Tracker\IssueBundle\Entity\Comment $comment
      * @return Issue
      */
-    public function addComment(Comment $commet)
+    public function addComment(Comment $comment)
     {
-        $this->comment[] = $commet;
+        $this->comment[] = $comment;
 
         return $this;
     }

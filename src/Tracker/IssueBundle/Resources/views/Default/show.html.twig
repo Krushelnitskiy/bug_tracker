@@ -8,33 +8,33 @@
 {% block body -%}
     <h3>{{ "issue.page.view.title"|trans }}</h3>
 
-    <p>
-            <a href="{{ path('issue') }}">
-                {{ "issue.action.back"|trans }}
-            </a>
+	<p>
+		<a href="{{ path('issue') }}">
+			{{ "issue.action.back"|trans }}
+		</a>
 
-            {%  if is_granted("edit", entity) %}
-                |
-                <a href="{{ path('issue_edit', { 'issue': entity.code }) }}">
-                    {{ "issue.action.edit"|trans }}
-                </a>
-            {% endif %}
+		{% if is_granted("edit", entity) %}
+			|
+			<a href="{{ path('issue_edit', { 'issue': entity.code }) }}">
+				{{ "issue.action.edit"|trans }}
+			</a>
+		{% endif %}
 
-            {% if is_granted("create_sub_task", entity) %}
-                |
-                <a href="{{ path('issue_new_sub_task', { 'issue': entity.code }) }}">
-                    {{ "issue.action.create_sub_task"|trans }}
-                </a>
-            {% endif %}
+		{% if is_granted("create_sub_task", entity) %}
+			|
+			<a href="{{ path('issue_new_sub_task', { 'issue': entity.code }) }}">
+				{{ "issue.action.create_sub_task"|trans }}
+			</a>
+		{% endif %}
 
-
-            {% if entity.parent %}
-                |
-                {{ "issue.parent"|trans }} <a href="{{ path('issue_show', { 'issue': entity.parent.code }) }}">
-                    {{ entity.parent.code }} - {{ entity.parent.summary }}
-                </a>
-            {% endif %}
-    </p>
+		{% if entity.parent %}
+			|
+			{{ "issue.parent"|trans }}
+			<a href="{{ path('issue_show', { 'issue': entity.parent.code }) }}">
+				{{ entity.parent.code }} - {{ entity.parent.summary }}
+			</a>
+		{% endif %}
+	</p>
 
     <table class="record_properties table">
         <tbody>
