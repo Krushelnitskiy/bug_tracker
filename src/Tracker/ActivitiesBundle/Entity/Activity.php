@@ -17,6 +17,10 @@ use Tracker\ActivitiesBundle\Entity;
  */
 class Activity
 {
+    const CREATE_NEW_ISSUE = 'activity.event.create_new_issue';
+    const CHANGED_STATUS_TO = 'activity.event.changed_status_to';
+    const CREATED_COMMENT = 'activity.event.created_comment';
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 23.02.15
- * Time: 18:58
- */
 
 namespace Tracker\IssueBundle\Security\Authorization\Voter;
 
@@ -23,10 +17,7 @@ class IssueVoter implements VoterInterface
     const CREATE_SUB_TASK = 'create_sub_task';
 
     /**
-     * {@inheritdoc }
-     * @param string $attribute
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function supportsAttribute($attribute)
     {
@@ -39,10 +30,7 @@ class IssueVoter implements VoterInterface
     }
 
     /**
-     * {@inheritdoc }
-     * @param string $class
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function supportsClass($class)
     {
@@ -52,12 +40,7 @@ class IssueVoter implements VoterInterface
     }
 
     /**
-     * {@inheritdoc }
-     * @param TokenInterface $token
-     * @param Issue $issue
-     * @param array $attributes
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function vote(TokenInterface $token, $issue, array $attributes)
     {
@@ -85,22 +68,14 @@ class IssueVoter implements VoterInterface
 
         switch($attribute) {
             case self::VIEW:
-                if ($this->userCanView($user, $issue)) {
-                    return self::ACCESS_GRANTED;
-                }
-                break;
             case self::CREATE:
-                if ($this->userCanCreate($user, $issue)) {
-                    return self::ACCESS_GRANTED;
-                }
-                break;
             case self::EDIT:
-                if ($this->userCanEdit($user, $issue)) {
+                if ($this->userHasAccess($user, $issue)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
             case self::CREATE_SUB_TASK:
-                if ($issue->getType()->getValue() === Type::TYPE_STORY && $this->userCanCreate($user, $issue)) {
+                if ($issue->getType()->getValue() === Type::TYPE_STORY && $this->userHasAccess($user, $issue)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
@@ -110,17 +85,14 @@ class IssueVoter implements VoterInterface
     }
 
     /**
-     * @param User $user
-     * @param Issue $issue
+     * @param $user
+     * @param $issue
+     *
      * @return bool
      */
-    public function userCanView($user, $issue)
+    protected function userHasAccess($user, $issue)
     {
-        if ($user->hasRole(User::ROLE_ADMIN)) {
-            return true;
-        }
-
-        if ($user->hasRole(User::ROLE_MANAGER)) {
+        if ($this->isSuperUser($user)) {
             return true;
         }
 
@@ -133,10 +105,10 @@ class IssueVoter implements VoterInterface
 
     /**
      * @param User $user
-     * @param Issue $issue
+     *
      * @return bool
      */
-    public function userCanEdit($user, $issue)
+    protected function isSuperUser(User $user)
     {
         if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
@@ -146,39 +118,13 @@ class IssueVoter implements VoterInterface
             return true;
         }
 
-        if ($this->operatorHasAccess($user, $issue)) {
-            return true;
-        }
-
-
         return false;
     }
 
     /**
      * @param User $user
      * @param Issue $issue
-     * @return bool
-     */
-    public function userCanCreate($user, $issue)
-    {
-        if ($user->hasRole(User::ROLE_ADMIN)) {
-            return true;
-        }
-
-        if ($user->hasRole(User::ROLE_MANAGER)) {
-            return true;
-        }
-
-        if ($this->operatorHasAccess($user, $issue)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param User $user
-     * @param Issue $issue
+     *
      * @return bool
      */
     protected function operatorHasAccess($user, $issue)

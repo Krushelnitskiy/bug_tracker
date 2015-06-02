@@ -23,9 +23,6 @@ class CommentVoter implements VoterInterface
 
     /**
      * {@inheritdoc}
-     * @param string $attribute
-     *
-     * @return bool
      */
     public function supportsAttribute($attribute)
     {
@@ -39,9 +36,6 @@ class CommentVoter implements VoterInterface
 
     /**
      * {@inheritdoc}
-     * @param string $class
-     *
-     * @return bool
      */
     public function supportsClass($class)
     {
@@ -52,11 +46,6 @@ class CommentVoter implements VoterInterface
 
     /**
      * {@inheritdoc}
-     * @param TokenInterface $token
-     * @param Comment $comment
-     * @param array $attributes
-     *
-     * @return int
      */
     public function vote(TokenInterface $token, $comment, array $attributes)
     {
@@ -87,12 +76,12 @@ class CommentVoter implements VoterInterface
 
         switch($attribute) {
             case self::EDIT:
-                if ($this->userCanEdit($user, $comment)) {
+                if ($this->userHasAccess($user, $comment)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
             case self::DELETE:
-                if ($this->userCanDelete($user, $comment)) {
+                if ($this->userHasAccess($user, $comment)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
@@ -104,17 +93,16 @@ class CommentVoter implements VoterInterface
     /**
      * @param User $user
      * @param comment $comment
+     *
      * @return bool
      */
-    public function userCanEdit($user, $comment)
+    public function userHasAccess($user, $comment)
     {
         if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;
         }
 
-        $userIsAuthor = $this->userIsAuthor($user, $comment);
-
-        if ($userIsAuthor) {
+        if ($this->userIsAuthor($user, $comment)) {
             return true;
         }
 
@@ -124,26 +112,7 @@ class CommentVoter implements VoterInterface
     /**
      * @param User $user
      * @param Comment $comment
-     * @return bool
-     */
-    public function userCanDelete($user, $comment)
-    {
-        if ($user->hasRole(User::ROLE_ADMIN)) {
-            return true;
-        }
-
-        $userIsAuthor = $this->userIsAuthor($user, $comment);
-
-        if ($userIsAuthor) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param User $user
-     * @param Comment $comment
+     *
      * @return bool
      */
     protected function userIsAuthor($user, $comment)

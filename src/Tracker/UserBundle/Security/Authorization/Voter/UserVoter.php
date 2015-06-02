@@ -73,12 +73,12 @@ class UserVoter implements VoterInterface
                 }
                 break;
             case self::CREATE:
-                if ($this->userCanCreate($currentUser)) {
+                if ($this->isSuperUser($currentUser)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
             case self::EDIT:
-                if ($this->userCanEdit($currentUser)) {
+                if ($this->isSuperUser($currentUser)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
@@ -107,22 +107,10 @@ class UserVoter implements VoterInterface
 
     /**
      * @param User $user
+     *
      * @return bool
      */
-    public function userCanEdit(User $user)
-    {
-        if ($user->hasRole(User::ROLE_ADMIN)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param User $user
-     * @return bool
-     */
-    public function userCanCreate(User $user)
+    public function isSuperUser(User $user)
     {
         if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;

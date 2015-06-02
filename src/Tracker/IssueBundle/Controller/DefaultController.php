@@ -194,6 +194,7 @@ class DefaultController extends Controller
      * Finds and displays a Issue entity.
      *
      * @param $issue Issue
+     *
      * @Route("/{issue}", name="issue_show")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
@@ -222,6 +223,7 @@ class DefaultController extends Controller
      * Displays a form to edit an existing Issue entity.
      *
      * @param Issue $issue
+     *
      * @Route("/{issue}/edit", name="issue_edit")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
@@ -259,6 +261,7 @@ class DefaultController extends Controller
      *
      * @param Issue $issue
      * @param Request $request
+     *
      * @Route("/{issue}", name="issue_update")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("PUT")
@@ -303,6 +306,7 @@ class DefaultController extends Controller
      *
      * @param Request $request
      * @param Issue $issue
+     *
      * @Route("/comment/{issue}", name="issue_comment_create")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("POST")
@@ -345,6 +349,7 @@ class DefaultController extends Controller
      * @param Request $request
      * @param Issue $issue
      * @param Comment $comment
+     *
      * @Route("/{issue}/comment/{comment}", name="issue_comment_delete")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
@@ -367,6 +372,7 @@ class DefaultController extends Controller
     /**
      * @param Comment $comment
      * @param integer $issueId
+     *
      * @return \Symfony\Component\Form\Form
      */
     private function createCreateCommentForm(Comment $comment, $issueId)

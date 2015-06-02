@@ -3,6 +3,7 @@
 namespace Tracker\ActivitiesBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+
 use Tracker\UserBundle\Entity\User;
 
 /**
@@ -13,6 +14,11 @@ use Tracker\UserBundle\Entity\User;
  */
 class ActivityRepository extends EntityRepository
 {
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
     public function findAvailableForUser(User $user)
     {
         $qb = $this->createQueryBuilder('activity');
