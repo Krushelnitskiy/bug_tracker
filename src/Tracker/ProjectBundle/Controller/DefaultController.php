@@ -2,7 +2,6 @@
 
 namespace Tracker\ProjectBundle\Controller;
 
-use Proxies\__CG__\Tracker\IssueBundle\Entity\Issue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -15,6 +14,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Tracker\ProjectBundle\Entity\Project;
 use Tracker\ProjectBundle\Entity\ProjectRepository;
 use Tracker\ProjectBundle\Form\ProjectType;
+use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\Status;
+use Tracker\IssueBundle\Entity\Issue;
 
 /**
  * Project controller.
@@ -197,7 +199,7 @@ class DefaultController extends Controller
         $entity = new Issue();
 
         $form = $this->createForm('tracker_issueBundle_issue', $entity, array(
-            'action' => $this->generateUrl('issue_create'),
+            'action' => $this->generateUrl('project_create_issue', ['project'=>$project->getCode()]),
             'method' => 'POST',
             'projects' => [$project],
             'selectedProject' => $project
@@ -207,6 +209,69 @@ class DefaultController extends Controller
             'project' => $project,
             'entity' => $entity,
             'form' => $form->createView()
+        );
+    }
+
+    /**
+     * Creates a new Issue entity.
+     * @param Request $request
+     * @param $project Project
+     *
+     * @Route("/{project}/issue/new", name="project_create_issue")
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
+     * @Method("POST")
+     * @Template("TrackerIssueBundle:Default:new.html.twig")
+     * @return array
+     */
+    public function createIssueAction(Request $request, $project)
+    {
+
+
+        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+
+        $entity = new Issue();
+        /**
+         * @var $user User
+         */
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $projects = array();
+        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
+            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
+        } else {
+            $projects = $user->getProject();
+        }
+
+        $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
+            'action' => $this->generateUrl('project_new_issue', ['project'=>$project->getCode()]),
+            'method' => 'POST',
+            'projects' => $projects,
+            'selectedProject' => $project
+        ));
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity->setCreated(new \DateTime());
+            $entity->setUpdated(new \DateTime());
+
+            $entityStatus = $em->getRepository('TrackerIssueBundle:Status')->findOneByValue(Status::STATUS_OPEN);
+            $entity->setStatus($entityStatus);
+
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getCode())));
+        }
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView()
         );
     }
 

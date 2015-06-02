@@ -105,13 +105,11 @@ class DefaultController extends Controller
      */
     public function createAction(Request $request)
     {
-
-        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $entity = new Issue();
 
+        if (false === $this->get('security.authorization_checker')->isGranted('create', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
         /**
          * @var $user User
          */
@@ -121,6 +119,8 @@ class DefaultController extends Controller
         $projects = array();
         if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
             $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
+        } else {
+            $projects = $user->getProject();
         }
 
         $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
@@ -269,11 +269,18 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
+        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
+            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
+        } else {
+            $projects = $user->getProject();
+        }
 
         $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
             'action' => $this->generateUrl('issue_update', array('issue' => $issue->getCode())),
-                'method' => 'PUT'
+                'method' => 'PUT',
+                'projects' => $projects
             ));
         $editForm->handleRequest($request);
 

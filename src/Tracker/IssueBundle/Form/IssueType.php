@@ -51,13 +51,15 @@ class IssueType extends AbstractType
         $attributeProject = $this->getAttributeProject($project, $projects);
         $attributePriority = $this->getAttributePriority();
         $attributeStatus = $this->getAttributeStatus();
+        $attributeResolution = $this->getAttributeResolution();
         $attributeReporter = $this->getAttributeReporter($builder, $project, $user);
         $attributeAssign = $this->getAttributeAssign($builder, $project, $user);
         $attributeType = $this->getAttributeType();
         $attributeSubmit = $this->getAttributeSubmit($builder);
 
-        if ($builder->getData()->getid() != null) {
+        if ($builder->getData()->getId() != null) {
             $builder->add('status', 'entity', $attributeStatus);
+            $builder->add('resolution', 'entity', $attributeResolution);
             if (Type::TYPE_STORY !== $builder->getData()->getType()->getValue()) {
                 $builder->add('type', 'entity', $attributeType);
             }
@@ -186,6 +188,22 @@ class IssueType extends AbstractType
             'property' => 'value'
         ));
     }
+
+
+    /**
+     * @return array
+     */
+    protected function getAttributeResolution()
+    {
+        $attribute = $this->getDefaultAttribute();
+
+        return array_merge($attribute, array(
+            'class' => 'TrackerIssueBundle:Resolution',
+            'property' => 'value'
+        ));
+    }
+
+
 
     protected function getDefaultAttribute()
     {
