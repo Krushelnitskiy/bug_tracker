@@ -225,12 +225,9 @@ class DefaultController extends Controller
      */
     public function createIssueAction(Request $request, $project)
     {
-
-
         if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
             throw new AccessDeniedException('Unauthorised access!');
         }
-
 
         $entity = new Issue();
         /**
@@ -266,7 +263,7 @@ class DefaultController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getCode())));
+            return $this->redirect($this->generateUrl('project_issues', array('project' => $project->getCode())));
         }
 
         return array(
