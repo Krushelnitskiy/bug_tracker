@@ -4,6 +4,7 @@ namespace Tracker\IssueBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,6 +31,10 @@ class CommentController extends Controller
      */
     public function editAction($comment)
     {
+        if (false === $this->get('security.authorization_checker')->isGranted('edit', $comment)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $form  = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
             'action' => $this->generateUrl('issue_comment_update', array('comment'=>$comment->getId())),
             'method' => 'PUT'

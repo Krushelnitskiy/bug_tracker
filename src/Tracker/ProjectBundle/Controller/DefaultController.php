@@ -35,6 +35,10 @@ class DefaultController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
+        if (!$user) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         /**
          * @var $projectRepository ProjectRepository
          */
