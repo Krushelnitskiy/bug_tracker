@@ -246,7 +246,7 @@ class DefaultController extends Controller
 
         $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
                 'action' => $this->generateUrl('issue_update', array('issue' => $issue->getCode())),
-                'method' => 'PUT',
+                'method' => 'POST',
                 'projects' => $projects
         ));
 
@@ -264,7 +264,7 @@ class DefaultController extends Controller
      *
      * @Route("/{issue}", name="issue_update")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
-     * @Method("PUT")
+     * @Method("POST")
      * @Template("TrackerIssueBundle:Default:edit.html.twig")
      * @return array
      */
@@ -284,7 +284,7 @@ class DefaultController extends Controller
 
         $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
             'action' => $this->generateUrl('issue_update', array('issue' => $issue->getCode())),
-                'method' => 'PUT',
+                'method' => 'POST',
                 'projects' => $projects
             ));
         $editForm->handleRequest($request);

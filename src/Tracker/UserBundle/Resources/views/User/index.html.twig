@@ -8,16 +8,16 @@
     <h3>{{ 'user.page.list.title'|trans }}</h3>
 
     <p>
-        <a href="{{ path('user_new') }}">
-            {{ "user.action.create"|trans }}
-        </a>
+	    {% if is_granted('edit', entity) %}
+	        <a href="{{ path('user_new') }}">
+	            {{ "user.action.create"|trans }}
+	        </a>
+	    {% endif %}
     </p>
 
     <table class="records_list table table-bordered grid-user">
         <thead>
         <tr>
-            <th>{{ "user.grid.id"|trans }}</th>
-            <th></th>
             <th>{{ "user.grid.username"|trans }}</th>
             <th>{{ "user.grid.fullName"|trans }}</th>
             <th>{{ "user.grid.email"|trans }}</th>
@@ -41,15 +41,16 @@
             {% endif %}
 
             <tr>
-                <td><a href="{{ pathShowUser }}">{{ entity.id }}</a></td>
                 <td>
-                    {% if entity.getWebPath() %}
-                        <a href="{{ pathShowUser }}">
-                            <img src="{{ entity.getWebPath() }}" width="64"/>
-                        </a>
-                    {% endif %}
+	                {% set pathShowUser = path('user_show', { 'user': entity.id }) %}
+
+	                {% if entity.getWebPath() %}
+		                <a href="{{ pathShowUser }}" class="avatar">
+			                <img src="{{ entity.getWebPath() }}"  width="64"/>
+		                </a>
+	                {% endif %}
+	                <a href="{{ pathShowUser }}">{{ entity.username }}</a>
                 </td>
-                <td><a href="{{ pathShowUser }}">{{ entity.username }}</a></td>
                 <td>{{ entity.fullName }}</td>
                 <td>{{ entity.email }}</td>
                 <td>{{ entity.roles[0]|trans }}</td>

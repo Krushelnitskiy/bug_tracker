@@ -88,6 +88,8 @@ class Issue
     /**
      * @var User $reporter
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
      **/
@@ -96,6 +98,7 @@ class Issue
     /**
      * @var User $assignee
      *
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="assignedIssue")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
      **/
@@ -104,7 +107,7 @@ class Issue
     /**
      * @var User[] $children
      *
-     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="issue")
+     * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="assignedIssue")
      * @ORM\JoinTable(name="issue_collaborator")
      **/
     protected $collaborators;

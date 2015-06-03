@@ -31,7 +31,8 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('view', new User())) {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
@@ -39,7 +40,8 @@ class UserController extends Controller
         $entities = $em->getRepository('TrackerUserBundle:User')->findAll();
 
         return array(
-            'entities' => $entities
+            'entities' => $entities,
+            'entity' => new User()
         );
     }
 

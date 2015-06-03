@@ -230,7 +230,7 @@ class DefaultController extends Controller
      * @Route("/{project}/issue/new", name="project_create_issue")
      * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method("POST")
-     * @Template("TrackerIssueBundle:Default:new.html.twig")
+     * @Template("TrackerProjectBundle:Default:newIssue.html.twig")
      * @return array
      */
     public function createIssueAction(Request $request, $project)
@@ -278,6 +278,7 @@ class DefaultController extends Controller
 
         return array(
             'entity' => $entity,
+            'project' => $project,
             'form'   => $form->createView()
         );
     }

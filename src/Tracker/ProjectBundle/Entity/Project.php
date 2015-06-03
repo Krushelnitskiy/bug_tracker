@@ -58,7 +58,7 @@ class Project
 
     /**
      * @var User[] $code
-     *
+     * @Assert\NotBlank()
      * @ORM\ManyToMany(targetEntity="\Tracker\UserBundle\Entity\User", inversedBy="project")
      * @ORM\JoinTable(name="projects_users")
      **/

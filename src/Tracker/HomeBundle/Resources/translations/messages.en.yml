@@ -7,7 +7,7 @@ layout:
     title: "Home page"
     logged_in_as: "Logged in as"
     listIssue:
-        title: "List opened/ reopened issue"
+        title: "List opened/reopened issue"
         linkToAll: "All issues >>"
     listActivities:
         title: "Activities in projects"

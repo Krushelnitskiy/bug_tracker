@@ -26,17 +26,15 @@
 				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 					<a href="{{ path("project") }}">
 						{{ "layout.menu.projects"|trans }}
-					</a> |
+					</a>
+					|
 					<a href="{{ path("issue") }}">
 						{{ "layout.menu.myIssues"|trans }}
 					</a>
-
-					{% if is_granted("ROLE_ADMIN") %}
-						|
-						<a href="{{ path("user") }}">
-							{{ "layout.menu.users"|trans }}
-						</a>
-					{% endif %}
+					|
+					<a href="{{ path("user") }}">
+						{{ "layout.menu.users"|trans }}
+					</a>
 				{% endif %}
 			</div>
 		{% endblock menu %}
@@ -58,7 +56,6 @@
 					{% endif %}
 				</div>
 			{% endblock auth %}
-
 		</div>
 	</div>
 </nav>

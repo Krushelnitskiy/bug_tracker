@@ -96,9 +96,8 @@ class UserVoter implements VoterInterface
     public function userCanView(User $currentUser, User $user)
     {
         $response = false;
-        if ($currentUser->hasRole(User::ROLE_ADMIN) ||
-            $currentUser->getId() === $user->getId() ||
-            $currentUser->hasRole(User::ROLE_MANAGER)) {
+
+        if ($currentUser instanceof User) {
             $response = true;
         }
 
