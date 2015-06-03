@@ -4,6 +4,7 @@ namespace Tracker\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 use FOS\UserBundle\Model\User as BaseUser;
 
@@ -90,6 +91,7 @@ class User extends BaseUser
      * Add assignedIssue
      *
      * @param Issue $assignedIssue
+     *
      * @return array Issue
      */
     public function addAssignedIssue(Issue $assignedIssue)
@@ -136,7 +138,7 @@ class User extends BaseUser
     /**
      * Remove product
      *
-     * @param \Tracker\ProjectBundle\Entity\Project $product
+     * @param Project $product
      */
     public function removeProduct(Project $product)
     {
@@ -146,7 +148,7 @@ class User extends BaseUser
     /**
      * Get product
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getProject()
     {
@@ -157,6 +159,7 @@ class User extends BaseUser
      * Set path
      *
      * @param string $path
+     *
      * @return User
      */
     public function setPath($path)
@@ -265,7 +268,7 @@ class User extends BaseUser
     /**
      * Add project
      *
-     * @param \Tracker\ProjectBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return User
      */
@@ -279,7 +282,7 @@ class User extends BaseUser
     /**
      * Remove project
      *
-     * @param \Tracker\ProjectBundle\Entity\Project $project
+     * @param Project $project
      */
     public function removeProject(Project $project)
     {

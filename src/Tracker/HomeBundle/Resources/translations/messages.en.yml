@@ -12,3 +12,4 @@ layout:
     listActivities:
         title: "Activities in projects"
         linkToAll: "All ativity >>"
+    empty-result: "no data..."

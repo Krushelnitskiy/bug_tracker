@@ -112,6 +112,10 @@ class UserType extends AbstractType
             'invalid_message' => 'fos_user.password.mismatch'
         );
 
+        if ($builder->getData()->getid()) {
+            $attributes ['required'] = false;
+        }
+
         return $builder->create('plainPassword', 'repeated', $attributes);
     }
 

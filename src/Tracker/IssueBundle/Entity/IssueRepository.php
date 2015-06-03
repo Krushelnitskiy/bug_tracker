@@ -36,7 +36,8 @@ class IssueRepository extends EntityRepository
         $query = $this->createQueryBuilder('issue')
             ->leftJoin('issue.collaborators', 'c')
             ->where('c.id = :user_id')
-            ->setParameter('user_id', $user->getId());
+            ->setParameter('user_id', $user->getId())
+            ->setMaxResults(10);
 
         if (is_array($skipStatus) and count($skipStatus)>0) {
             $query->andWhere('issue.status not in (:skipStatus)')

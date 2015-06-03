@@ -28,6 +28,7 @@ class ActivityRepository extends EntityRepository
             ->leftJoin('p.members', 'm')
             ->where('m.id = :user_id')
             ->setParameter('user_id', $user->getId())
+            ->setMaxResults(10)
             ->getQuery();
 
         return $query->getResult();

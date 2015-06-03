@@ -22,15 +22,14 @@
 
         <tr>
             <td>
+	            {% set pathShowUser = path('user_show', { 'user': collaborator.id }) %}
 	            {% if collaborator.getWebPath() %}
-		            {% set pathShowUser = path('user_show', { 'user': collaborator.id }) %}
-
 			            <a href="{{ pathShowUser }}" class="avatar">
 				            <img src="{{ collaborator.getWebPath() }}"  width="64"/>
 			            </a>
 
 	            {% endif %}
-	            {{ collaborator.username }}
+	            <a href="{{ pathShowUser }}">{{ collaborator.username }}</a>
             </td>
             <td>{{ collaborator.email }}</td>
             <td>{{ collaborator.lastLogin|date('d.m.Y H:i:s') }}</td>
