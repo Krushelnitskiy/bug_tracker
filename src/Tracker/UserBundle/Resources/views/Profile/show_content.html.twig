@@ -3,9 +3,10 @@
         <img src="{{ user.getWebPath() }}" width="240"/>
     {% endif %}
 
-    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+    <p>{{ 'user.profile.show.username'|trans }}: {{ user.username }}</p>
 
-    <p>{{ 'profile.show.fullname'|trans }}: {{ user.fullName }}</p>
+    <p>{{ 'user.profile.show.fullName'|trans }}: {{ user.fullName }}</p>
 
-    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+    <p>{{ 'user.profile.show.email'|trans }}: {{ user.email }}</p>
+    <p>{{ 'user.profile.show.timezone'|trans }}: {{ user.timezone }}</p>
 </div>

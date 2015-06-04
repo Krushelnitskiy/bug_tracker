@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
+use Tracker\UserBundle\Entity\Timezone;
+
 class ProfileFormType extends AbstractType
 {
     /**
@@ -33,6 +35,11 @@ class ProfileFormType extends AbstractType
             'label_attr' => array('class' => 'col-sm-4 control-label'),
             'translation_domain' => 'FOSUserBundle',
             'attr' => array('class' => 'orm-control')
+        ))
+        ->add('timezone', 'choice', array(
+            'choices' => Timezone::$timezones,
+            'multiple' => false,
+            'required' => true
         ));
     }
 

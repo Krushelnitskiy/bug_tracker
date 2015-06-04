@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Tracker\UserBundle\Entity\Timezone;
 use Tracker\UserBundle\Form\DataTransformer\StringToArrayTransformer;
 
 class UserType extends AbstractType
@@ -37,7 +38,9 @@ class UserType extends AbstractType
         $attributeSubmit = $attributeDefault;
         unset($attributeSubmit['attr']);
 
-        $builder->add('email', 'email', $attributeDefault)
+        $builder
+            ->add($this->getTimeZone($builder))
+            ->add('email', 'email', $attributeDefault)
             ->add('username', null, $attributeDefault)
             ->add('fullName', null, $attributeDefault)
             ->add($this->getPlainPassword($builder))
@@ -50,6 +53,25 @@ class UserType extends AbstractType
         } else {
             $builder->add('save', 'submit', array('label' => 'issue.form.update'));
         }
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     *
+     * @return FormBuilderInterface
+     */
+    protected function getTimeZone(FormBuilderInterface $builder)
+    {
+        $attributeTimeZone = array_merge(
+            $this->getDefaultAttributes(),
+            array(
+                'choices' => Timezone::$timezones,
+                'multiple' => false,
+                'required' => true
+            )
+        );
+
+        return $builder->create('timezone', 'choice', $attributeTimeZone);
     }
 
     /**
@@ -66,6 +88,7 @@ class UserType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
+     *
      * @return FormBuilderInterface
      */
     protected function getEnabled(FormBuilderInterface $builder)
@@ -86,6 +109,7 @@ class UserType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
+     *
      * @return FormBuilderInterface
      */
     protected function getPlainPassword(FormBuilderInterface $builder)
@@ -121,6 +145,7 @@ class UserType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
+     *
      * @return \Symfony\Component\Form\FormConfigBuilderInterface
      */
     protected function getRoles(FormBuilderInterface $builder)

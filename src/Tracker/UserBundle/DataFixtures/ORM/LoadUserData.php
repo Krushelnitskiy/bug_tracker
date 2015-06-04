@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Tracker\UserBundle\Entity\User;
+use Tracker\UserBundle\Entity\Timezone;
 
 class LoadUserData extends AbstractFixture implements
     FixtureInterface,
@@ -47,6 +48,7 @@ class LoadUserData extends AbstractFixture implements
             $user->setFullName($item['fullName']);
             $user->addRole($item['role']);
             $user->setPassword($this->generatePassword($user));
+            $user->setTimezone(Timezone::TIMEZONE_EUROPE_KIEV);
             $user->setEnabled(1);
 
             $managerUsers->updateUser($user);

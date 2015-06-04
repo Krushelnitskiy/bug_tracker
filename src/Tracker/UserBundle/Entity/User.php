@@ -64,6 +64,13 @@ class User extends BaseUser
     protected $file;
 
     /**
+     * @var string $timezone
+     *
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $timezone;
+
+    /**
      * @var Issue[] $assignedIssue
      *
      * @ORM\OneToMany(targetEntity="\Tracker\IssueBundle\Entity\Issue", mappedBy="assignee")
@@ -122,31 +129,7 @@ class User extends BaseUser
     }
 
     /**
-     * Add product
-     *
-     * @param \Tracker\ProjectBundle\Entity\Project $product
-     *
-     * @return User
-     */
-    public function addProduct(Project $product)
-    {
-        $this->project[] = $product;
-
-        return $this;
-    }
-
-    /**
-     * Remove product
-     *
-     * @param Project $product
-     */
-    public function removeProduct(Project $product)
-    {
-        $this->project->removeElement($product);
-    }
-
-    /**
-     * Get product
+     * Get project
      *
      * @return Collection
      */
@@ -311,5 +294,21 @@ class User extends BaseUser
     public function getFullName()
     {
         return $this->fullName;
+    }
+
+    /**
+     * @param string $timezone
+     */
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimezone()
+    {
+        return $this->timezone;
     }
 }

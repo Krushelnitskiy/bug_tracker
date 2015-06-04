@@ -10,19 +10,6 @@ use Tracker\TestBundle\Test\WebTestCase;
  */
 class DefaultControllerTest extends WebTestCase
 {
-
-    public function testViewList()
-    {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'test'
-        ));
-
-        $client->request('GET', '/issue');
-        $crawler = $client->followRedirect();
-        self::assertContains($this->getReference('issue.story')->getSummary(), $crawler->html());
-    }
-
     public function testShow()
     {
         $client = static::createClient(array(), array(

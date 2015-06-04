@@ -26,6 +26,13 @@ user:
         role: "Role"
         status: "Status"
         fullName: "Full Name"
+        timezone: "Time Zone"
+    profile:
+        show:
+            email: "Email"
+            fullName: "Full Name"
+            username: "Username"
+            timezone: "Time Zone"
 
 security:
     login:
@@ -51,10 +58,3 @@ ROLE_ADMIN: Administrator
 ROLE_MANAGER: Manager
 ROLE_OPERATOR: Operator
 ROLE_USER: User
-
-
-profile:
-    show:
-        email: "Email"
-        fullName: "Full Name"
-        username: "Username"

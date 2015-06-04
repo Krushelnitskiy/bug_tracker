@@ -1,5 +1,6 @@
 {% extends '::base.html.twig' %}
 {% form_theme comment_form 'TrackerProjectBundle:Form:fields.html.twig' %}
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
 
 {% block title %}
     {{ "issue.page.view.title"|trans }}
@@ -64,11 +65,12 @@
             </tr>
             <tr>
                 <th>{{ "issue.grid.created"|trans }}</th>
-                <td>{{ entity.created|date('d.m.Y') }}</td>
+
+                <td>{{ UI.formatDateAndTimeZone(entity.created) }}</td>
             </tr>
             <tr>
                 <th>{{ "issue.grid.updated"|trans }}</th>
-                <td>{{ entity.updated|date('d.m.Y') }}</td>
+	            <td>{{ UI.formatDateAndTimeZone(entity.updated) }}</td>
             </tr>
             <tr>
                 <th>{{ "issue.grid.reporter"|trans }}</th>

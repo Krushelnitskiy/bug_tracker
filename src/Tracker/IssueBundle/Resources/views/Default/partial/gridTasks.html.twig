@@ -1,3 +1,5 @@
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
+
 <table class="table table-bordered">
 	<thead>
 	<tr>
@@ -19,8 +21,16 @@
 			<td><a href="{{ pathIssueView }}">{{ entity.summary }}</a></td>
 			<td>{{ entity.description }}</td>
 			<td>{{ entity.type.value }}</td>
-			<td>{% if entity.created %}{{ entity.created|date('d.m.Y H:i:s') }}{% endif %}</td>
-			<td>{% if entity.updated %}{{ entity.updated|date('d.m.Y H:i:s') }}{% endif %}</td>
+			<td>
+				{% if entity.created %}
+					{{ UI.formatDateAndTimeZone(entity.created) }}
+				{% endif %}
+			</td>
+			<td>
+				{% if entity.updated %}
+					{{ UI.formatDateAndTimeZone(entity.updated) }}
+				{% endif %}
+			</td>
 			<td><a href="{{ pathProjectView }}">{{ entity.project.label }}</a></td>
 		</tr>
 	{% endfor %}

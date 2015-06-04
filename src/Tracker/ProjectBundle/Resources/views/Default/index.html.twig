@@ -1,4 +1,5 @@
 {% extends '::base.html.twig' %}
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
 
 {% block title %}
     {{ "project.list"|trans }}
@@ -32,7 +33,7 @@
                 <td><a href="{{ pathProject }}">{{ entity.code }}</a></td>
                 <td><a href="{{ pathProject }}">{{ entity.label }}</a></td>
                 <td>{{ entity.summary }}</td>
-                <td>{{ entity.created|date('d.m.Y H:i:s') }}</td>
+	            <td>{{ UI.formatDateAndTimeZone(entity.created) }}</td>
             </tr>
         {% endfor %}
         </tbody>

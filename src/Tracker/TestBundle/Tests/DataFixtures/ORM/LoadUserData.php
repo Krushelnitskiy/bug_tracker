@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Tracker\UserBundle\Entity\Timezone;
 use Tracker\UserBundle\Entity\User;
 
 class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
@@ -44,6 +45,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
         $userAdmin->setPlainPassword($password);
         $userAdmin->setEnabled(true);
         $userAdmin->addRole(User::ROLE_ADMIN);
+        $userAdmin->setTimezone(Timezone::TIMEZONE_EUROPE_KIEV);
         $userManager->updateUser($userAdmin);
 
         /**
@@ -55,6 +57,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
         $userRoleManager->setPlainPassword($password);
         $userRoleManager->setEnabled(true);
         $userRoleManager->addRole(User::ROLE_MANAGER);
+        $userRoleManager->setTimezone(Timezone::TIMEZONE_EUROPE_KIEV);
         $userManager->updateUser($userRoleManager);
 
         /**
@@ -66,6 +69,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
         $userOperator->setPlainPassword($password);
         $userOperator->setEnabled(true);
         $userOperator->addRole(User::ROLE_OPERATOR);
+        $userOperator->setTimezone(Timezone::TIMEZONE_EUROPE_KIEV);
         $userManager->updateUser($userOperator);
 
         /**
@@ -77,6 +81,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
         $userOperatorNoProject->setPlainPassword($password);
         $userOperatorNoProject->setEnabled(true);
         $userOperatorNoProject->addRole(User::ROLE_OPERATOR);
+        $userOperatorNoProject->setTimezone(Timezone::TIMEZONE_EUROPE_KIEV);
         $userManager->updateUser($userOperatorNoProject);
 
         $this->addReference('user.admin', $userAdmin);

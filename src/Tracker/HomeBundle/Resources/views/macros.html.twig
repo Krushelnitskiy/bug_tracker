@@ -11,3 +11,13 @@
 		{{ entity.username }}
 	{% endif %}
 {% endmacro %}
+
+{#
+    Renders date in format d.m.Y H:i:s and applyes user timezone
+
+    parameters:
+        value: datetime
+#}
+{% macro formatDateAndTimeZone(value) %}
+	{{ value|date("d.m.Y H:i:s", app.user.timezone) }}
+{% endmacro %}

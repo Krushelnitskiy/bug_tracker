@@ -201,13 +201,13 @@ class DefaultController extends Controller
      * @Template()
      * @return array
      */
-    public function showAction($issue)
+    public function showAction(Issue $issue = null)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        if (false === $this->get('security.authorization_checker')->isGranted('view', $issue)) {
+        if (empty($issue) || false === $this->get('security.authorization_checker')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
+
+        $em = $this->getDoctrine()->getManager();
 
         $createCommentForm = $this->createCreateCommentForm(new Comment(), $issue->getCode());
         $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByIssue($issue);

@@ -1,3 +1,5 @@
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
+
 <table class="records_list table table-bordered">
     <thead>
     <tr>
@@ -32,7 +34,7 @@
 	            <a href="{{ pathShowUser }}">{{ collaborator.username }}</a>
             </td>
             <td>{{ collaborator.email }}</td>
-            <td>{{ collaborator.lastLogin|date('d.m.Y H:i:s') }}</td>
+            <td>{{ UI.formatDateAndTimeZone(collaborator.lastLogin) }}</td>
             <td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
         </tr>
     {% endfor %}

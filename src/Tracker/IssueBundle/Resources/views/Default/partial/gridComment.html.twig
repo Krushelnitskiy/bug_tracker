@@ -13,7 +13,7 @@
     {% for comment in comments %}
         <tr>
             <td>{{ comment.body }}</td>
-            <td>{{ comment.created|date("d.m.Y H:i:s") }}</td>
+            <td>{{ UI.formatDateAndTimeZone(comment.created) }}</td>
             <td>
 	            {{ UI.renderLinkUserPage(comment.author) }}
             </td>

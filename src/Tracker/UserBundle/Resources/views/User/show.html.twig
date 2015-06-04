@@ -1,4 +1,5 @@
 {% extends '::base.html.twig' %}
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
 
 {% block title %}
     {{ "user.page.view.title"|trans }} - {{ entity.username }}
@@ -28,8 +29,8 @@
     <table class="record_properties table">
         <tbody>
             <tr>
-                <th>{{ "user.grid.id"|trans }}</th>
-                <td>{{ entity.id }}</td>
+                <th>{{ "user.grid.timezone"|trans }}</th>
+                <td>{{ entity.timezone }}</td>
             </tr>
 
             <tr>
@@ -49,7 +50,7 @@
 
             <tr>
                 <th>{{ "user.grid.lastLogin"|trans }}</th>
-                <td>{{ entity.lastLogin|date("d.m.Y") }}</td>
+	            <td>{{ UI.formatDateAndTimeZone(entity.lastLogin) }}</td>
             </tr>
 
             <tr>

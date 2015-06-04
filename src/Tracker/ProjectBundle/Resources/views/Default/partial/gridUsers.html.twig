@@ -26,7 +26,9 @@
 				{{ UI.renderLinkUserPage(member) }}
 			</td>
 			<td>{{ member.email }}</td>
-			<td>{{ member.lastLogin|date('d.m.Y H:i:s') }}</td>
+
+			<td>{{ UI.formatDateAndTimeZone(member.lastLogin) }}</td>
+
 			<td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
 		</tr>
 	{% endfor %}

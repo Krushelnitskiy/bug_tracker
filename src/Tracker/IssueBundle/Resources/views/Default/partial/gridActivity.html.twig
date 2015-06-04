@@ -15,7 +15,7 @@
 	            <td>
 		            {{ UI.renderLinkUserPage(activity.user) }}
 	            </td>
-                <td>{{ activity.created|date('d.m.Y H:i:s') }}</a></td>
+	            <td>{{ UI.formatDateAndTimeZone(activity.created) }}</td>
             </tr>
     {% endfor %}
     </tbody>
