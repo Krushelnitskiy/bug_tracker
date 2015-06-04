@@ -12,18 +12,6 @@ use Tracker\TestBundle\Test\WebTestCase;
  */
 class OperatorTest extends WebTestCase
 {
-
-    public function testListIssue()
-    {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'operator.noProjects',
-            'PHP_AUTH_PW' => 'test'
-        ));
-
-        $crawler = $client->request('POST', '/issue/');
-        $this->assertContains('Unauthorised access!', $crawler->html());
-    }
-
     public function testCreateIssue()
     {
         $client = static::createClient(array(), array(
@@ -61,7 +49,7 @@ class OperatorTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-        $crawler = $client->request('POST', '/issue/' . $this->getReference('issue.story')->getCode());
+        $crawler = $client->request('POST', '/issue/' . $this->getReference('issue.story')->getCode().'/edit');
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
 
@@ -119,7 +107,7 @@ class OperatorTest extends WebTestCase
         $crawler = $client->request('GET', '/issue/' . $this->getReference('issue.story')->getCode().'/new');
         $this->assertContains('Unauthorised access!', $crawler->html());
 
-        $crawler = $client->request('POST', '/issue/' . $this->getReference('issue.story')->getCode());
+        $crawler = $client->request('POST', '/issue/' . $this->getReference('issue.story')->getCode().'/new');
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
 }

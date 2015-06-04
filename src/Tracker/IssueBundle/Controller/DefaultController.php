@@ -98,8 +98,8 @@ class DefaultController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/", name="issue_create")
-     * @Method("POST")
+     * @Route("/new", name="issue_new")
+     * @Method({"GET", "POST"})
      * @Template("TrackerIssueBundle:Default:new.html.twig")
      *
      * @return array
@@ -116,7 +116,6 @@ class DefaultController extends Controller
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
-        $projects = array();
         if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
             $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
         } else {
@@ -124,7 +123,7 @@ class DefaultController extends Controller
         }
 
         $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
-            'action' => $this->generateUrl('issue_create'),
+            'action' => $this->generateUrl('issue_new'),
             'method' => 'POST',
             'projects' => $projects
         ));
@@ -152,46 +151,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Displays a form to create a new Issue entity.
-     *
-     * @Route("/new", name="issue_new")
-     * @Method("GET")
-     *
-     * @Template()
-     */
-    public function newAction()
-    {
-        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        $entity = new Issue();
-
-        /**
-         * @var $user User
-         */
-        $user = $this->getUser();
-        $em = $this->getDoctrine()->getManager();
-
-        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
-            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
-        } else {
-            $projects = $user->getProject();
-        }
-
-        $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
-            'action' => $this->generateUrl('issue_create'),
-            'method' => 'POST',
-            'projects' => $projects
-        ));
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView()
-        );
-    }
-
-    /**
      * Finds and displays a Issue entity.
      *
      * @param $issue Issue
@@ -205,7 +164,8 @@ class DefaultController extends Controller
      */
     public function showAction(Issue $issue = null)
     {
-        if ($issue === true || false === $this->get('security.authorization_checker')->isGranted('view', $issue)) {
+        if ($issue === true ||
+            false === $this->get('security.authorization_checker')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
@@ -222,57 +182,19 @@ class DefaultController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Issue entity.
-     *
-     * @param Issue $issue
-     *
-     * @Route("/{issue}/edit", name="issue_edit")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
-     * @Method("GET")
-     * @Template()
-     *
-     * @return array
-     */
-    public function editAction($issue)
-    {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        $user = $this->getUser();
-        $em = $this->getDoctrine()->getManager();
-        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
-            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
-        } else {
-            $projects = $user->getProject();
-        }
-
-        $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
-                'action' => $this->generateUrl('issue_update', array('issue' => $issue->getCode())),
-                'method' => 'POST',
-                'projects' => $projects
-        ));
-
-        return array(
-            'entity'      => $issue,
-            'edit_form'   => $editForm->createView()
-        );
-    }
-
-    /**
      * Edits an existing Issue entity.
      *
      * @param Issue $issue
      * @param Request $request
      *
-     * @Route("/{issue}", name="issue_update")
+     * @Route("/{issue}/edit", name="issue_edit")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
-     * @Method("POST")
+     * @Method({"GET", "POST"})
      * @Template("TrackerIssueBundle:Default:edit.html.twig")
      *
      * @return array
      */
-    public function updateAction(Request $request, $issue)
+    public function editAction(Request $request, $issue)
     {
         if (false === $this->get('security.authorization_checker')->isGranted('edit', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -287,7 +209,7 @@ class DefaultController extends Controller
         }
 
         $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
-            'action' => $this->generateUrl('issue_update', array('issue' => $issue->getCode())),
+            'action' => $this->generateUrl('issue_edit', array('issue' => $issue->getCode())),
                 'method' => 'POST',
                 'projects' => $projects
             ));
@@ -391,47 +313,15 @@ class DefaultController extends Controller
     }
 
     /**
-     * Displays a form to create a new Issue entity.
-     *
-     * @param Issue $issue
-     *
-     * @Route("/{issue}/new", name="issue_new_sub_task")
-     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
-     * @Method("GET")
-     * @Template()
-     *
-     * @return array
-     */
-    public function newSubTaskAction($issue)
-    {
-        if (false === $this->get('security.authorization_checker')->isGranted(IssueVoter::CREATE_SUB_TASK, $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        $entity = new Issue();
-
-        $form  = $this->createForm('tracker_issueBundle_issueSubTask_form', $entity, array(
-            'action' => $this->generateUrl('issue_create_sub_task', array('issue'=>$issue->getCode())),
-            'method' => 'POST',
-            'issueStory' => $issue
-        ));
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView()
-        );
-    }
-
-    /**
      * Creates a new Issue entity.
      *
      * @param Request $request
      * @param Issue $issue
      *
-     * @Route("/{issue}", name="issue_create_sub_task")
+     * @Route("/{issue}/new", name="issue_new_sub_task")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
-     * @Method("POST")
-     * @Template("TrackerIssueBundle:Issue:new.html.twig")
+     * @Method({"GET", "POST"})
+     * @Template("TrackerIssueBundle:Default:newSubTask.html.twig")
      *
      * @return array
      */
@@ -443,10 +333,11 @@ class DefaultController extends Controller
 
         $entity = new Issue();
         $form  = $this->createForm('tracker_issueBundle_issueSubTask_form', $entity, array(
-            'action' => $this->generateUrl('issue_create_sub_task', array('issue'=>$issue->getCode())),
+            'action' => $this->generateUrl('issue_new_sub_task', array('issue'=>$issue->getCode())),
             'method' => 'POST',
             'issueStory' => $issue
         ));
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {

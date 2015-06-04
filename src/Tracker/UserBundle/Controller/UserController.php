@@ -79,9 +79,9 @@ class UserController extends Controller
      *
      * @return array
      */
-    public function showAction($user)
+    public function showAction(User $user = null)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('view', $user)) {
+        if ($user === true || false === $this->get('security.authorization_checker')->isGranted('view', $user)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 

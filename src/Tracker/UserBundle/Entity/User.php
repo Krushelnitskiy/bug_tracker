@@ -10,6 +10,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Tracker\IssueBundle\Entity\Issue;
 use Tracker\ProjectBundle\Entity\Project;
@@ -20,6 +21,8 @@ use Tracker\ProjectBundle\Entity\Project;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="fos_user")
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
  */
 class User extends BaseUser
 {

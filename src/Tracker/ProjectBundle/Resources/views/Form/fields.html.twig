@@ -101,6 +101,7 @@
 	<div class="col-sm-6">
 		{%- set type = type|default('email') -%}
 		{{ block('form_widget_simple') }}
+		{{- form_errors(form) -}}
 	</div>
 {%- endblock email_widget -%}
 
@@ -112,6 +113,7 @@
 	<div class="col-sm-6">
 		{%- set type = type|default('password') -%}
 		{{ block('form_widget_simple') }}
+		{{- form_errors(form) -}}
 	</div>
 {%- endblock password_widget -%}
 

@@ -61,11 +61,11 @@ class DefaultController extends Controller
      *
      * @return array
      *
-     * @Route("/", name="project_create")
-     * @Method("POST")
+     * @Route("/new", name="project_new")
+     * @Method({"GET", "POST"})
      * @Template("TrackerProjectBundle:Default:new.html.twig")
      */
-    public function createAction(Request $request)
+    public function newAction(Request $request)
     {
         if (false === $this->get('security.authorization_checker')->isGranted('create', new Project())) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -100,35 +100,13 @@ class DefaultController extends Controller
     private function createCreateForm(Project $entity)
     {
         $form = $this->createForm(new ProjectType(), $entity, array(
-            'action' => $this->generateUrl('project_create'),
+            'action' => $this->generateUrl('project_new'),
             'method' => 'POST'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
-    }
-
-    /**
-     * Displays a form to create a new Project entity.
-     *
-     * @Route("/new", name="project_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        if (false === $this->get('security.authorization_checker')->isGranted('create', new Project())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        $entity = new Project();
-        $form = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form' => $form->createView()
-        );
     }
 
     /**
@@ -282,32 +260,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Project entity.
-     *
-     * @param $project Project
-     *
-     * @return array
-     *
-     * @Route("/{project}/edit", name="project_edit")
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($project)
-    {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', $project)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        $editForm = $this->createEditForm($project);
-
-        return array(
-            'entity' => $project,
-            'edit_form' => $editForm->createView()
-        );
-    }
-
-    /**
      * Creates a form to edit a Project entity.
      *
      * @param Project $entity The entity
@@ -317,7 +269,7 @@ class DefaultController extends Controller
     private function createEditForm(Project $entity)
     {
         $form = $this->createForm(new ProjectType(), $entity, array(
-            'action' => $this->generateUrl('project_update', array('project' => $entity->getCode())),
+            'action' => $this->generateUrl('project_edit', array('project' => $entity->getCode())),
             'method' => 'PUT'
         ));
 
@@ -334,12 +286,12 @@ class DefaultController extends Controller
      *
      * @return array
      *
-     * @Route("/{project}", name="project_update")
+     * @Route("/{project}/edit", name="project_edit")
      * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
-     * @Method("PUT")
+     * @Method({"GET", "POST"})
      * @Template("TrackerProjectBundle:Default:edit.html.twig")
      */
-    public function updateAction(Request $request, $project)
+    public function editAction(Request $request, $project)
     {
         if (false === $this->get('security.authorization_checker')->isGranted('edit', $project)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -380,17 +332,21 @@ class DefaultController extends Controller
     {
         $members = $project->getMembers();
         $newMembers = $request->request->get('tracker_projectBundle_project')['members'];
+        $newMembers = $newMembers ? $newMembers : [];
 
         $deletedMembers = [];
-        /**
-         * @var User $member
-         */
-        foreach ($members as $member) {
-            $id = (string)$member->getId();
-            if (!in_array($id, $newMembers, true) &&
-                $member->getAssignedIssue()->count() > 0
-            ) {
-                $deletedMembers[] = $member->getUsername();
+
+        if ($members->count()) {
+            /**
+             * @var User $member
+             */
+            foreach ($members as $member) {
+                $id = (string)$member->getId();
+                if (!in_array($id, $newMembers, true) &&
+                    $member->getAssignedIssue()->count() > 0
+                ) {
+                    $deletedMembers[] = $member->getUsername();
+                }
             }
         }
 
