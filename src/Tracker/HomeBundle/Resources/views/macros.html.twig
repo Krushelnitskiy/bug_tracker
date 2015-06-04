@@ -1,0 +1,13 @@
+{#
+    Renders link user
+
+    parameters:
+        entity: user
+#}
+{% macro renderLinkUserPage(entity) %}
+	{% if is_granted('view', entity) %}
+		<a href="{{ path('user_show', { 'user': entity.id }) }}">{{ entity.username }}</a>
+	{% else %}
+		{{ entity.username }}
+	{% endif %}
+{% endmacro %}

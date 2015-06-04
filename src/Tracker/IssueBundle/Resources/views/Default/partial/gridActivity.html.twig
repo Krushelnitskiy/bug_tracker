@@ -1,3 +1,5 @@
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
+
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -10,12 +12,9 @@
     {% for activity in activities %}
             <tr>
                 <td>{{ activity.event|trans }}</a></td>
-                {% if is_granted('view', activity.user) %}
-                    <td><a href="{{ path('user_show', { 'user': activity.user.id }) }}">{{ activity.user.username }}</a></td>
-                {% else %}
-                    <td>{{ activity.user.username }}</td>
-                {% endif %}
-
+	            <td>
+		            {{ UI.renderLinkUserPage(activity.user) }}
+	            </td>
                 <td>{{ activity.created|date('d.m.Y H:i:s') }}</a></td>
             </tr>
     {% endfor %}

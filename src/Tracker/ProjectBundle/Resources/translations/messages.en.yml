@@ -2,7 +2,7 @@ project:
     page:
         view:
             activity: "Activity"
-
+            members: "Members"
     project: 'Project'
     listIssue: "List Issues"
     page: 'Project code'

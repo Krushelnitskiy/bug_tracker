@@ -13,8 +13,9 @@ use Tracker\ProjectBundle\Entity\Project;
 
 /**
  * Class Issue
+ *
  * @package Tracker\IssueBundle\Entity
- * @ORM\Entity(repositoryClass="Tracker\IssueBundle\Entity\IssueRepository")
+ * @ORM\Entity(repositoryClass="Tracker\IssueBundle\Entity\Repository\IssueRepository")
  * @ORM\Table(name="issue")
  * @UniqueEntity("code")
  */

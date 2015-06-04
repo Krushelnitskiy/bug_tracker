@@ -1,3 +1,5 @@
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
+
 <table class="table comment table-bordered">
     <thead>
     <tr>
@@ -12,7 +14,9 @@
         <tr>
             <td>{{ comment.body }}</td>
             <td>{{ comment.created|date("d.m.Y H:i:s") }}</td>
-            <td>{{ comment.author.username }}</td>
+            <td>
+	            {{ UI.renderLinkUserPage(comment.author) }}
+            </td>
             <td>
                 {% if is_granted("delete", comment) %}
                     <a href="{{ path('issue_comment_delete', {"issue":entity.code, "comment":comment.id}) }}">{{ "issue.action.delete"|trans }}</a>

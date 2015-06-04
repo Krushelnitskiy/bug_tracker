@@ -45,7 +45,7 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $entities = $em->getRepository('TrackerIssueBundle:Issue')->findByCollaborator($user);
+        $entities = $em->getRepository('TrackerIssueBundle:Issue')->findByUser($user);
 
         return array(
             'entities' => $entities,

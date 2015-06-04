@@ -48,7 +48,7 @@ class DefaultController extends Controller
         $projectRepository = $entityManager->getRepository('TrackerProjectBundle:Project');
         $entities = $projectRepository->findByCollaborator($user);
 
-        return array (
+        return array(
             'entities' => $entities,
             'emptyEntity' => new Project()
         );
@@ -86,7 +86,7 @@ class DefaultController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         );
     }
 
@@ -123,11 +123,11 @@ class DefaultController extends Controller
         }
 
         $entity = new Project();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         );
     }
 
@@ -180,7 +180,7 @@ class DefaultController extends Controller
         }
 
         $issues = $em->getRepository('TrackerIssueBundle:Issue')->findByProject($project);
-        return  array(
+        return array(
             'entity' => $project,
             'entities' => $issues,
             'emptyEntity' => new Issue()
@@ -208,7 +208,7 @@ class DefaultController extends Controller
         }
 
         $form = $this->createForm('tracker_issueBundle_issue', $entity, array(
-            'action' => $this->generateUrl('project_create_issue', ['project'=>$project->getCode()]),
+            'action' => $this->generateUrl('project_create_issue', ['project' => $project->getCode()]),
             'method' => 'POST',
             'projects' => [$project],
             'selectedProject' => $project
@@ -253,8 +253,8 @@ class DefaultController extends Controller
             $projects = $user->getProject();
         }
 
-        $form  = $this->createForm('tracker_issueBundle_issue', $entity, array(
-            'action' => $this->generateUrl('project_new_issue', ['project'=>$project->getCode()]),
+        $form = $this->createForm('tracker_issueBundle_issue', $entity, array(
+            'action' => $this->generateUrl('project_new_issue', ['project' => $project->getCode()]),
             'method' => 'POST',
             'projects' => $projects,
             'selectedProject' => $project
@@ -279,7 +279,7 @@ class DefaultController extends Controller
         return array(
             'entity' => $entity,
             'project' => $project,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         );
     }
 
@@ -304,8 +304,8 @@ class DefaultController extends Controller
         $editForm = $this->createEditForm($project);
 
         return array(
-            'entity'      => $project,
-            'edit_form'   => $editForm->createView()
+            'entity' => $project,
+            'edit_form' => $editForm->createView()
         );
     }
 
@@ -327,6 +327,7 @@ class DefaultController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Project entity.
      *
@@ -342,11 +343,13 @@ class DefaultController extends Controller
      */
     public function updateAction(Request $request, $project)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         if (false === $this->get('security.authorization_checker')->isGranted('edit', $project)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $deletedMembers = $this->getDeletedMembers($project, $request);
 
         $editForm = $this->createEditForm($project);
         $editForm->handleRequest($request);
@@ -354,12 +357,44 @@ class DefaultController extends Controller
         if ($editForm->isValid()) {
             $entityManager->flush();
 
+            if (count($deletedMembers)) {
+                $this->addFlash(
+                    'notice',
+                    'You have deleted users ' . implode(',', $deletedMembers) . ' that are assigned to issues'
+                );
+            }
+
             return $this->redirect($this->generateUrl('project_show', array('project' => $project->getCode())));
         }
 
         return array(
-            'entity'      => $project,
-            'edit_form'   => $editForm->createView()
+            'entity' => $project,
+            'edit_form' => $editForm->createView()
         );
+    }
+
+    /**
+     * @param Project $project
+     * @param $request
+     * @return array
+     */
+    protected function getDeletedMembers(Project $project, $request)
+    {
+        $members = $project->getMembers();
+        $newMembers = $request->request->get('tracker_projectBundle_project')['members'];
+
+        $deletedMembers = [];
+        /**
+         * @var User $member
+         */
+        foreach ($members as $member) {
+            if (!in_array((string)$member->getid(), $newMembers, true) &&
+                $member->getAssignedIssue()->count() > 0
+            ) {
+                $deletedMembers[] = $member->getUsername();
+            }
+        }
+
+        return $deletedMembers;
     }
 }

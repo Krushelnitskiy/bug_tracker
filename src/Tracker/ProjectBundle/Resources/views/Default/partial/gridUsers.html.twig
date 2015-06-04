@@ -1,0 +1,34 @@
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
+
+<table class="record_properties table-bordered table">
+	<thead>
+	<tr>
+		<td>{{ "project.view.users.username"|trans }}</td>
+		<td>{{ "project.view.users.email"|trans }}</td>
+		<td>{{ "project.view.users.lastLogin"|trans }}</td>
+		<td>{{ "project.view.users.status"|trans }}</td>
+	</tr>
+	</thead>
+	<tbody class="table-striped">
+	{% for member in entity.members %}
+		{% if (member.enabled) %}
+			{% set statusClass = 'success' %}
+			{% set statusTitle = 'Activated' %}
+			{% set statusValue = '✔' %}
+		{% else %}
+			{% set statusClass = 'danger' %}
+			{% set statusTitle = 'Disabled' %}
+			{% set statusValue = '' %}
+		{% endif %}
+
+		<tr>
+			<td>
+				{{ UI.renderLinkUserPage(member) }}
+			</td>
+			<td>{{ member.email }}</td>
+			<td>{{ member.lastLogin|date('d.m.Y H:i:s') }}</td>
+			<td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>

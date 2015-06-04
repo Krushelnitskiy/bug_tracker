@@ -12,7 +12,7 @@ use Tracker\ActivitiesBundle\Entity;
 /**
  * Class Issue
  * @package Tracker\ActivitiesBundle\Entity
- * @ORM\Entity(repositoryClass="ActivityRepository")
+ * @ORM\Entity(repositoryClass="Tracker\ActivitiesBundle\Entity\Repository\ActivityRepository")
  * @ORM\Table(name="activity")
  */
 class Activity
