@@ -5,7 +5,7 @@ namespace Tracker\IssueBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Tracker\UserBundle\Entity\User;
 use Tracker\IssueBundle\Entity\Type;
@@ -14,14 +14,14 @@ use Tracker\ProjectBundle\Entity\Project;
 class IssueType extends AbstractType
 {
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
     private $securityContext;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface $securityContext
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(TokenStorageInterface $securityContext)
     {
         $this->securityContext = $securityContext;
     }
@@ -87,10 +87,9 @@ class IssueType extends AbstractType
      */
     protected function getAttributeSubmit(FormBuilderInterface $builder)
     {
+        $attributes = array('label' => 'issue.form.update');
         if (!$builder->getData()->getid()) {
             $attributes = array('label' => 'issue.form.create');
-        } else {
-            $attributes = array('label' => 'issue.form.update');
         }
 
         return $attributes;

@@ -5,21 +5,21 @@ namespace Tracker\IssueBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Tracker\IssueBundle\Entity\Issue;
 
 class IssueSubTaskType extends AbstractType
 {
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
     private $securityContext;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface $securityContext
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(TokenStorageInterface $securityContext)
     {
         $this->securityContext = $securityContext;
     }

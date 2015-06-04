@@ -156,6 +156,7 @@ class DefaultController extends Controller
      *
      * @Route("/new", name="issue_new")
      * @Method("GET")
+     *
      * @Template()
      */
     public function newAction()
@@ -199,11 +200,12 @@ class DefaultController extends Controller
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
+     *
      * @return array
      */
     public function showAction(Issue $issue = null)
     {
-        if (empty($issue) || false === $this->get('security.authorization_checker')->isGranted('view', $issue)) {
+        if ($issue === true || false === $this->get('security.authorization_checker')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
@@ -228,6 +230,7 @@ class DefaultController extends Controller
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
+     *
      * @return array
      */
     public function editAction($issue)
@@ -266,6 +269,7 @@ class DefaultController extends Controller
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("POST")
      * @Template("TrackerIssueBundle:Default:edit.html.twig")
+     *
      * @return array
      */
     public function updateAction(Request $request, $issue)
@@ -311,6 +315,7 @@ class DefaultController extends Controller
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("POST")
      * @Template("TrackerIssueBundle:Issue:edit.html.twig")
+     *
      * @return array
      */
     public function createCommentAction(Request $request, Issue $issue)
@@ -346,7 +351,6 @@ class DefaultController extends Controller
     /**
      * Deletes a Issue entity.
      *
-     * @param Request $request
      * @param Issue $issue
      * @param Comment $comment
      *
@@ -354,9 +358,10 @@ class DefaultController extends Controller
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
      * @Method("GET")
+     *
      * @return array
      */
-    public function deleteCommentAction(Request $request, $issue, $comment)
+    public function deleteCommentAction($issue, $comment)
     {
         if (false === $this->get('security.authorization_checker')->isGranted('delete', $comment)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -394,6 +399,8 @@ class DefaultController extends Controller
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
+     *
+     * @return array
      */
     public function newSubTaskAction($issue)
     {
@@ -425,6 +432,7 @@ class DefaultController extends Controller
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
      * @Method("POST")
      * @Template("TrackerIssueBundle:Issue:new.html.twig")
+     *
      * @return array
      */
     public function createSubTaskAction(Request $request, $issue)

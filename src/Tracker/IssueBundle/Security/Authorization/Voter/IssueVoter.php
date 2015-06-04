@@ -75,7 +75,7 @@ class IssueVoter implements VoterInterface
                 }
                 break;
             case self::CREATE_SUB_TASK:
-                if ($issue->getType()->getValue() === Type::TYPE_STORY && $this->userHasAccess($user, $issue)) {
+                if ($this->userHasAccess($user, $issue) && $issue->getType()->getValue() === Type::TYPE_STORY) {
                     return self::ACCESS_GRANTED;
                 }
                 break;

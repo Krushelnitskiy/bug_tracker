@@ -14,20 +14,20 @@ services:
     tracker_issueBundle_issue:
         class: Tracker\IssueBundle\Form\IssueType
         arguments:
-            - @security.context
+            - @security.token_storage
         tags:
             - { name: form.type, alias: tracker_issueBundle_issue }
 
     tracker_issueBundle_issueSubTask_form:
         class: Tracker\IssueBundle\Form\IssueSubTaskType
         arguments:
-            - @security.context
+            - @security.token_storage
         tags:
             - { name: form.type, alias: tracker_issueBundle_issueSubTask_form }
 
     tracker_issueBundle_comment_form:
         class: Tracker\IssueBundle\Form\IssueCommentType
         arguments:
-          - @security.context
+          - @security.token_storage
         tags:
           - { name: form.type, alias: tracker_issueBundle_comment_form }

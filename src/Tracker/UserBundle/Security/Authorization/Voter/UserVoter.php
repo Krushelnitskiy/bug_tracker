@@ -89,11 +89,10 @@ class UserVoter implements VoterInterface
 
     /**
      * @param User $currentUser
-     * @param User $user
      *
      * @return bool
      */
-    public function userCanView(User $currentUser, User $user)
+    public function userCanView(User $currentUser)
     {
         $response = false;
 

@@ -246,11 +246,9 @@ class DefaultController extends Controller
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
-        $projects = array();
+        $projects = $user->getProject();
         if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
             $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
-        } else {
-            $projects = $user->getProject();
         }
 
         $form = $this->createForm('tracker_issueBundle_issue', $entity, array(
@@ -388,7 +386,8 @@ class DefaultController extends Controller
          * @var User $member
          */
         foreach ($members as $member) {
-            if (!in_array((string)$member->getid(), $newMembers, true) &&
+            $id = (string)$member->getId();
+            if (!in_array($id, $newMembers, true) &&
                 $member->getAssignedIssue()->count() > 0
             ) {
                 $deletedMembers[] = $member->getUsername();
