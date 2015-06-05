@@ -176,7 +176,7 @@ class CommentController extends Controller
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function createCreateCommentForm(Comment $comment, $issueId, Project $project)
+    private function createCreateCommentForm(Comment $comment, $issueId, Project $project = null)
     {
         if ($project instanceof Project) {
             $routeParams = array('issue' => $issueId, 'project'=>$project->getCode());
