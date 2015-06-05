@@ -48,7 +48,7 @@ class CommentController extends Controller
         if ($project instanceof Project) {
             $routeParam = array('issue' => $comment->getIssue()->getCode(), 'project'=>$project->getCode());
             $editForm = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
-                'action' => $this->generateUrl('project_issue_comment_create', $routeParam).self::COMMENT_FORM_ANCHOR,
+                'action' => $this->generateUrl('project_issue_comment_edit', $routeParam).self::COMMENT_FORM_ANCHOR,
                 'method' => 'POST'
             ));
         } else {
