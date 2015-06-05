@@ -21,7 +21,8 @@ issue:
     action:
         create: "Create Issue"
         edit: "Edit"
-        back: "Back to the list"
+        back: "My issues"
+        backProject: "Project issues"
         delete: "Delete"
         create_sub_task: "Create sub task"
     grid:

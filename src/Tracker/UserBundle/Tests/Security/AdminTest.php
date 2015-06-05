@@ -43,7 +43,7 @@ class AdminTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-        $client->request('GET', '/user/test');
+        $client->request('GET', '/user/test/edit');
         $this->assertEquals(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
     }
 }

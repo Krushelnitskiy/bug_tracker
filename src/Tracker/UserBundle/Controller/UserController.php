@@ -81,7 +81,11 @@ class UserController extends Controller
      */
     public function showAction(User $user = null)
     {
-        if ($user === true || false === $this->get('security.authorization_checker')->isGranted('view', $user)) {
+        if ($user === null) {
+            throw $this->createNotFoundException('The user does not exist');
+        }
+
+        if (false === $this->get('security.authorization_checker')->isGranted('view', $user)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
@@ -130,7 +134,7 @@ class UserController extends Controller
     {
         $form = $this->createForm('tracker_userBundle_user', $entity, array(
             'action' => $this->generateUrl('user_update', array('user' => $entity->getId())),
-            'method' => 'PUT'
+            'method' => 'POST'
         ));
 
         return $form;
@@ -183,7 +187,7 @@ class UserController extends Controller
     {
         $form = $this->createForm('tracker_userBundle_user', $entity, array(
             'action' => $this->generateUrl('user_create'),
-            'method' => 'PUT'
+            'method' => 'POST'
         ));
 
         return $form;

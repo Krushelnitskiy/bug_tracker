@@ -12,74 +12,186 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Tracker\IssueBundle\Entity\Comment;
+use Tracker\IssueBundle\Entity\Issue;
+use Tracker\ProjectBundle\Entity\Project;
 
 /**
  * Comment controller.
- *
- * @Route("issue/comment")
  */
 class CommentController extends Controller
 {
     /**
      * Finds and displays a Comment entity.
      * @param Comment $comment
-     * @Route("/{comment}/edit", name="issue_comment_edit")
-     * @Method("GET")
+     * @param Issue $issue
+     * @param Project $project
+     *
+     * @Route("/issue/{issue}/comment/{comment}/edit", name="issue_comment_edit")
+     * @Route("/project/{project}/issue/{issue}/comment/{comment}/edit", name="project_issue_comment_edit")
+     *
      * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
+     *
+     * @Method({"GET", "POST"})
      * @Template()
+     *
      * @return array
      */
-    public function editAction($comment)
+    public function editAction(Request $request, $comment, Project $project = null)
     {
         if (false === $this->get('security.authorization_checker')->isGranted('edit', $comment)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $form  = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
-            'action' => $this->generateUrl('issue_comment_update', array('comment'=>$comment->getId())),
-            'method' => 'PUT'
-        ));
+        if ($project instanceof Project) {
+            $routeParam = array('issue' => $comment->getIssue()->getCode(), 'project'=>$project->getCode());
+            $editForm = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
+                'action' => $this->generateUrl('project_issue_comment_create', $routeParam),
+                'method' => 'POST'
+            ));
+        } else {
+            $routeParam = array('issue' => $comment->getIssue()->getCode(), 'comment'=>$comment->getId());
+            $editForm = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
+                'action' => $this->generateUrl('issue_comment_edit', $routeParam),
+                'method' => 'POST'
+            ));
+        }
+
+        $editForm->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+
+        if ($editForm->isValid()) {
+            $em->flush();
+
+            if ($project instanceof Project) {
+                $routeParam = array('project'=>$project->getCode(), 'issue' => $comment->getIssue()->getCode());
+                return $this->redirect($this->generateUrl('project_issue_show', $routeParam));
+            } else {
+                $routeParam = array('issue' => $comment->getIssue()->getCode());
+                return $this->redirect($this->generateUrl('issue_show', $routeParam));
+            }
+        }
 
         return array(
+            'project' => $project,
             'entity' => $comment,
-            'edit_form'=> $form->createView()
+            'edit_form' => $editForm->createView()
         );
     }
 
     /**
      * Edits an existing Issue entity.
-     * @param $comment Comment
+     *
      * @param Request $request
-     * @Route("/{comment}", name="issue_comment_update")
-     * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
-     * @Method("PUT")
-     * @Template("TrackerIssueBundle:Default:edit.html.twig")
+     * @param Issue $issue
+     * @param Project $project
+     *
+     * @Route("/issue/{issue}/comment", name="issue_comment_create")
+     * @Route("/project/{project}/issue/{issue}/comment", name="project_issue_comment_create")
+     *
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
+     *
+     * @Method("POST")
+     * @Template("TrackerIssueBundle:Issue:edit.html.twig")
+     *
      * @return array
      */
-    public function updateAction(Request $request, $comment)
+    public function createCommentAction(Request $request, Issue $issue, Project $project = null)
     {
-        if (false === $this->get('security.authorization_checker')->isGranted('edit', $comment)) {
+        if (false === $this->get('security.authorization_checker')->isGranted('create', $issue)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        $entity = new Comment();
+        $form = $this->createCreateCommentForm($entity, $issue->getCode(), $project);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $entity->setCreated(new \DateTime());
+            $author = $this->getUser();
+            $entity->setAuthor($author);
+            $entity->setIssue($issue);
+
+            $em->persist($entity);
+            $em->flush();
+
+            if ($project instanceof Project) {
+                $routeParam = array('project'=>$project->getCode(), 'issue' => $issue->getCode());
+                return $this->redirect($this->generateUrl('project_issue_show', $routeParam));
+            } else {
+                $routeParam = array('issue' => $entity->getIssue()->getCode());
+                return $this->redirect($this->generateUrl('issue_show', $routeParam));
+            }
+        }
+
+        return array(
+            'entity' => $entity->getIssue(),
+            'comment_form' => $form->createView()
+        );
+    }
+
+    /**
+     * Deletes a Issue entity.
+     *
+     * @param Issue $issue
+     * @param Comment $comment
+     * @param Project $project
+     *
+     * @Route("/issue/{issue}/comment/{comment}", name="issue_comment_delete")
+     * @Route("/project/{project}/issue/{issue}/comment/{comment}", name="project_issue_comment_delete")
+     *
+     * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
+     * @ParamConverter("comment", class="TrackerIssueBundle:Comment", options={"repository_method" = "find"})
+     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
+     * @Method("GET")
+     *
+     * @return array
+     */
+    public function deleteCommentAction($issue, $comment, Project $project = null)
+    {
+        if (false === $this->get('security.authorization_checker')->isGranted('delete', $comment)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
         $em = $this->getDoctrine()->getManager();
+        $em->remove($comment);
+        $em->flush();
 
-        $editForm = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
-            'action' => $this->generateUrl('issue_comment_update', array('comment'=>$comment->getId())),
-            'method' => 'PUT'
-        ));
-        $editForm->handleRequest($request);
+        if ($project instanceof Project) {
+            $routeParam = array('project'=>$project->getCode(), 'issue' => $issue->getCode());
+            return $this->redirect($this->generateUrl('project_issue_show', $routeParam));
+        } else {
+            $routeParam = array('issue' => $issue->getCode());
+            return $this->redirect($this->generateUrl('issue_show', $routeParam));
+        }
+    }
 
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('issue_show', array('issue' => $comment->getIssue()->getCode())));
+    /**
+     * @param Comment $comment
+     * @param integer $issueId
+     * @param Project $project
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createCreateCommentForm(Comment $comment, $issueId, Project $project)
+    {
+        if ($project instanceof Project) {
+            $routeParams = array('issue' => $issueId, 'project'=>$project->getCode());
+            $form = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
+                'action' => $this->generateUrl('project_issue_comment_create', $routeParams),
+                'method' => 'POST'
+            ));
+        } else {
+            $form = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
+                'action' => $this->generateUrl('issue_comment_create', array('issue' => $issueId)),
+                'method' => 'POST'
+            ));
         }
 
-        return array(
-            'entity'      => $comment,
-            'edit_form'   => $editForm->createView()
-        );
+
+        return $form;
     }
 }

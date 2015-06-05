@@ -28,7 +28,7 @@ class OperatorTest extends WebTestCase
             'PHP_AUTH_PW' => 'test'
         ));
 
-        $crawler = $client->request('GET', '/user/'.$this->getReference('user.operator')->getId().'/edit');
+        $crawler = $client->request('GET', '/user/'.$this->getReference('user.operator.noProjects')->getId().'/edit');
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
 }

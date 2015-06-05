@@ -14,8 +14,14 @@
 	</thead>
 	<tbody>
 	{% for entity in entities %}
-		{% set pathIssueView = path('issue_show', { 'issue': entity.code }) %}
+		{% if project is empty %}
+			{% set pathIssueView = path('issue_show', { 'issue': entity.code }) %}
+		{% else %}
+			{% set pathIssueView = path('project_issue_show', { 'project': project.code, 'issue': entity.code }) %}
+		{% endif %}
 		{% set pathProjectView = path('project_show', { 'project': entity.project.code }) %}
+
+
 		<tr>
 			<td><a href="{{ pathIssueView }}">{{ entity.code }}</a></td>
 			<td><a href="{{ pathIssueView }}">{{ entity.summary }}</a></td>

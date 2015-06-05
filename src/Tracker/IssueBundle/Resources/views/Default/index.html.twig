@@ -1,19 +1,32 @@
 {% extends '::base.html.twig' %}
 
 {% block title %}
-    {{ "issue.page.list.title"|trans }}
+	{{ "issue.page.list.title"|trans }}
 {% endblock title %}
 
 {% block body -%}
-    <h3>{{ "issue.page.list.title"|trans }}</h3>
+	{% if project is empty %}
+		<h3>{{ "issue.page.list.title"|trans }}</h3>
 
-    <p>
-        {% if is_granted('create', emptyEntity) %}
-            <a href="{{ path('issue_new') }}">
-                {{ "issue.action.create"|trans }}
-            </a>
-        {% endif %}
-    </p>
+		<p>
+			{% if is_granted('create', emptyEntity) %}
+				<a href="{{ path('issue_new') }}">
+					{{ "issue.action.create"|trans }}
+				</a>
+			{% endif %}
+		</p>
+	{% else %}
+		<h3>Project: <a href="{{ path("project_show", { project: project.code}) }}">{{ project.summary }}</a></h3>
+		<h4>{{ "issue.page.list.title"|trans }} </h4>
 
-    {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'entities': entities } %}
+		<p>
+			{% if is_granted('create', emptyEntity) %}
+				<a href="{{ path('project_new_issue', {project:project.code}) }}">
+					{{ "issue.action.create"|trans }}
+				</a>
+			{% endif %}
+		</p>
+	{% endif %}
+
+	{% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'project': project, 'entities': entities } %}
 {% endblock %}

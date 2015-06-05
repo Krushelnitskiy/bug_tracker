@@ -136,13 +136,13 @@ class DefaultControllerTest extends WebTestCase
         $link = $crawler->filter('a:contains("Create sub task")')->link();
         $crawler= $client->click($link);
 
-        $form = $crawler->selectButton('Save')->form();
-        $form['tracker_issueBundle_issueSubTask_form[summary]'] = 'issue test summary 1';
-        $form['tracker_issueBundle_issueSubTask_form[priority]'] = $this->getReference('priority.trivial')->getId();
-        $form['tracker_issueBundle_issueSubTask_form[code]'] = 'test-1';
-        $form['tracker_issueBundle_issueSubTask_form[description]'] = 'issue test description 1';
-        $form['tracker_issueBundle_issueSubTask_form[reporter]'] = $this->getReference('user.manager')->getId();
-        $form['tracker_issueBundle_issueSubTask_form[assignee]'] = $this->getReference('user.operator')->getId();
+        $form = $crawler->selectButton('Create')->form();
+        $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 1';
+        $form['tracker_issueBundle_issue[priority]'] = $this->getReference('priority.trivial')->getId();
+        $form['tracker_issueBundle_issue[code]'] = 'test-1';
+        $form['tracker_issueBundle_issue[description]'] = 'issue test description 1';
+        $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.manager')->getId();
+        $form['tracker_issueBundle_issue[assignee]'] = $this->getReference('user.operator')->getId();
         $client->followRedirects();
         $client->submit($form);
         $crawler = $client->getCrawler();

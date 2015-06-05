@@ -1,0 +1,11 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    <title>An Error Occurred: {{ status_text }}</title>
+{% endblock title %}
+
+
+{% block body %}
+    <h1>Oops! An Error Occurred</h1>
+    <h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
+{% endblock body %}

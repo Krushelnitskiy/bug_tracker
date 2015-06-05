@@ -36,6 +36,7 @@ class IssueType extends AbstractType
     {
         $projects = $options['projects'];
         $project = array_key_exists('selectedProject', $options) ? $options['selectedProject'] : null ;
+        $typeIssue = array_key_exists('typeIssue', $options) ? $options['typeIssue'] : null ;
 
         /**
          * @var $user User
@@ -78,6 +79,11 @@ class IssueType extends AbstractType
             ->add('reporter', null, $attributeReporter)
             ->add('assignee', null, $attributeAssign)
             ->add('save', 'submit', $attributeSubmit);
+
+        if ($typeIssue) {
+            $builder->remove('project');
+        }
+
     }
 
     /**
@@ -242,7 +248,9 @@ class IssueType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Tracker\IssueBundle\Entity\Issue',
             'projects' => array(),
-            'selectedProject' => null
+            'selectedProject' => null,
+            'issueStory' => null,
+            'typeIssue' => null
         ));
     }
 

@@ -16,8 +16,6 @@ use Tracker\ProjectBundle\Entity\Project;
 use Tracker\ProjectBundle\Entity\ProjectRepository;
 use Tracker\ProjectBundle\Form\ProjectType;
 use Tracker\UserBundle\Entity\User;
-use Tracker\IssueBundle\Entity\Status;
-use Tracker\IssueBundle\Entity\Issue;
 
 /**
  * Project controller.
@@ -138,128 +136,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Finds and displays a Project entity.
-     *
-     * @param $project Project
-     *
-     * @return array
-     *
-     * @Route("/{project}/issues", name="project_issues")
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
-     * @Method("GET")
-     * @Template()
-     */
-    public function issuesAction($project)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        if (false === $this->get('security.authorization_checker')->isGranted('view', $project)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        $issues = $em->getRepository('TrackerIssueBundle:Issue')->findByProject($project);
-        return array(
-            'entity' => $project,
-            'entities' => $issues,
-            'emptyEntity' => new Issue()
-        );
-    }
-
-    /**
-     * Finds and displays a Project entity.
-     *
-     * @param $project Project
-     *
-     * @return array
-     *
-     * @Route("/{project}/issue/new", name="project_new_issue")
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
-     * @Method("GET")
-     * @Template()
-     */
-    public function newIssueAction($project)
-    {
-        $entity = new Issue();
-
-        if (false === $this->get('security.authorization_checker')->isGranted('create', $entity)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        $form = $this->createForm('tracker_issueBundle_issue', $entity, array(
-            'action' => $this->generateUrl('project_create_issue', ['project' => $project->getCode()]),
-            'method' => 'POST',
-            'projects' => [$project],
-            'selectedProject' => $project
-        ));
-
-        return array(
-            'project' => $project,
-            'entity' => $entity,
-            'form' => $form->createView()
-        );
-    }
-
-    /**
-     * Creates a new Issue entity.
-     *
-     * @param Request $request
-     * @param $project Project
-     *
-     * @Route("/{project}/issue/new", name="project_create_issue")
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
-     * @Method("POST")
-     * @Template("TrackerProjectBundle:Default:newIssue.html.twig")
-     * @return array
-     */
-    public function createIssueAction(Request $request, $project)
-    {
-        if (false === $this->get('security.authorization_checker')->isGranted('create', new Issue())) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        $entity = new Issue();
-        /**
-         * @var $user User
-         */
-        $user = $this->getUser();
-        $em = $this->getDoctrine()->getManager();
-
-        $projects = $user->getProject();
-        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_MANAGER)) {
-            $projects = $em->getRepository('TrackerProjectBundle:Project')->findAll();
-        }
-
-        $form = $this->createForm('tracker_issueBundle_issue', $entity, array(
-            'action' => $this->generateUrl('project_new_issue', ['project' => $project->getCode()]),
-            'method' => 'POST',
-            'projects' => $projects,
-            'selectedProject' => $project
-        ));
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity->setCreated(new \DateTime());
-            $entity->setUpdated(new \DateTime());
-
-            $entityStatus = $em->getRepository('TrackerIssueBundle:Status')->findOneByValue(Status::STATUS_OPEN);
-            $entity->setStatus($entityStatus);
-
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('project_issues', array('project' => $project->getCode())));
-        }
-
-        return array(
-            'entity' => $entity,
-            'project' => $project,
-            'form' => $form->createView()
-        );
-    }
-
-    /**
      * Creates a form to edit a Project entity.
      *
      * @param Project $entity The entity
@@ -270,7 +146,7 @@ class DefaultController extends Controller
     {
         $form = $this->createForm(new ProjectType(), $entity, array(
             'action' => $this->generateUrl('project_edit', array('project' => $entity->getCode())),
-            'method' => 'PUT'
+            'method' => 'POST'
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));

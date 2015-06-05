@@ -36,7 +36,7 @@ class OperatorTest extends WebTestCase
         $crawler = $client->request('GET', '/project/new');
         $this->assertContains('Unauthorised access!', $crawler->html());
 
-        $crawler = $client->request('POST', '/project/');
+        $crawler = $client->request('POST', '/project/new');
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
 
@@ -65,7 +65,7 @@ class OperatorTest extends WebTestCase
         $crawler = $client->request('GET', '/project/'.$this->getReference('project.first')->getCode().'/edit');
         $this->assertContains('Unauthorised access!', $crawler->html());
 
-        $crawler = $client->request('PUT', '/project/'.$this->getReference('project.first')->getCode());
+        $crawler = $client->request('POST', '/project/'.$this->getReference('project.first')->getCode().'/edit');
         $this->assertContains('Unauthorised access!', $crawler->html());
     }
 }

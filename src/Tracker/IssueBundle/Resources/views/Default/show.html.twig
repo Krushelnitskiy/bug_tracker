@@ -10,9 +10,15 @@
     <h3>{{ "issue.page.view.title"|trans }}</h3>
 
 	<p>
-		<a href="{{ path('issue') }}">
-			{{ "issue.action.back"|trans }}
-		</a>
+		{% if project is empty %}
+			<a href="{{ path('issue') }}">
+				{{ "issue.action.back"|trans }}
+			</a>
+		{% else %}
+			<a href="{{ path('project_issues', { 'project': project.code}) }}">
+				{{ "issue.action.backProject"|trans }}
+			</a>
+		{% endif %}
 
 		{% if is_granted("edit", entity) %}
 			|
@@ -23,17 +29,29 @@
 
 		{% if is_granted("create_sub_task", entity) %}
 			|
-			<a href="{{ path('issue_new_sub_task', { 'issue': entity.code }) }}">
-				{{ "issue.action.create_sub_task"|trans }}
-			</a>
+			{% if project is empty %}
+				<a href="{{ path('issue_new_sub_task', { 'issue': entity.code }) }}">
+					{{ "issue.action.create_sub_task"|trans }}
+				</a>
+			{% else %}
+				<a href="{{ path('project_issue_new_sub_task', { 'project': project.code, 'issue': entity.code}) }}">
+					{{ "issue.action.create_sub_task"|trans }}
+				</a>
+			{% endif %}
 		{% endif %}
 
 		{% if entity.parent %}
 			|
 			{{ "issue.parent"|trans }}
-			<a href="{{ path('issue_show', { 'issue': entity.parent.code }) }}">
-				{{ entity.parent.code }} - {{ entity.parent.summary }}
-			</a>
+			{% if project is empty %}
+				<a href="{{ path('issue_show', { 'issue': entity.parent.code }) }}">
+					{{ entity.parent.code }} - {{ entity.parent.summary }}
+				</a>
+			{% else %}
+				<a href="{{ path('project_issue_show', { 'project': project.code, 'issue': entity.parent.code}) }}">
+					{{ entity.parent.code }} - {{ entity.parent.summary }}
+				</a>
+			{% endif %}
 		{% endif %}
 	</p>
 

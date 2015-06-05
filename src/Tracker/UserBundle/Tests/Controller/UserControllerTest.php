@@ -3,6 +3,7 @@
 namespace Tracker\UserBundle\Tests\Controller;
 
 use Tracker\TestBundle\Test\WebTestCase;
+use Tracker\UserBundle\Entity\Timezone;
 use Tracker\UserBundle\Entity\User;
 
 class UserControllerTest extends WebTestCase
@@ -36,8 +37,12 @@ class UserControllerTest extends WebTestCase
         $form['tracker_userBundle_user[plainPassword][second]']= '123';
         $form['tracker_userBundle_user[roles]']= User::ROLE_MANAGER;
         $form['tracker_userBundle_user[enabled]']= 1;
+        $form['tracker_userBundle_user[timezone]']= Timezone::TIMEZONE_EUROPE_KIEV;
+
+        $client->followRedirects();
         $client->submit($form);
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
+
         $this->assertContains('test1@test.com', $crawler->html());
     }
 
@@ -63,10 +68,10 @@ class UserControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/user/'.$userId.'/edit');
 
         $form = $crawler->selectButton('Update')->form();
-        $form['tracker_userBundle_user[email]'] = 'test_admin@test.com';
+        $form['tracker_userBundle_user[email]'] = 'test_admin111@test.com';
+        $client->followRedirects();
         $client->submit($form);
-
-        $crawler = $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         $this->assertContains('test_admin@test.com', $crawler->html());
     }

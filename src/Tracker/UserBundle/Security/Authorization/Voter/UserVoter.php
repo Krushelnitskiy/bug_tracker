@@ -78,7 +78,7 @@ class UserVoter implements VoterInterface
                 }
                 break;
             case self::EDIT:
-                if ($this->isSuperUser($currentUser)) {
+                if ($this->canEditUser($currentUser, $user)) {
                     return self::ACCESS_GRANTED;
                 }
                 break;
@@ -97,6 +97,16 @@ class UserVoter implements VoterInterface
         $response = false;
 
         if ($currentUser instanceof User) {
+            $response = true;
+        }
+
+        return $response;
+    }
+
+    public function canEditUser(User $currentUser, User $user)
+    {
+        $response = false;
+        if ($this->isSuperUser($currentUser) || $currentUser->getId() == $user->getId()) {
             $response = true;
         }
 
