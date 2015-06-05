@@ -128,6 +128,7 @@
     <h4>{{ "issue.page.view.sendComment"|trans }}</h4>
 
     {% if is_granted('create', entity) %}
+        <a name="comment-form"></a>
         {{ form(comment_form, {'attr':{'class':"form-horizontal"}}) }}
     {% endif %}
 {% endblock %}

@@ -120,10 +120,10 @@ class CommentController extends Controller
 
             if ($project instanceof Project) {
                 $routeParam = array('project'=>$project->getCode(), 'issue' => $issue->getCode());
-                return $this->redirect($this->generateUrl('project_issue_show', $routeParam));
+                return $this->redirect($this->generateUrl('project_issue_show', $routeParam).'#comment-form');
             } else {
                 $routeParam = array('issue' => $entity->getIssue()->getCode());
-                return $this->redirect($this->generateUrl('issue_show', $routeParam));
+                return $this->redirect($this->generateUrl('issue_show', $routeParam).'#comment-form');
             }
         }
 
