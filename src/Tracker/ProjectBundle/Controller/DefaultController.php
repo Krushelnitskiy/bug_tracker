@@ -186,7 +186,7 @@ class DefaultController extends Controller
             if (count($deletedMembers)) {
                 $this->addFlash(
                     'notice',
-                    'You have deleted users ' . implode(',', $deletedMembers) . ' that are assigned to issues'
+                    'You have deleted users (' . implode(',', $deletedMembers) . ') that are assigned to issues'
                 );
             }
 
@@ -202,6 +202,7 @@ class DefaultController extends Controller
     /**
      * @param Project $project
      * @param $request
+     *
      * @return array
      */
     protected function getDeletedMembers(Project $project, $request)

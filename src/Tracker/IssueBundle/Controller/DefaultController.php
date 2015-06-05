@@ -89,6 +89,7 @@ class DefaultController extends Controller
             foreach ($project->getMembers() as $member) {
                 $members[] = [
                     'fullName' => $member->getFullName(),
+                    'username' => $member->getUsername(),
                     'id' => $member->getId()
                 ];
             }
