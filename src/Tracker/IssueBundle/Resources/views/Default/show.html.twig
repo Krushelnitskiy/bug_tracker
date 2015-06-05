@@ -22,9 +22,15 @@
 
 		{% if is_granted("edit", entity) %}
 			|
-			<a href="{{ path('issue_edit', { 'issue': entity.code }) }}">
-				{{ "issue.action.edit"|trans }}
-			</a>
+            {% if project is empty %}
+                <a href="{{ path('issue_edit', { 'issue': entity.code }) }}">
+                    {{ "issue.action.edit"|trans }}
+                </a>
+    		{% else %}
+                <a href="{{ path('project_issue_edit', { 'project': project.code, 'issue':entity.code}) }}">
+                    {{ "issue.action.edit"|trans }}
+                </a>
+            {% endif %}
 		{% endif %}
 
 		{% if is_granted("create_sub_task", entity) %}

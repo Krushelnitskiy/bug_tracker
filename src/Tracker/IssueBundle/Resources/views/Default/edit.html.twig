@@ -6,11 +6,16 @@
     <h3>{{ "issue.page.edit.title"|trans }}</h3>
 
     <p>
-        <a href="{{ path('issue') }}">
-            {{ "issue.action.back"|trans }}
-        </a>
+        {% if project is empty %}
+            <a href="{{ path('issue_show', {'issue': entity.code}) }}">
+                {{ entity.summary }} (My issues)
+            </a>
+        {% else %}
+            <a href="{{ path('project_issue_show', { 'issue': entity.code, 'project': project.code}) }}">
+                {{ entity.summary }} (Project issues)
+            </a>
+        {% endif %}
     </p>
-
     {{ form(edit_form,  {'attr':{'class':"form-horizontal"}} ) }}
 
 {% endblock %}

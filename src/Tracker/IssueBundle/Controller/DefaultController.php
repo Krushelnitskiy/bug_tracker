@@ -220,17 +220,17 @@ class DefaultController extends Controller
      */
     private function createCreateCommentForm(Comment $comment, $issueId, $project)
     {
+        $route = $this->generateUrl('issue_comment_create', array('issue' => $issueId));
+
         if ($project instanceof Project) {
-            $form = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
-                'action' => $this->generateUrl('project_issue_comment_create', array('issue' => $issueId, 'project'=>$project->getCode())),
-                'method' => 'POST'
-            ));
-        } else {
-            $form = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
-                'action' => $this->generateUrl('issue_comment_create', array('issue' => $issueId)),
-                'method' => 'POST'
-            ));
+            $routeParam = array('issue' => $issueId, 'project'=>$project->getCode());
+            $route = $this->generateUrl('project_issue_comment_create', $routeParam);
         }
+
+        $form = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
+            'action' => $route,
+            'method' => 'POST'
+        ));
 
         return $form;
     }
@@ -265,11 +265,21 @@ class DefaultController extends Controller
             $projects = $user->getProject();
         }
 
-        $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
-            'action' => $this->generateUrl('issue_edit', array('issue' => $issue->getCode())),
-            'method' => 'POST',
-            'projects' => $projects
-        ));
+        if ($project instanceof Project) {
+            $routeParams = ['issue' => $issue->getCode(), 'project' => $project->getCode()];
+            $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
+                'action' => $this->generateUrl('project_issue_edit', $routeParams),
+                'method' => 'POST',
+                'projects' => $projects
+            ));
+        } else {
+            $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
+                'action' => $this->generateUrl('issue_edit', array('issue' => $issue->getCode())),
+                'method' => 'POST',
+                'projects' => $projects
+            ));
+        }
+
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -283,6 +293,7 @@ class DefaultController extends Controller
         }
 
         return array(
+            'project' => $project,
             'entity' => $issue,
             'edit_form' => $editForm->createView()
         );
