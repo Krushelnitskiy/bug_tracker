@@ -20,6 +20,8 @@ use Tracker\ProjectBundle\Entity\Project;
  */
 class CommentController extends Controller
 {
+    const COMMENT_FORM_ANCHOR = '#comment-form';
+
     /**
      * Finds and displays a Comment entity.
      * @param Comment $comment
@@ -46,13 +48,13 @@ class CommentController extends Controller
         if ($project instanceof Project) {
             $routeParam = array('issue' => $comment->getIssue()->getCode(), 'project'=>$project->getCode());
             $editForm = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
-                'action' => $this->generateUrl('project_issue_comment_create', $routeParam),
+                'action' => $this->generateUrl('project_issue_comment_create', $routeParam).self::COMMENT_FORM_ANCHOR,
                 'method' => 'POST'
             ));
         } else {
             $routeParam = array('issue' => $comment->getIssue()->getCode(), 'comment'=>$comment->getId());
             $editForm = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
-                'action' => $this->generateUrl('issue_comment_edit', $routeParam),
+                'action' => $this->generateUrl('issue_comment_edit', $routeParam).self::COMMENT_FORM_ANCHOR,
                 'method' => 'POST'
             ));
         }
@@ -120,10 +122,10 @@ class CommentController extends Controller
 
             if ($project instanceof Project) {
                 $routeParam = array('project'=>$project->getCode(), 'issue' => $issue->getCode());
-                return $this->redirect($this->generateUrl('project_issue_show', $routeParam).'#comment-form');
+                return $this->redirect($this->generateUrl('project_issue_show', $routeParam).self::COMMENT_FORM_ANCHOR);
             } else {
                 $routeParam = array('issue' => $entity->getIssue()->getCode());
-                return $this->redirect($this->generateUrl('issue_show', $routeParam).'#comment-form');
+                return $this->redirect($this->generateUrl('issue_show', $routeParam).self::COMMENT_FORM_ANCHOR);
             }
         }
 
@@ -150,7 +152,7 @@ class CommentController extends Controller
      *
      * @return array
      */
-    public function deleteCommentAction($issue, $comment, Project $project = null)
+    public function deleteAction($issue, $comment, Project $project = null)
     {
         if (false === $this->get('security.authorization_checker')->isGranted('delete', $comment)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -162,10 +164,10 @@ class CommentController extends Controller
 
         if ($project instanceof Project) {
             $routeParam = array('project'=>$project->getCode(), 'issue' => $issue->getCode());
-            return $this->redirect($this->generateUrl('project_issue_show', $routeParam));
+            return $this->redirect($this->generateUrl('project_issue_show', $routeParam).self::COMMENT_FORM_ANCHOR);
         } else {
             $routeParam = array('issue' => $issue->getCode());
-            return $this->redirect($this->generateUrl('issue_show', $routeParam));
+            return $this->redirect($this->generateUrl('issue_show', $routeParam).self::COMMENT_FORM_ANCHOR);
         }
     }
 
