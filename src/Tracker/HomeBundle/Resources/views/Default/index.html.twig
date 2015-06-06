@@ -27,7 +27,7 @@
 				<div class="block-with-title">
 					<h2>{{ 'layout.listActivities.title'|trans }}</h2>
 					{% if activities|length > 0 %}
-						{% include 'TrackerHomeBundle:Default:partial/activity.html.twig' with { 'activities': activities } %}
+                        {% include 'TrackerActivitiesBundle::activityList.html.twig' with { 'activities': activities } %}
 					{% else %}
 						<div class="no-data">
 							{{ "layout.empty-result"|trans }}

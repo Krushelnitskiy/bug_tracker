@@ -4,12 +4,16 @@
     parameters:
         entity: user
 #}
-{% macro renderLinkUserPage(entity) %}
-	{% if is_granted('view', entity) %}
-		<a href="{{ path('user_show', { 'user': entity.id }) }}">{{ entity.username }}</a>
-	{% else %}
-		{{ entity.username }}
-	{% endif %}
+{% macro renderLinkUserPage(entity, title) %}
+    {% if title is empty %}
+        {% set title = entity.username %}
+    {% endif %}
+
+    {% if is_granted('view', entity) %}
+        <a href="{{ path('user_show', { 'user': entity.id }) }}">{{ title }}</a>
+    {% else %}
+        {{ title }}
+    {% endif %}
 {% endmacro %}
 
 {#
@@ -19,5 +23,44 @@
         value: datetime
 #}
 {% macro formatDateAndTimeZone(value) %}
-	{{ value|date("d.m.Y H:i:s", app.user.timezone) }}
+    {{ value|date("d.m.Y H:i:s", app.user.timezone) }}
+{% endmacro %}
+
+{% macro userAvatarFullName(user, width, height) %}
+    {% import _self as UI %}
+
+    {{ UI.renderAvatar(user, width, height, true) }}
+
+    {% set pathShowUser = path('user_show', { 'user': user.id }) %}
+
+    <a href="{{ pathShowUser }}">{{ user.fullName }}</a>
+{% endmacro %}
+
+{% macro renderAvatar(user, width, height, isLink) %}
+    {% if width is empty%}
+        {% set width = 64 %}
+    {% endif %}
+    {% if height is empty%}
+        {% set height = 64 %}
+    {% endif %}
+
+
+    {% if user.getWebPath() %}
+        {% set routeAvatara = user.getWebPath() %}
+    {% else %}
+        {% set routeAvatara = '/images/useravatar.png' %}
+    {% endif %}
+
+    {% set pathShowUser = '' %}
+    {% if isLink %}
+        {% set pathShowUser = path('user_show', { 'user': user.id }) %}
+    {% endif %}
+
+    {% if pathShowUser is empty %}
+        <img src="{{ routeAvatara }}" width="{{ width }}" height="{{ height }}"/>
+    {% else %}
+        <a href="{{ pathShowUser }}" class="avatar">
+            <img src="{{ routeAvatara }}" width="{{ width }}" height="{{ height }}"/>
+        </a>
+    {% endif %}
 {% endmacro %}

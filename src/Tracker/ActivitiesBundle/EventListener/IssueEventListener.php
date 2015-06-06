@@ -86,6 +86,7 @@ class IssueEventListener
                 $eventEntity->setIssue($issue);
                 $eventEntity->setProject($issue->getProject());
                 $eventEntity->setUser($user);
+                $eventEntity->setData($issue->getStatus()->getValue());
                 $eventEntity->setEvent(Activity::CHANGED_STATUS_TO);
                 $eventEntity->setCreated(new \DateTime());
                 $entityManager->persist($eventEntity);

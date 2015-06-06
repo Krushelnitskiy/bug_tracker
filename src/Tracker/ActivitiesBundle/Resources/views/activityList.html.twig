@@ -1,0 +1,34 @@
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
+
+<ul class="activity-list">
+    {% for activity in activities %}
+        <li>
+            <div class="time">
+                {{ UI.formatDateAndTimeZone(activity.created) }}
+            </div>
+
+            <div class="message">
+                <div class="user">
+                    {% if activity.user.getWebPath() %}
+                        {% set avatarPath = activity.user.getWebPath() %}
+                    {% else %}
+                        {% set avatarPath = '/images/useravatar.png' %}
+                    {% endif %}
+
+                    <div class="image">
+                        <img src="{{ avatarPath }}" width="240"/>
+                    </div>
+                </div>
+                <div class="body">
+                    {{ UI.renderLinkUserPage(activity.user, activity.user.fullname) }}
+                    {{ activity.event|trans|lower }}
+                    {% if activity.data  %}
+                        to "{{ activity.data }}"
+                        on {{ activity.issue.code }} {{ activity.issue.summary }}
+                    {% endif %}
+
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

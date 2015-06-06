@@ -42,7 +42,7 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
         $issueStory = new Issue();
         $issueStory->setAssignee($user);
         $issueStory->setCode('1');
-        $issueStory->setSummary('1');
+        $issueStory->setSummary('Bug Tracker');
         $issueStory->setDescription('');
         $issueStory->setCreated(new \DateTime());
         $issueStory->setUpdated(new \DateTime());
@@ -55,22 +55,26 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
 
         $manager->persist($issueStory);
 
-        $issueStorySubTask = new Issue();
-        $issueStorySubTask->setAssignee($user);
-        $issueStorySubTask->setCode('2');
-        $issueStorySubTask->setSummary('2');
-        $issueStorySubTask->setDescription('');
-        $issueStorySubTask->setCreated(new \DateTime());
-        $issueStorySubTask->setUpdated(new \DateTime());
-        $issueStorySubTask->setParent($issueStory);
-        $issueStorySubTask->setStatus($status);
-        $issueStorySubTask->setType($typeSubTask);
-        $issueStorySubTask->setPriority($priorityTrivial);
-        $issueStorySubTask->setProject($project);
-        $issueStorySubTask->setReporter($userManager);
-        $issueStorySubTask->setAssignee($userOperator);
+        $data = $this->getData();
 
-        $manager->persist($issueStorySubTask);
+        foreach ($data as $item) {
+            $issueStorySubTask = new Issue();
+            $issueStorySubTask->setAssignee($user);
+            $issueStorySubTask->setCode($item['code']);
+            $issueStorySubTask->setSummary($item['summary']);
+            $issueStorySubTask->setDescription('');
+            $issueStorySubTask->setCreated(new \DateTime());
+            $issueStorySubTask->setUpdated(new \DateTime());
+            $issueStorySubTask->setParent($issueStory);
+            $issueStorySubTask->setStatus($status);
+            $issueStorySubTask->setType($typeSubTask);
+            $issueStorySubTask->setPriority($priorityTrivial);
+            $issueStorySubTask->setProject($project);
+            $issueStorySubTask->setReporter($userManager);
+            $issueStorySubTask->setAssignee($userOperator);
+
+            $manager->persist($issueStorySubTask);
+        }
 
         $manager->flush();
     }
@@ -85,5 +89,79 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
             'Tracker\ProjectBundle\DataFixtures\ORM\LoadProjectData',
             'Tracker\UserBundle\DataFixtures\ORM\LoadUserData'
         );
+    }
+
+    protected function getData()
+    {
+        return [[
+            'code' => 'task-1',
+            'summary' => 'Create empty project'
+        ],
+            [
+                'code' => 'task-2',
+                'summary' => 'Create Bundles UserBundle, IssueBundle, ProjectBundle, ActivitiesBundle, HomeBundle.'
+            ],
+            [
+                'code' => 'task-3',
+                'summary' => 'Crete Entities in bundeles and add doctrine annotate'
+            ],
+            [
+                'code' => 'task-4',
+                'summary' => 'Add FosUserBundle'
+            ],
+            [
+                'code' => 'task-5',
+                'summary' => 'Create page with form login'
+            ],
+            [
+                'code' => 'task-6',
+                'summary' => 'Create pages with registration form, forgot password'
+            ], [
+                'code' => 'task-7',
+                'summary' => 'Create data Fixtures for demonstration a bug tracker'
+            ], [
+                'code' => 'task-8',
+                'summary' => 'Create User Page'
+            ], [
+                'code' => 'task-9',
+                'summary' => 'Create Issue page'
+            ], [
+                'code' => 'task-10',
+                'summary' => 'Create project page'
+            ], [
+                'code' => 'task-11',
+                'summary' => 'Create Main page'
+            ], [
+                'code' => 'task-12',
+                'summary' => 'Create page edit profile'
+            ], [
+                'code' => 'task-13',
+                'summary' => 'Create page create / edit project'
+            ], [
+                'code' => 'task-14',
+                'summary' => 'Create page create / edit issues'
+            ], [
+                'code' => 'task-15',
+                'summary' => 'Add saving activities of events: Create issue, Change status of issue, Comment in issue'
+            ], [
+                'code' => 'task-16',
+                'summary' => 'Add notifications via email for Issue collaborators about events'
+            ], [
+                'code' => 'task-19',
+                'summary' => 'Create User roles: Administrator, Manager, Operator'
+            ], [
+                'code' => 'task-20',
+                'summary' => 'Apply permision by roles'
+            ], [
+                'code' => 'task-21',
+                'summary' => 'Delete comments'
+            ], [
+                'code' => 'task-22',
+                'summary' => 'Edit Comments'
+            ], [
+                'code' => 'task-23',
+                'summary' => 'Fix code review'
+            ]
+        ];
     }
 }

@@ -50,7 +50,7 @@ class Issue
     /**
      * @var string $description
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $description;
 

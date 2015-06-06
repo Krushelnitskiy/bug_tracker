@@ -10,7 +10,7 @@
 				{{ "issue.action.back"|trans }}
 			</a>
 		{% else %}
-			<a href="{{ path('project_issues', {'project': project.code}) }}">
+			<a href="{{ path('project_show', {'project': project.code}) }}">
 				{{ "issue.action.back"|trans }}
 			</a>
 		{% endif %}

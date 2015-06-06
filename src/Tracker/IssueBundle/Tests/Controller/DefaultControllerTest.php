@@ -66,7 +66,6 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->getCrawler();
 
-        self::assertContains('manager', $crawler->html());
         self::assertContains('In progress', $crawler->html());
     }
 
@@ -114,7 +113,7 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $client->getCrawler();
 
         $this->assertContains('issue test comment', $crawler->html());
-        $link = $crawler->filter('.comment a:contains("Edit")')->link();
+        $link = $crawler->filter('.list-comments a:contains("Edit")')->link();
         $crawler= $client->click($link);
         $form = $crawler->selectButton('Update')->form();
         $form['tracker_issueBundle_comment_form[body]'] = 'issue test comment 222';

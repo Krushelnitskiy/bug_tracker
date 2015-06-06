@@ -1,0 +1,39 @@
+<dl class="dl-horizontal">
+    <dt>Avatar:</dt>
+    <dd>
+        {% if entity.getWebPath() %}
+            <img src="{{ entity.getWebPath() }}" width="48" height="48"/>
+        {% endif %}
+    </dd>
+</dl>
+
+<dl class="dl-horizontal">
+    <dt>{{ "user.grid.username"|trans }}</dt>
+    <dd>{{ entity.username }}</dd>
+</dl>
+
+<dl class="dl-horizontal">
+    <dt>{{ "user.grid.fullName"|trans }}</dt>
+    <dd>{{ entity.fullName }}</dd>
+</dl>
+<dl class="dl-horizontal">
+    <dt>{{ "user.grid.email"|trans }}</dt>
+    <dd>{{ entity.email }}</dd>
+</dl>
+
+<dl class="dl-horizontal">
+    <dt>{{ "user.grid.timezone"|trans }}</dt>
+    <dd>{{ entity.timezone }}</dd>
+</dl>
+<dl class="dl-horizontal">
+    <dt>{{ "user.grid.role"|trans }}</dt>
+    <dd>{{ entity.roles[0] }}</dd>
+</dl>
+<dl class="dl-horizontal">
+    <dt>{{ "user.grid.lastLogin"|trans }}</dt>
+    <dd>{{ UI.formatDateAndTimeZone(entity.lastLogin) }}</dd>
+</dl>
+<dl class="dl-horizontal">
+    <dt>{{ "user.grid.enabled"|trans }}</dt>
+    <dd>{{ entity.enabled }}</dd>
+</dl>

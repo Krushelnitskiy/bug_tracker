@@ -6,72 +6,52 @@
 {% endblock title -%}
 
 {% block body -%}
-    <h3>{{ "user.page.view.title"|trans }} - {{ entity.username }}</h3>
+    <header>
+        <div class="header-user">
+            {{ UI.renderAvatar(entity, 48, 48) }}<p>{{ "user.page.view.title"|trans }}: {{ entity.username }}</p>
+        </div>
+    </header>
 
-    <p>
-        <a href="{{ path('user') }}">
-            {{ "user.action.backToList"|trans }}
-        </a>
+    <div class="actions">
         {% if is_granted('edit', entity) %}
-            |
-            <a href="{{ path("user_edit", {user: entity.id}) }}">
+            <a class="btn btn-default" href="{{ path("user_edit", {user: entity.id}) }}">
                 {{ "user.action.edit"|trans }}
             </a>
         {% endif %}
-    </p>
+    </div>
 
-    {% if entity.getWebPath() %}
-        <div class="user-page-image">
-            <img src="{{ entity.getWebPath() }}" width="240"/>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="information user detail">
+                <p class="title">{{ "issue.details"|trans }}</p>
+
+                <div class="content">
+                    <div>
+                        {% include 'TrackerUserBundle:User/partial:details.html.twig' with { 'entity': entity} %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="information">
+                <p class="title">{{ 'layout.listIssue.title'|trans }}</p>
+
+                <div class="content">
+                    {% if entity.assignedIssue|length > 0 %}
+                        {% include 'TrackerUserBundle:User:partial/issue.html.twig' with { 'issues': entity.assignedIssue  } %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    {% endif %}
+        <div class="col-md-4">
+            <div class="information">
+                <p class="title">{{ "user.page.view.activity"|trans }}</p>
 
-    <table class="record_properties table">
-        <tbody>
-            <tr>
-                <th>{{ "user.grid.timezone"|trans }}</th>
-                <td>{{ entity.timezone }}</td>
-            </tr>
-
-            <tr>
-                <th>{{ "user.grid.username"|trans }}</th>
-                <td>{{ entity.username }}</td>
-            </tr>
-
-            <tr>
-	            <th>{{ "user.grid.role"|trans }}</th>
-	            <td>{{ entity.roles[0] }}</td>
-            </tr>
-
-            <tr>
-                <th>{{ "user.grid.fullName"|trans }}</th>
-                <td>{{ entity.fullName }}</td>
-            </tr>
-
-            <tr>
-                <th>{{ "user.grid.email"|trans }}</th>
-                <td>{{ entity.email }}</td>
-            </tr>
-
-            <tr>
-                <th>{{ "user.grid.lastLogin"|trans }}</th>
-	            <td>{{ UI.formatDateAndTimeZone(entity.lastLogin) }}</td>
-            </tr>
-
-            <tr>
-                <th>{{ "user.grid.enabled"|trans }}</th>
-                <td>{{ entity.enabled }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    {% if activity|length > 0 %}
-        <h4>{{ "user.page.view.activity"|trans }}</h4>
-        {% include 'TrackerUserBundle:User:partial/gridActivity.html.twig' with { 'activities': activity } %}
-    {% endif %}
-
-    {% if entity.assignedIssue|length > 0 %}
-        <h4>{{ 'layout.listIssue.title'|trans }}</h4>
-        {% include 'TrackerUserBundle:User:partial/issue.html.twig' with { 'issues': entity.assignedIssue  } %}
-    {% endif %}
+                <div class="content">
+                    {% if activity|length > 0 %}
+                        {% include 'TrackerUserBundle:User:partial/gridActivity.html.twig' with { 'activities': activity } %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -4,7 +4,7 @@ project:
             activity: "Activity"
             members: "Members"
     project: 'Project'
-    listIssue: "List Issues"
+    listIssue: "Issues"
     page: 'Project code'
     list: 'Projects list'
     create: 'Create Project'
