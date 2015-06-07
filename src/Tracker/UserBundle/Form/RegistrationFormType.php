@@ -18,7 +18,7 @@ class RegistrationFormType extends AbstractType
         $attributeDefault = array(
             'label_attr' => array('class' => 'col-sm-4 control-label'),
             'translation_domain' => 'FOSUserBundle',
-            'attr'=>array('class'=> 'orm-control')
+            'attr'=>array('class'=> 'form-control')
         );
 
         $attributeEmail = array_merge($attributeDefault, array(
@@ -41,11 +41,14 @@ class RegistrationFormType extends AbstractType
             'translation_domain' => 'TrackerUserBundle',
         ));
 
+        $attributeFile = $attributeDefault;
+        $attributeFile['attr'] = [];
+
         $builder
             ->add('email', 'email', $attributeEmail)
             ->add('fullName', null, $attributeFullName)
             ->add('username', null, $attributeUserName)
-            ->add('file', null, $attributeDefault)
+            ->add('file', null, $attributeFile)
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',
                 'options' => array('translation_domain' => 'FOSUserBundle'),

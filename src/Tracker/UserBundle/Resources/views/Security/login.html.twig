@@ -1,5 +1,9 @@
 {% extends "base.html.twig" %}
 
+{% block header %}
+    <header class="clear"></header>
+{% endblock header %}
+
 {% block content %}
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>

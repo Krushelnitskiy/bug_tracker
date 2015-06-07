@@ -2,6 +2,10 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
+{% block header %}
+    <header class="clear"></header>
+{% endblock header %}
+
 {% block content %}
     <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
     {% if app.session is not empty %}
