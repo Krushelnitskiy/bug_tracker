@@ -3,11 +3,11 @@ issue:
         list:
             title: "My Issue"
         create:
-            title: "Issue creation"
+            title: "Create issue"
         createSubTask:
-            title: "Sub task creation"
+            title: "Create Sub-Task "
         edit:
-            title: "Issue edit"
+            title: "Edit issue"
         view:
             title: "Issue"
             collaborators: "Collaborators"

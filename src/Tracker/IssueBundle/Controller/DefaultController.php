@@ -361,6 +361,7 @@ class DefaultController extends Controller
 
         return array(
             'project' => $project,
+            'parent'=>$issue,
             'entity' => $entity,
             'form' => $form->createView()
         );

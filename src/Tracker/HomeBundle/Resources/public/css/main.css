@@ -95,6 +95,7 @@ td .avatar{
     line-height: 40px;
     padding-left: 20px;
     margin-bottom: 5px;
+    margin-left: -30px;
 }
 .home-activities .activity-list{
     margin: 10px;
@@ -118,6 +119,25 @@ ul {
 header{
     margin: 0 -15px;
     padding: 0 15px;
+    min-height: 70px;
+    margin-bottom: 20px;
+}
+
+header.clear{
+    background: none;
+}
+
+header.breadcrumbs .breadcrumbs{
+    padding-top: 10px;
+    margin-bottom: 5px;
+}
+
+header.breadcrumbs h1{
+    line-height: 24px;
+}
+
+header h1 {
+    line-height: 70px;
 }
 
 .issue-header {

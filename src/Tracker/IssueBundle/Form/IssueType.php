@@ -82,7 +82,6 @@ class IssueType extends AbstractType
         if ($typeIssue) {
             $builder->remove('project');
         }
-
     }
 
     /**

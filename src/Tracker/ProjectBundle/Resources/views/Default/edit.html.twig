@@ -2,14 +2,24 @@
 
 {% form_theme edit_form 'TrackerProjectBundle:Form:fields.html.twig' %}
 
-{% block body -%}
-    <h3>{{ "project.edit"|trans }}</h3>
+{% block header %}
+    <header class="breadcrumbs">
+        <ul class="breadcrumbs">
+            <li>
+                <a href="{{ path('project') }}">
+                    {{ "layout.menu.projects"|trans }}
+                </a> /
 
-    <p>
-        <a href="{{ path('project') }}">
-            {{ "project.back"|trans }}
-        </a>
-    </p>
+                <a href="{{ path('project_show', {project:project.code}) }}">
+                    {{ project.code }}
+                </a>
+            </li>
+        </ul>
 
+        <h1>{{ 'project.edit'|trans }}</h1>
+    </header>
+{% endblock %}
+
+{% block content %}
     {{ form(edit_form, {'attr':{'class':"form-horizontal"}}) }}
 {% endblock %}

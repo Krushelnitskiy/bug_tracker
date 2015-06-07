@@ -6,9 +6,9 @@
     {{ "issue.page.view.title"|trans }}
 {% endblock title %}
 
-{% block body -%}
-    <header>
-        <ul class="issue-header">
+{% block header %}
+    <header class="breadcrumbs">
+        <ul class="breadcrumbs">
             <li>
                 <a href="{{ path("project_show", {"project":entity.project.code }) }}">{{ entity.project.label }}</a>
                 {% if entity.parent %}
@@ -23,14 +23,15 @@
                         {{ entity.parent.code }} - {{ entity.parent.summary }}
                     </a>
                 {% endif %}
-                / {{ entity.code }}</li>
-
-            <li><h1>{{ entity.summary }}</h1></li>
+                / {{ entity.code }}
+            </li>
         </ul>
+
+        <h1>{{ entity.summary }}</h1>
     </header>
+{% endblock header %}
 
-
-
+{% block content %}
     <div class="actions">
         {% if is_granted("edit", entity) %}
             {% if project is empty %}

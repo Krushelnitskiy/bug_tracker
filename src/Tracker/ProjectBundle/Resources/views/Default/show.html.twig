@@ -4,9 +4,9 @@
 	{{ 'project.project'|trans }} - {{ entity.label }}
 {% endblock title %}
 
-{% block body -%}
-    <header>
-        <ul>
+{% block header %}
+    <header class="breadcrumbs">
+        <ul class="breadcrumbs">
             <li>
                 <a href="{{ path('project') }}">
                     {{ "layout.menu.projects"|trans }}
@@ -19,7 +19,9 @@
             </li>
         </ul>
     </header>
+{% endblock header %}
 
+{% block content %}
     <div class="actions">
         {% if is_granted('edit', entity) %}
             <a class="btn btn-default" href="{{ path('project_edit', { 'project': entity.code }) }}">

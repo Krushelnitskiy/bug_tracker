@@ -198,7 +198,7 @@ class DefaultController extends Controller
         }
 
         return array(
-            'entity' => $project,
+            'project' => $project,
             'edit_form' => $editForm->createView()
         );
     }

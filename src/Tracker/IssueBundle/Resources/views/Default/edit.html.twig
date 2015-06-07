@@ -2,20 +2,20 @@
 
 {% form_theme edit_form 'TrackerProjectBundle:Form:fields.html.twig' %}
 
-{% block body -%}
-    <h3>{{ "issue.page.edit.title"|trans }}</h3>
+{% block header %}
+    <header class="breadcrumbs">
+        <ul class="breadcrumbs">
+            <li>
+                <a href="{{ path('project_show', {project:project.code}) }}">
+                    {{ project.code }}
+                </a>
+            </li>
+        </ul>
 
-    <p>
-        {% if project is empty %}
-            <a href="{{ path('issue_show', {'issue': entity.code}) }}">
-                {{ entity.summary }} (My issues)
-            </a>
-        {% else %}
-            <a href="{{ path('project_issue_show', { 'issue': entity.code, 'project': project.code}) }}">
-                {{ entity.summary }} (Project issues)
-            </a>
-        {% endif %}
-    </p>
+        <h1>{{ "issue.page.edit.title"|trans }}</h1>
+    </header>
+{% endblock %}
+
+{% block content %}
     {{ form(edit_form,  {'attr':{'class':"form-horizontal"}} ) }}
-
 {% endblock %}

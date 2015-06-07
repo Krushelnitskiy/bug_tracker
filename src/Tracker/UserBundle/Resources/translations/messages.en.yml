@@ -1,11 +1,11 @@
 user:
     page:
         list:
-            title: "Users list"
+            title: "Users"
         create:
             title: "Create User"
         edit:
-            title: "Edit user"
+            title: "Edit Profile"
         view:
             title: "User"
             activity: "Activity"

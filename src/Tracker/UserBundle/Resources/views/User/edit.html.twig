@@ -2,14 +2,12 @@
 
 {% form_theme edit_form 'TrackerProjectBundle:Form:fields.html.twig' %}
 
-{% block body -%}
-    <h3>{{ "user.page.edit.title"|trans }}</h3>
+{% block header %}
+    <header>
+        <h1>{{ 'user.page.edit.title'|trans }}</h1>
+    </header>
+{% endblock header %}
 
-    <p>
-        <a href="{{ path('user') }}">
-            {{ "user.action.backToList"|trans }}
-        </a>
-    </p>
-
+{% block content %}
     {{ form(edit_form, {'attr':{'class':"form-horizontal"}}) }}
 {% endblock %}
