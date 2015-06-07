@@ -36,7 +36,6 @@ class DefaultControllerTest extends WebTestCase
         $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 1';
         $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 1';
         $form['tracker_issueBundle_issue[priority]'] = $this->getReference('priority.trivial')->getId();
-        $form['tracker_issueBundle_issue[code]'] = 'test-1';
         $form['tracker_issueBundle_issue[description]'] = 'issue test description 1';
         $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.manager')->getId();
         $form['tracker_issueBundle_issue[assignee]'] = $this->getReference('user.operator')->getId();
@@ -138,7 +137,6 @@ class DefaultControllerTest extends WebTestCase
         $form = $crawler->selectButton('Create')->form();
         $form['tracker_issueBundle_issue[summary]'] = 'issue test summary 1';
         $form['tracker_issueBundle_issue[priority]'] = $this->getReference('priority.trivial')->getId();
-        $form['tracker_issueBundle_issue[code]'] = 'test-1';
         $form['tracker_issueBundle_issue[description]'] = 'issue test description 1';
         $form['tracker_issueBundle_issue[reporter]'] = $this->getReference('user.manager')->getId();
         $form['tracker_issueBundle_issue[assignee]'] = $this->getReference('user.operator')->getId();

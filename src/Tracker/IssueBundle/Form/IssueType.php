@@ -74,7 +74,6 @@ class IssueType extends AbstractType
             ->add('project', 'entity', $attributeProject)
             ->add('summary', 'text', $attribute)
             ->add('priority', 'entity', $attributePriority)
-            ->add('code', 'text', $attribute)
             ->add('description', null, $attribute)
             ->add('reporter', null, $attributeReporter)
             ->add('assignee', null, $attributeAssign)

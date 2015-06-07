@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Tracker\UserBundle\Entity\User;
 use Tracker\ProjectBundle\Entity\Project;
@@ -17,7 +16,6 @@ use Tracker\ProjectBundle\Entity\Project;
  * @package Tracker\IssueBundle\Entity
  * @ORM\Entity(repositoryClass="Tracker\IssueBundle\Entity\Repository\IssueRepository")
  * @ORM\Table(name="issue")
- * @UniqueEntity("code")
  */
 class Issue
 {
@@ -38,12 +36,7 @@ class Issue
     /**
      * @var string $code
      *
-     * @Assert\Regex(
-     *      pattern="/^[\w\-]+$/",
-     *      match = true,
-     *      message="issue.error.invalidCodeValue"
-     * )
-     * @ORM\Column(type="string", length=50, unique=true)
+     * @ORM\Column(type="string", length=50, unique=true, nullable=true)
      */
     protected $code;
 

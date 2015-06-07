@@ -51,14 +51,17 @@ class IssueEventListener
         $entityManager = $eventArgs->getEntityManager();
 
         if ($issue instanceof Issue) {
-                $eventEntity = new Activity();
-                $eventEntity->setIssue($issue);
-                $eventEntity->setProject($issue->getProject());
-                $eventEntity->setUser($issue->getReporter());
-                $eventEntity->setEvent(Activity::CREATE_NEW_ISSUE);
-                $eventEntity->setCreated(new \DateTime());
-                $entityManager->persist($eventEntity);
-                $entityManager->flush();
+            if (!$issue->getCode()) {
+                $issue->setCode($this->generateCode($issue));
+            }
+            $eventEntity = new Activity();
+            $eventEntity->setIssue($issue);
+            $eventEntity->setProject($issue->getProject());
+            $eventEntity->setUser($issue->getReporter());
+            $eventEntity->setEvent(Activity::CREATE_NEW_ISSUE);
+            $eventEntity->setCreated(new \DateTime());
+            $entityManager->persist($eventEntity);
+            $entityManager->flush();
         }
     }
 
@@ -107,7 +110,27 @@ class IssueEventListener
     }
 
     /**
+     * @param Issue $issue
+     *
+     * @return string
+     */
+    protected function generateCode(Issue $issue)
+    {
+        $projectLabel = $issue->getProject()->getLabel();
+
+        $projectLabel = explode(' ', $projectLabel);
+
+        $code = [];
+        foreach ($projectLabel as $items) {
+            $code[] = strtoupper($items[0]);
+        }
+
+        return implode('', $code) . '-' . $issue->getId();
+    }
+
+    /**
      * @param PreUpdateEventArgs $eventArgs
+     *
      * @return bool
      */
     private function hasChangedAssignee(PreUpdateEventArgs $eventArgs)
@@ -119,6 +142,7 @@ class IssueEventListener
 
     /**
      * @param PreUpdateEventArgs $eventArgs
+     *
      * @return bool
      */
     private function hasChangedReporter(PreUpdateEventArgs $eventArgs)
