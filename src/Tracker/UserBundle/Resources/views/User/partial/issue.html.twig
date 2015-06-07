@@ -9,9 +9,21 @@
     <tbody>
     {% for issue in issues %}
         <tr>
-            <td><a href="{{ path('issue_show', { 'issue': issue.code }) }}">{{ issue.code }}</a></td>
+            <td>
+                {% if is_granted('view', issue) %}
+                    <a href="{{ path('issue_show', { 'issue': issue.code }) }}">{{ issue.code }}</a>
+                {% else %}
+                    {{ issue.code }}
+                {% endif %}
+            </td>
             <td>{{ issue.summary }}</td>
-            <td><a href="{{ path('project_show', { 'project': issue.project.code }) }}">{{ issue.project.label }}</a></td>
+            <td>
+                {% if is_granted('view', issue.project) %}
+                    <a href="{{ path('project_show', { 'project': issue.project.code }) }}">{{ issue.project.label }}</a>
+                {% else %}
+                    {{ issue.project.label }}
+                {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>

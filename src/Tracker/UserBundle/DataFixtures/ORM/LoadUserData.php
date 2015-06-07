@@ -79,22 +79,29 @@ class LoadUserData extends AbstractFixture implements
                 'userName'=> 'admin',
                 'email'=>'test@test.test',
                 'role'=>User::ROLE_ADMIN,
-                'fullName'=>'First name Second name',
+                'fullName'=>'Administrator',
                 'referenceKey'=>'admin-user'
             ],
             [
                 'userName'=> 'manager',
                 'email'=>'manager@test.test',
                 'role'=>User::ROLE_MANAGER,
-                'fullName'=>'First name Second name',
+                'fullName'=>'Manager',
                 'referenceKey'=>'user.manager'
             ],
             [
                 'userName'=> 'operator',
                 'email'=>'operator@test.test',
                 'role'=>User::ROLE_OPERATOR,
-                'fullName'=>'First name Second name',
+                'fullName'=>'Operator',
                 'referenceKey'=>'user.operator'
+            ],
+            [
+                'userName'=> 'operatorNoProject',
+                'email'=>'operator-no-project@test.test',
+                'role'=>User::ROLE_OPERATOR,
+                'fullName'=>'Operator No Porjects',
+                'referenceKey'=>'user.operatorNoProjects'
             ]
         ];
 

@@ -1,8 +1,10 @@
 <dl class="dl-horizontal">
-    <dt>Avatar:</dt>
+    <dt>{{ "user.grid.avatar"|trans }}</dt>
     <dd>
         {% if entity.getWebPath() %}
             <img src="{{ entity.getWebPath() }}" width="48" height="48"/>
+        {% else %}
+            <img src="{{ asset('images/useravatar.png') }}" width="48" height="48"/>
         {% endif %}
     </dd>
 </dl>
@@ -27,13 +29,19 @@
 </dl>
 <dl class="dl-horizontal">
     <dt>{{ "user.grid.role"|trans }}</dt>
-    <dd>{{ entity.roles[0] }}</dd>
+    <dd>{{ entity.roles[0]|trans }}</dd>
 </dl>
 <dl class="dl-horizontal">
     <dt>{{ "user.grid.lastLogin"|trans }}</dt>
     <dd>{{ UI.formatDateAndTimeZone(entity.lastLogin) }}</dd>
 </dl>
 <dl class="dl-horizontal">
-    <dt>{{ "user.grid.enabled"|trans }}</dt>
-    <dd>{{ entity.enabled }}</dd>
+    <dt>{{ "user.grid.status"|trans }}</dt>
+    <dd>
+        {% if entity.enabled %}
+            {{ "user.status.enabled"|trans }}
+        {% else %}
+            {{ "user.status.disabled"|trans }}
+        {% endif %}
+    </dd>
 </dl>

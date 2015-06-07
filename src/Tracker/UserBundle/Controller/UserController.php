@@ -150,7 +150,7 @@ class UserController extends Controller
      *
      * @Route("/{user}", name="user_update")
      * @ParamConverter("user", class="TrackerUserBundle:User", options={"repository_method" = "find"})
-     * @Method("PUT")
+     * @Method("POST")
      * @Template("TrackerUserBundle:User:edit.html.twig")
      */
     public function updateAction(Request $request, $user)
@@ -201,7 +201,7 @@ class UserController extends Controller
      * @return array
      *
      * @Route("/", name="user_create")
-     * @Method("PUT")
+     * @Method("POST")
      * @Template("TrackerUserBundle:User:new.html.twig")
      */
     public function createAction(Request $request)

@@ -121,6 +121,7 @@ class DefaultController extends Controller
         if (false === $this->get('security.authorization_checker')->isGranted('create', $entity)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
+
         /**
          * @var $user User
          */
@@ -160,10 +161,6 @@ class DefaultController extends Controller
 
             $em->persist($entity);
             $em->flush();
-
-            if ($project instanceof Project) {
-                return $this->redirect($this->generateUrl('project_issues', array('project' => $project->getCode())));
-            }
 
             return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getCode())));
         }

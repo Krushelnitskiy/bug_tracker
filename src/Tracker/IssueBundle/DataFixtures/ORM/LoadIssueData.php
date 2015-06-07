@@ -41,7 +41,7 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
 
         $issueStory = new Issue();
         $issueStory->setAssignee($user);
-        $issueStory->setCode('1');
+        $issueStory->setCode(strtoupper('story-1'));
         $issueStory->setSummary('Bug Tracker');
         $issueStory->setDescription('');
         $issueStory->setCreated(new \DateTime());
@@ -60,7 +60,7 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
         foreach ($data as $item) {
             $issueStorySubTask = new Issue();
             $issueStorySubTask->setAssignee($user);
-            $issueStorySubTask->setCode($item['code']);
+            $issueStorySubTask->setCode(strtoupper($item['code']));
             $issueStorySubTask->setSummary($item['summary']);
             $issueStorySubTask->setDescription('');
             $issueStorySubTask->setCreated(new \DateTime());

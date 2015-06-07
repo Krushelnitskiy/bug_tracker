@@ -8,9 +8,51 @@
             </div>
             {{ UI.userAvatarFullName(activity.user, 24, 24) }}
             {{ activity.event|trans }}
-            {{ activity.data }} on
-            {{ activity.issue.code }} - {{ activity.issue.summary }}
-            for project ({{ activity.project.summary }})
+            {#{{ activity.data }} on#}
+            {#{{ activity.issue.code }} - {{ activity.issue.summary }}#}
+            {#for project ({{ activity.project.summary }})#}
+
+
+
+            {% if activity.data %}
+                to "{{ activity.data }}"
+                on
+                {% if is_granted("view", activity.issue) %}
+                    <a href="{{ path('issue_show',{'issue':activity.issue.code}) }}">
+                        {{ activity.issue.code }} {{ activity.issue.summary }}
+                    </a>
+                {% else %}
+                    {{ activity.issue.code }} {{ activity.issue.summary }}
+                {% endif %}
+                for the project
+                {% if is_granted("view", activity.project) %}
+                    <a href="{{ path('project_show',{'project':activity.project.code}) }}">
+                        {{ activity.project.code }} {{ activity.project.label }}
+                    </a>
+                {% else %}
+                    {{ activity.project.code }} {{ activity.project.label }}
+                {% endif %}
+            {% else %}
+                {% if is_granted("view", activity.issue) %}
+                    <a href="{{ path('issue_show',{'issue':activity.issue.code}) }}">
+                        {{ activity.issue.code }} {{ activity.issue.summary }}
+                    </a>
+                {% else %}
+                    {{ activity.issue.code }} {{ activity.issue.summary }}
+                {% endif %}
+
+                for the project
+                {% if is_granted("view", activity.project) %}
+                    <a href="{{ path('project_show',{'project':activity.project.code}) }}">
+                        {{ activity.project.code }} {{ activity.project.label }}
+                    </a>
+                {% else %}
+                    {{ activity.project.code }} {{ activity.project.label }}
+                {% endif %}
+
+
+            {% endif %}
+
         </li>
     {% endfor %}
 </ul>

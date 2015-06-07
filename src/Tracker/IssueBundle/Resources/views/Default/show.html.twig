@@ -34,24 +34,14 @@
 {% block content %}
     <div class="actions">
         {% if is_granted("edit", entity) %}
-            {% if project is empty %}
-                {% set route = path('issue_edit', { 'issue': entity.code }) %}
-            {% else %}
-                {% set route = path('project_issue_edit', { 'project': project.code, 'issue':entity.code}) %}
-            {% endif %}
-
+            {% set route = path('issue_edit', { 'issue': entity.code }) %}
             <a class="btn btn-default" href="{{ route }}">
                 {{ "issue.action.edit"|trans }}
             </a>
         {% endif %}
 
         {% if is_granted("create_sub_task", entity) %}
-            {% if project is empty %}
-                {% set route = path('issue_new_sub_task', { 'issue': entity.code }) %}
-            {% else %}
-                {% set route = path('project_issue_new_sub_task', { 'project': project.code, 'issue': entity.code}) %}
-            {% endif %}
-
+            {% set route = path('issue_new_sub_task', { 'issue': entity.code }) %}
             <a class="btn btn-default" href="{{ route }}">
                 {{ "issue.action.create_sub_task"|trans }}
             </a>
@@ -101,17 +91,19 @@
                 </div>
             </div>
 
-            <div class="information">
-                <p class="title">{{ "issue.page.view.subTask"|trans }}</p>
+            {% if entity.type == "Story"  %}
+                <div class="information">
+                    <p class="title">{{ "issue.page.view.subTask"|trans }}</p>
 
-                <div class="content">
-                    {% if entity.children|length > 0 %}
-                        {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'entities': entity.children } %}
-                    {% else %}
-                        {{ "issue.noSubTask"|trans }}
-                    {% endif %}
+                    <div class="content">
+                        {% if entity.children|length > 0 %}
+                            {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'entities': entity.children } %}
+                        {% else %}
+                            {{ "issue.noSubTask"|trans }}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
+            {% endif %}
 
             <div class="information activity">
                 {% if activity|length > 0 %}
