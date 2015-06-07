@@ -4,18 +4,12 @@
     {% for comment in comments %}
         <li>
             <p>
-
                 {{ UI.userAvatarFullName(comment.author, 24, 24) }}
                 {{ "issue.comment.message.added"|trans }} {{ UI.formatDateAndTimeZone(comment.created) }}
 
                 <span class="actions">
                     {% if is_granted("delete", comment) %}
-                        {% if project is empty %}
-                            {% set route = path('issue_comment_delete', {"issue":entity.code, "comment":comment.id}) %}
-                        {% else %}
-                            {% set route = path('project_issue_comment_delete', {"project":project.code, "issue":entity.code, "comment":comment.id}) %}
-                        {% endif %}
-
+                        {% set route = path('issue_comment_delete', {"issue":entity.code, "comment":comment.id}) %}
                         <a href="{{ route }}">{{ "issue.action.delete"|trans }}</a>
                     {% endif %}
 
@@ -24,14 +18,9 @@
                     {% endif %}
 
                     {% if is_granted("edit", comment) %}
-                        {% if project is empty %}
-                            {% set route = path('issue_comment_edit', {"issue":entity.code,"comment":comment.id}) %}
-                        {% else %}
-                            {% set route = path('project_issue_comment_edit', {"project":project.code, "issue":entity.code, "comment":comment.id}) %}
-                        {% endif %}
+                        {% set route = path('issue_comment_edit', {"issue":entity.code,"comment":comment.id}) %}
                         <a href="{{ route }}">{{ "issue.action.edit"|trans }}</a>
                     {% endif %}
-
                 </span>
             </p>
 

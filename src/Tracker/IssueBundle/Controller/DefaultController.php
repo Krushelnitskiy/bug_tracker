@@ -31,13 +31,10 @@ class DefaultController extends Controller
      * @param Project $project
      *
      * @Route("/issues", name="issue")
-     * @Route("/project/{project}/issues", name="project_issues")
-     *
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
      */
-    public function indexAction(Project $project = null)
+    public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
@@ -46,14 +43,9 @@ class DefaultController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        if ($project instanceof Project) {
-            $entities = $em->getRepository('TrackerIssueBundle:Issue')->findByProject($project);
-        } else {
-            $entities = $em->getRepository('TrackerIssueBundle:Issue')->findByUser($user);
-        }
+        $entities = $em->getRepository('TrackerIssueBundle:Issue')->findByUser($user);
 
         return array(
-            'project' => $project,
             'entities' => $entities,
             'emptyEntity' => new Issue()
         );
@@ -179,15 +171,13 @@ class DefaultController extends Controller
      * @param Project $project
      *
      * @Route("/issue/{issue}", name="issue_show")>
-     * @Route("/project/{project}/issue/{issue}", name="project_issue_show")>
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method("GET")
      * @Template()
      *
      * @return array
      */
-    public function showAction(Issue $issue = null, Project $project = null)
+    public function showAction(Issue $issue = null)
     {
         if ($issue === true ||
             false === $this->get('security.authorization_checker')->isGranted('view', $issue)
@@ -197,11 +187,10 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $createCommentForm = $this->createCreateCommentForm(new Comment(), $issue->getCode(), $project);
+        $createCommentForm = $this->createCreateCommentForm(new Comment(), $issue->getCode());
         $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByIssue($issue);
 
         return array(
-            'project' => $project,
             'entity' => $issue,
             'activity' => $activity,
             'comment_form' => $createCommentForm->createView()
@@ -211,19 +200,12 @@ class DefaultController extends Controller
     /**
      * @param Comment $comment
      * @param integer $issueId
-     * @param Project $project
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function createCreateCommentForm(Comment $comment, $issueId, $project)
+    private function createCreateCommentForm(Comment $comment, $issueId)
     {
         $route = $this->generateUrl('issue_comment_create', array('issue' => $issueId));
-
-        if ($project instanceof Project) {
-            $routeParam = array('issue' => $issueId, 'project'=>$project->getCode());
-            $route = $this->generateUrl('project_issue_comment_create', $routeParam);
-        }
-
         $form = $this->createForm('tracker_issueBundle_comment_form', $comment, array(
             'action' => $route,
             'method' => 'POST'
@@ -240,15 +222,13 @@ class DefaultController extends Controller
      * @param Project $project
      *
      * @Route("/issue/{issue}/edit", name="issue_edit")
-     * @Route("/project/{project}/issue/{issue}/edit", name="project_issue_edit")
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method({"GET", "POST"})
      * @Template("TrackerIssueBundle:Default:edit.html.twig")
      *
      * @return array
      */
-    public function editAction(Request $request, $issue, Project $project = null)
+    public function editAction(Request $request, $issue)
     {
         if (false === $this->get('security.authorization_checker')->isGranted('edit', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -262,35 +242,20 @@ class DefaultController extends Controller
             $projects = $user->getProject();
         }
 
-        if ($project instanceof Project) {
-            $routeParams = ['issue' => $issue->getCode(), 'project' => $project->getCode()];
-            $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
-                'action' => $this->generateUrl('project_issue_edit', $routeParams),
-                'method' => 'POST',
-                'projects' => $projects
-            ));
-        } else {
-            $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
-                'action' => $this->generateUrl('issue_edit', array('issue' => $issue->getCode())),
-                'method' => 'POST',
-                'projects' => $projects
-            ));
-        }
-
+        $editForm = $this->createForm('tracker_issueBundle_issue', $issue, array(
+            'action' => $this->generateUrl('issue_edit', array('issue' => $issue->getCode())),
+            'method' => 'POST',
+            'projects' => $projects
+        ));
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            if ($project instanceof Project) {
-                $routeParams = array('project' => $project->getCode(), 'issue' => $issue->getCode());
-                return $this->redirect($this->generateUrl('project_issue_show', $routeParams));
-            }
             return $this->redirect($this->generateUrl('issue_show', array('issue' => $issue->getCode())));
         }
 
         return array(
-            'project' => $project,
             'entity' => $issue,
             'edit_form' => $editForm->createView()
         );
@@ -301,19 +266,15 @@ class DefaultController extends Controller
      *
      * @param Request $request
      * @param Issue $issue
-     * @param Project $project
      *
      * @Route("/issue/{issue}/new", name="issue_new_sub_task")
-     * @Route("/project/{project}/issue/{issue}/new", name="project_issue_new_sub_task")
-     *
      * @ParamConverter("issue", class="TrackerIssueBundle:Issue", options={"repository_method" = "findOneByCode"})
-     * @ParamConverter("project", class="TrackerProjectBundle:Project", options={"repository_method" = "findOneByCode"})
      * @Method({"GET", "POST"})
      * @Template("TrackerIssueBundle:Default:newSubTask.html.twig")
      *
      * @return array
      */
-    public function createSubTaskAction(Request $request, $issue, Project $project = null)
+    public function createSubTaskAction(Request $request, $issue)
     {
         if (false === $this->get('security.authorization_checker')->isGranted(IssueVoter::CREATE_SUB_TASK, $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -349,15 +310,10 @@ class DefaultController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            if ($project instanceof Project) {
-                $routeParams = array('project' => $project->getCode(), 'issue' => $entity->getCode());
-                return $this->redirect($this->generateUrl('project_issue_show', $routeParams));
-            }
             return $this->redirect($this->generateUrl('issue_show', array('issue' => $entity->getCode())));
         }
 
         return array(
-            'project' => $project,
             'parent'=>$issue,
             'entity' => $entity,
             'form' => $form->createView()

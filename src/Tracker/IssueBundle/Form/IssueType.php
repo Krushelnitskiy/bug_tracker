@@ -63,7 +63,7 @@ class IssueType extends AbstractType
         if ($builder->getData()->getId() !== null) {
             $builder->add('status', 'entity', $attributeStatus);
             $builder->add('resolution', 'entity', $attributeResolution);
-            if (Type::TYPE_STORY !== $builder->getData()->getType()->getValue()) {
+            if (!in_array($builder->getData()->getType()->getValue(), [Type::TYPE_STORY, Type::TYPE_SUB_TASK])) {
                 $builder->add('type', 'entity', $attributeType);
             }
         } else {
@@ -215,7 +215,8 @@ class IssueType extends AbstractType
 
         return array_merge($attribute, array(
             'class' => 'TrackerIssueBundle:Resolution',
-            'property' => 'value'
+            'property' => 'value',
+            'required'=>false
         ));
     }
 

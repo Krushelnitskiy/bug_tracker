@@ -13,12 +13,7 @@
                 <a href="{{ path("project_show", {"project":entity.project.code }) }}">{{ entity.project.label }}</a>
                 {% if entity.parent %}
                     /
-                    {% if project is empty %}
-                        {% set route = path('issue_show', { 'issue': entity.parent.code }) %}
-                    {% else %}
-                        {% set route = path('project_issue_show', { 'project': project.code, 'issue': entity.parent.code}) %}
-                    {% endif %}
-
+                    {% set route = path('issue_show', { 'issue': entity.parent.code }) %}
                     <a href="{{ route }}">
                         {{ entity.parent.code }} - {{ entity.parent.summary }}
                     </a>

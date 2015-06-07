@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block title %}
-	{{ "issue.page.list.title"|trans }}
+    {{ "issue.page.list.title"|trans }}
 {% endblock title %}
 
 {% block header %}
@@ -19,5 +19,5 @@
         {% endif %}
     </div>
 
-	{% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'project': project, 'entities': entities } %}
+    {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with {'entities': entities} %}
 {% endblock %}
