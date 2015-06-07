@@ -7,6 +7,14 @@
     {{ form_widget(form._token) }}
 
     <div class="form-group">
+        {{ form_label(form.timezone) }}
+
+        <div class="col-sm-6">
+            {{ form_widget(form.timezone) }}
+        </div>
+    </div>
+
+    <div class="form-group">
         {{ form_label(form.email) }}
 
         <div class="col-sm-6">

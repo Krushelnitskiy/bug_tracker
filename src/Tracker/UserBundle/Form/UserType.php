@@ -48,7 +48,7 @@ class UserType extends AbstractType
             ->add($this->getEnabled($builder))
             ->add('file', null, $attributeSubmit);
 
-        if (!$builder->getData()->getid()) {
+        if (!$builder->getData()->getId()) {
             $builder->add('save', 'submit', array('label' => 'issue.form.create'));
         } else {
             $builder->add('save', 'submit', array('label' => 'issue.form.update'));
