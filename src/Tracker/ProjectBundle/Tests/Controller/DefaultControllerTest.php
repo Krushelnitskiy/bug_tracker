@@ -59,9 +59,10 @@ class DefaultControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'test'
         ));
 
+        $client->followRedirects();
         $client->request('GET', '/project');
-        $crawler = $client->followRedirect();
-        self::assertContains('Create a new project', $crawler->html());
+        $crawler =$client->getCrawler();
+            self::assertContains('Create project', $crawler->html());
     }
 
     public function testEdit()
