@@ -2,6 +2,10 @@
 
 {% form_theme edit_form 'TrackerProjectBundle:Form:fields.html.twig' %}
 
+{% block title %}
+    {{ 'project.edit'|trans }}
+{% endblock %}
+
 {% block header %}
     <header class="breadcrumbs">
         <ul class="breadcrumbs">

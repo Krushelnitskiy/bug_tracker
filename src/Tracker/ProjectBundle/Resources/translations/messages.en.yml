@@ -6,7 +6,7 @@ project:
     project: 'Project'
     listIssue: "Issues"
     page: 'Project code'
-    list: 'Projects list'
+    list: 'Projects'
     create: 'Create Project'
     edit: 'Edit project'
     createIssue: 'Create Issue'

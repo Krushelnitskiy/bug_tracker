@@ -2,6 +2,10 @@
 
 {% form_theme form 'TrackerProjectBundle:Form:fields.html.twig' %}
 
+{% block title %}
+    {{ 'user.page.create.title'|trans }}
+{% endblock title %}
+
 {% block header %}
     <header>
         <h1>{{ 'user.page.create.title'|trans }}</h1>
