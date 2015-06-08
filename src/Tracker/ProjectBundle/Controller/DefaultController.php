@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Tracker\ProjectBundle\Entity\Project;
-use Tracker\ProjectBundle\Entity\ProjectRepository;
+use Tracker\ProjectBundle\Entity\Repository\ProjectRepository;
 use Tracker\ProjectBundle\Form\ProjectType;
 use Tracker\UserBundle\Entity\User;
 use Tracker\IssueBundle\Entity\Issue;
