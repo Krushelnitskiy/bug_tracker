@@ -1,20 +1,58 @@
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>  {{ "activity.grid.event"|trans }}</th>
-        <th>  {{ "activity.grid.issue"|trans }}</th>
-        <th>  {{ "activity.grid.project"|trans }}</th>
-        <th>  {{ "activity.grid.user"|trans }}</th>
-    </tr>
-    </thead>
-    <tbody>
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
+
+<ul class="activity-list">
     {% for activity in activities %}
-            <tr>
-                <td>{{ activity.event|trans }}</a></td>
-                <td><a href="{{ path('issue_show', { 'issue': activity.issue.code }) }}">{{ activity.issue.summary }}</a></td>
-                <td><a href="{{ path('project_show', { 'project': activity.project.code }) }}">{{ activity.project.label }}</a></td>
-                <td>{{ activity.user.username }}</a></td>
-            </tr>
+        <li>
+            <div class="time">
+                {{ UI.formatDateAndTimeZone(activity.created) }}
+            </div>
+            {{ UI.userAvatarFullName(activity.user, 24, 24) }}
+            {{ activity.event|trans }}
+            {#{{ activity.data }} on#}
+            {#{{ activity.issue.code }} - {{ activity.issue.summary }}#}
+            {#for project ({{ activity.project.summary }})#}
+
+
+
+            {% if activity.data %}
+                to "{{ activity.data }}"
+                on
+                {% if is_granted("view", activity.issue) %}
+                    <a href="{{ path('issue_show',{'issue':activity.issue.code}) }}">
+                        {{ activity.issue.code }} {{ activity.issue.summary }}
+                    </a>
+                {% else %}
+                    {{ activity.issue.code }} {{ activity.issue.summary }}
+                {% endif %}
+                for the project
+                {% if is_granted("view", activity.project) %}
+                    <a href="{{ path('project_show',{'project':activity.project.code}) }}">
+                        {{ activity.project.code }} {{ activity.project.label }}
+                    </a>
+                {% else %}
+                    {{ activity.project.code }} {{ activity.project.label }}
+                {% endif %}
+            {% else %}
+                {% if is_granted("view", activity.issue) %}
+                    <a href="{{ path('issue_show',{'issue':activity.issue.code}) }}">
+                        {{ activity.issue.code }} {{ activity.issue.summary }}
+                    </a>
+                {% else %}
+                    {{ activity.issue.code }} {{ activity.issue.summary }}
+                {% endif %}
+
+                for the project
+                {% if is_granted("view", activity.project) %}
+                    <a href="{{ path('project_show',{'project':activity.project.code}) }}">
+                        {{ activity.project.code }} {{ activity.project.label }}
+                    </a>
+                {% else %}
+                    {{ activity.project.code }} {{ activity.project.label }}
+                {% endif %}
+
+
+            {% endif %}
+
+        </li>
     {% endfor %}
-    </tbody>
-</table>
+</ul>

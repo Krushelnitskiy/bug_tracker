@@ -3,14 +3,14 @@ issue:
         list:
             title: "My Issue"
         create:
-            title: "Issue creation"
+            title: "Create issue"
         createSubTask:
-            title: "Sub task creation"
+            title: "Create Sub-Task "
         edit:
-            title: "Issue edit"
+            title: "Edit issue"
         view:
             title: "Issue"
-            collaborators: "Collaborators List"
+            collaborators: "Collaborators"
             subTask: "Sub tasks"
             comment: "Comments"
             sendComment: "Send comment"
@@ -42,6 +42,9 @@ issue:
         reporter: "Reporter"
         collaborators: "Collaborators"
         project: "Project"
+        users: Users
+        people: People
+        dates: Dates
     comment:
         page:
             edit:
@@ -51,6 +54,13 @@ issue:
             created: "Created"
             author: "Author"
             action: "Action"
+        message:
+            added:  added a comment -
     parent: "Parent Issue:"
     error:
         invalidCodeValue: "Code can contain symbols a-zA-Z0-9-"
+    details: Details
+    noDescription: no description
+    noSubTask: no sub tasks
+    noComments: no comments
+    noCollaborators: no collaborators

@@ -1,0 +1,68 @@
+{% import "TrackerHomeBundle::macros.html.twig" as UI %}
+
+<ul class="activity-list">
+    {% for activity in activities %}
+        <li>
+            <div class="time">
+                {{ UI.formatDateAndTimeZone(activity.created) }}
+            </div>
+
+            <div class="message">
+                <div class="user">
+                    {% if activity.user.getWebPath() %}
+                        {% set avatarPath = activity.user.getWebPath() %}
+                    {% else %}
+                        {% set avatarPath = '/images/useravatar.png' %}
+                    {% endif %}
+
+                    <div class="image">
+                        <a href="{{ path('user_show', {'user': activity.user.id}) }}">
+                            <img src="{{ avatarPath }}" width="240"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="body">
+                    {{ UI.renderLinkUserPage(activity.user, activity.user.fullname) }}
+                    {{ activity.event|trans|lower }}
+
+                    {% if activity.data %}
+                        to "{{ activity.data }}"
+                        on
+                        {% if is_granted("view", activity.issue) %}
+                            <a href="{{ path('issue_show',{'issue':activity.issue.code}) }}">
+                                {{ activity.issue.code }} {{ activity.issue.summary }}
+                            </a>
+                        {% else %}
+                            {{ activity.issue.code }} {{ activity.issue.summary }}
+                        {% endif %}
+                        for the project
+                        {% if is_granted("view", activity.project) %}
+                            <a href="{{ path('project_show',{'project':activity.project.code}) }}">
+                                {{ activity.project.code }} {{ activity.project.label }}
+                            </a>
+                        {% else %}
+                            {{ activity.project.code }} {{ activity.project.label }}
+                        {% endif %}
+                    {% else %}
+                        {% if is_granted("view", activity.issue) %}
+                            <a href="{{ path('issue_show',{'issue':activity.issue.code}) }}">
+                                {{ activity.issue.code }} {{ activity.issue.summary }}
+                            </a>
+                        {% else %}
+                            {{ activity.issue.code }} {{ activity.issue.summary }}
+                        {% endif %}
+
+                        for the project
+                        {% if is_granted("view", activity.project) %}
+                            <a href="{{ path('project_show',{'project':activity.project.code}) }}">
+                                {{ activity.project.code }} {{ activity.project.label }}
+                            </a>
+                        {% else %}
+                            {{ activity.project.code }} {{ activity.project.label }}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

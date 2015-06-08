@@ -73,6 +73,6 @@ class UserControllerTest extends WebTestCase
         $client->submit($form);
         $crawler = $client->getCrawler();
 
-        $this->assertContains('test_admin@test.com', $crawler->html());
+        $this->assertContains('test_admin111@test.com', $crawler->html());
     }
 }

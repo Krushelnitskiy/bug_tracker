@@ -2,16 +2,12 @@
 
 {% form_theme form 'TrackerProjectBundle:Form:fields.html.twig' %}
 
-{% block body -%}
-    <h3>{{ "project.create"|trans }}</h3>
+{% block header %}
+    <header class="project">
+        <h1>{{ 'project.create'|trans }}</h1>
+    </header>
+{% endblock %}
 
-    <p>
-        <a href="{{ path('project') }}">
-            {{ "project.back"|trans }}
-        </a>
-    </p>
-
+{% block content %}
     {{ form(form, {'attr':{'class':"form-horizontal"}}) }}
-
-
 {% endblock %}

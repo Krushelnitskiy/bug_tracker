@@ -23,15 +23,8 @@ class ProjectType extends AbstractType
         );
 
         $builder->add('label', null, $attribute)
-            ->add('summary', null, $attribute);
-
-        if (!$builder->getData()->getid()) {
-            $builder->add('code', null, $attribute);
-        }
-
-        $builder->add('members', null, $attribute);
-
-
+            ->add('summary', null, $attribute)
+            ->add('members', null, $attribute);
     }
     
     /**

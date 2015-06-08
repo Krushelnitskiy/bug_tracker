@@ -6,135 +6,178 @@
     {{ "issue.page.view.title"|trans }}
 {% endblock title %}
 
-{% block body -%}
-    <h3>{{ "issue.page.view.title"|trans }}</h3>
+{% block header %}
+    <header class="breadcrumbs">
+        <ul class="breadcrumbs">
+            <li>
+                <a href="{{ path("project_show", {"project":entity.project.code }) }}">{{ entity.project.label }}</a>
+                {% if entity.parent %}
+                    /
+                    {% set route = path('issue_show', { 'issue': entity.parent.code }) %}
+                    <a href="{{ route }}">
+                        {{ entity.parent.code }} - {{ entity.parent.summary }}
+                    </a>
+                {% endif %}
+                / {{ entity.code }}
+            </li>
+        </ul>
 
-	<p>
-		{% if project is empty %}
-			<a href="{{ path('issue') }}">
-				{{ "issue.action.back"|trans }}
-			</a>
-		{% else %}
-			<a href="{{ path('project_issues', { 'project': project.code}) }}">
-				{{ "issue.action.backProject"|trans }}
-			</a>
-		{% endif %}
+        <h1>{{ entity.summary }}</h1>
+    </header>
+{% endblock header %}
 
-		{% if is_granted("edit", entity) %}
-			|
-            {% if project is empty %}
-                <a href="{{ path('issue_edit', { 'issue': entity.code }) }}">
-                    {{ "issue.action.edit"|trans }}
-                </a>
-    		{% else %}
-                <a href="{{ path('project_issue_edit', { 'project': project.code, 'issue':entity.code}) }}">
-                    {{ "issue.action.edit"|trans }}
-                </a>
+{% block content %}
+    <div class="actions">
+        {% if is_granted("edit", entity) %}
+            {% set route = path('issue_edit', { 'issue': entity.code }) %}
+            <a class="btn btn-default" href="{{ route }}">
+                {{ "issue.action.edit"|trans }}
+            </a>
+        {% endif %}
+
+        {% if is_granted("create_sub_task", entity) %}
+            {% set route = path('issue_new_sub_task', { 'issue': entity.code }) %}
+            <a class="btn btn-default" href="{{ route }}">
+                {{ "issue.action.create_sub_task"|trans }}
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="information issue detail">
+                <p class="title">{{ "issue.details"|trans }}</p>
+
+                <div class="content row">
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>{{ "issue.grid.type"|trans }}</dt>
+                            <dd>{{ entity.type.value }}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>{{ "issue.grid.priority"|trans }}</dt>
+                            <dd>{{ entity.priority.value }}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>{{ "issue.grid.status"|trans }}</dt>
+                            <dd>{{ entity.status.value }}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>{{ "issue.grid.resolution"|trans }}</dt>
+                            <dd>{{ entity.resolution }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="information description">
+                <p class="title">{{ "issue.grid.description"|trans }}</p>
+
+                <div class="content">
+                    {% if entity.description %}
+                        {{ entity.description }}
+                    {% else %}
+                        {{ "issue.noDescription"|trans }}
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if entity.type == "Story"  %}
+                <div class="information">
+                    <p class="title">{{ "issue.page.view.subTask"|trans }}</p>
+
+                    <div class="content">
+                        {% if entity.children|length > 0 %}
+                            {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'entities': entity.children } %}
+                        {% else %}
+                            {{ "issue.noSubTask"|trans }}
+                        {% endif %}
+                    </div>
+                </div>
             {% endif %}
-		{% endif %}
 
-		{% if is_granted("create_sub_task", entity) %}
-			|
-			{% if project is empty %}
-				<a href="{{ path('issue_new_sub_task', { 'issue': entity.code }) }}">
-					{{ "issue.action.create_sub_task"|trans }}
-				</a>
-			{% else %}
-				<a href="{{ path('project_issue_new_sub_task', { 'project': project.code, 'issue': entity.code}) }}">
-					{{ "issue.action.create_sub_task"|trans }}
-				</a>
-			{% endif %}
-		{% endif %}
+            <div class="information activity">
+                {% if activity|length > 0 %}
+                    <p class="title">{{ "issue.page.view.activity"|trans }}</p>
+                    {% include 'TrackerActivitiesBundle::activityList.html.twig' with { 'activities': activity } %}
+                {% endif %}
+            </div>
 
-		{% if entity.parent %}
-			|
-			{{ "issue.parent"|trans }}
-			{% if project is empty %}
-				<a href="{{ path('issue_show', { 'issue': entity.parent.code }) }}">
-					{{ entity.parent.code }} - {{ entity.parent.summary }}
-				</a>
-			{% else %}
-				<a href="{{ path('project_issue_show', { 'project': project.code, 'issue': entity.parent.code}) }}">
-					{{ entity.parent.code }} - {{ entity.parent.summary }}
-				</a>
-			{% endif %}
-		{% endif %}
-	</p>
+            <div class="information ">
+                <p class="title">{{ "issue.page.view.comment"|trans }}</p>
 
-    <table class="record_properties table">
-        <tbody>
-            <tr>
-                <th>{{ "issue.grid.type"|trans }}</th>
-                <td>{{ entity.type.value }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.summary"|trans }}</th>
-                <td>{{ entity.summary }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.code"|trans }}</th>
-                <td>{{ entity.code }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.status"|trans }}</th>
-                <td>{{ entity.status }}</td>
-            </tr>
-            <tr>
-	            <th>{{ "issue.grid.resolution"|trans }}</th>
-	            <td>{{ entity.resolution }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.description"|trans }}</th>
-                <td>{{ entity.description }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.created"|trans }}</th>
+                <div class="content">
+                    {% if entity.comment|length > 0 %}
+                        {% include 'TrackerIssueBundle:Default:partial/gridComment.html.twig' with { 'comments': entity.comment } %}
+                    {% else %}
+                        {{ "issue.noComments"|trans }}
+                    {% endif %}
+                </div>
+            </div>
 
-                <td>{{ UI.formatDateAndTimeZone(entity.created) }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.updated"|trans }}</th>
-	            <td>{{ UI.formatDateAndTimeZone(entity.updated) }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.reporter"|trans }}</th>
-                <td>{{ entity.reporter.username }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.assignee"|trans }}</th>
-                <td>{{ entity.assignee.username }}</td>
-            </tr>
-            <tr>
-                <th>{{ "issue.grid.project"|trans }}</th>
-                <td><a href="{{ path("project_show", {"project":entity.project.code }) }}">{{ entity.project.label }}</a></td>
-            </tr>
-        </tbody>
-    </table>
+            <div class="information">
+                <p class="title">{{ "issue.page.view.sendComment"|trans }}</p>
 
-    {% if activity|length > 0 %}
-        <h4>{{ "issue.page.view.activity"|trans }}</h4>
-        {% include 'TrackerIssueBundle:Default:partial/gridActivity.html.twig' with { 'activities': activity } %}
-    {% endif %}
+                <div class="content">
+                    {% if is_granted('create', entity) %}
+                        <a name="comment-form"></a>
+                        {{ form(comment_form, {'attr':{'class':"form-horizontal"}}) }}
+                    {% endif %}
+                </div>
 
-    {% if entity.collaborators|length > 0 %}
-        <h4>{{ "issue.page.view.collaborators"|trans }}</h4>
-        {% include 'TrackerIssueBundle:Default:partial/gridCollaborators.html.twig' with { 'collaborators': entity.collaborators } %}
-    {% endif %}
+            </div>
+        </div>
 
-    {% if entity.children|length > 0 %}
-        <h4>{{ "issue.page.view.subTask"|trans }}</h4>
-        {% include 'TrackerIssueBundle:Default:partial/gridTasks.html.twig' with { 'entities': entity.children } %}
-    {% endif %}
+        <div class="information additional col-md-4">
+            <div class="information users">
+                <p class="title">{{ "issue.grid.people"|trans }}</p>
 
-    {% if entity.comment|length > 0 %}
-        <h4>{{ "issue.page.view.comment"|trans }}</h4>
-        {% include 'TrackerIssueBundle:Default:partial/gridComment.html.twig' with { 'comments': entity.comment } %}
-    {% endif %}
+                <div class="content">
+                    <dl>
+                        <dt>{{ "issue.grid.reporter"|trans }}</dt>
+                        <dd>
+                            {{ UI.userAvatarFullName(entity.reporter, 24, 24) }}
+                        </dd>
+                    </dl>
 
-    <h4>{{ "issue.page.view.sendComment"|trans }}</h4>
+                    <dl>
+                        <dt>{{ "issue.grid.assignee"|trans }}</dt>
+                        <dd>
+                            {{ UI.userAvatarFullName(entity.assignee, 24, 24) }}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="information date">
+                <p class="title">{{ "issue.grid.dates"|trans }}</p>
 
-    {% if is_granted('create', entity) %}
-        <a name="comment-form"></a>
-        {{ form(comment_form, {'attr':{'class':"form-horizontal"}}) }}
-    {% endif %}
+                <div class="content">
+                    <dl>
+                        <dt>{{ "issue.grid.created"|trans }}</dt>
+                        <dd>{{ UI.formatDateAndTimeZone(entity.created) }}</dd>
+                    </dl>
+                    <dl>
+                        <dt>{{ "issue.grid.updated"|trans }}</dt>
+                        <dd>{{ UI.formatDateAndTimeZone(entity.updated) }}</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="information collaborator">
+                <p class="title">{{ "issue.page.view.collaborators"|trans }}</p>
+
+                <div class="content">
+                    {% if entity.collaborators|length > 0 %}
+                        {% include 'TrackerIssueBundle:Default:partial/gridCollaborators.html.twig' with { 'collaborators': entity.collaborators } %}
+                    {% else %}
+                        {{ "issue.noCollaborators"|trans }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -3,13 +3,27 @@
     <tr>
         <th>  {{ "issue.grid.code"|trans }}</th>
         <th>  {{ "issue.grid.summary"|trans }}</th>
+        <th>  {{ "issue.grid.project"|trans }}</th>
     </tr>
     </thead>
     <tbody>
     {% for issue in issues %}
         <tr>
-            <td><a href="{{ path('issue_show', { 'issue': issue.code }) }}">{{ issue.summary }}</a></td>
-            <td><a href="{{ path('project_show', { 'project': issue.project.code }) }}">{{ issue.project.label }}</a></td>
+            <td>
+                {% if is_granted('view', issue) %}
+                    <a href="{{ path('issue_show', { 'issue': issue.code }) }}">{{ issue.code }}</a>
+                {% else %}
+                    {{ issue.code }}
+                {% endif %}
+            </td>
+            <td>{{ issue.summary }}</td>
+            <td>
+                {% if is_granted('view', issue.project) %}
+                    <a href="{{ path('project_show', { 'project': issue.project.code }) }}">{{ issue.project.label }}</a>
+                {% else %}
+                    {{ issue.project.label }}
+                {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>

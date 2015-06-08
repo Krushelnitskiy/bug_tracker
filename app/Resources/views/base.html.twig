@@ -8,6 +8,9 @@
 		{% stylesheets 'bundles/trackerhome/css/*' filter='cssrewrite' output='css/app.css' %}
 			<link rel="stylesheet" href="{{ asset_url }}" />
 		{% endstylesheets %}
+        {% stylesheets 'bundles/trackeractivities/css/activityList.css/*' filter='cssrewrite' output='css/app.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
 	{% endblock %}
 
 	<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
@@ -49,7 +52,7 @@
 								<img src="{{ app.user.getWebPath() }}" width="48"/>
 							</a>
 						{% endif %}
-						<a href="{{ path("fos_user_profile_show") }}">{{ app.user.username }}</a>  |
+						<a href="{{ path("user_show", {'user': app.user.id }) }}">{{ app.user.username }}</a>  |
 						<a href="{{ path('fos_user_security_logout') }}">
 							{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
 						</a>
@@ -60,19 +63,19 @@
 	</div>
 </nav>
 
-<div class="container">
-	{% for flashMessage in app.session.flashbag.get('notice') %}
-		<div class="flash-notice bg-warning">
-			{{ flashMessage }}
-		</div>
-	{% endfor %}
-</div>
-
 
 <div class="container">
 	{% block body %}
 		{% block header %}
 		{% endblock %}
+
+        <div class="container">
+            {% for flashMessage in app.session.flashbag.get('notice') %}
+                <div class="flash-notice bg-warning">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
 
 		{% block content %}
 		{% endblock %}

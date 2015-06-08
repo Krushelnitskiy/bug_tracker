@@ -4,11 +4,11 @@ project:
             activity: "Activity"
             members: "Members"
     project: 'Project'
-    listIssue: "List Issues"
+    listIssue: "Issues"
     page: 'Project code'
     list: 'Projects list'
     create: 'Create Project'
-    edit: 'Edit this project'
+    edit: 'Edit project'
     createIssue: 'Create Issue'
     not_activity: 'Not Activity yet!'
     not_issues: 'No Issues yet!'
@@ -39,6 +39,6 @@ project:
     action:
         back: "Back to the list"
         edit: "Edit"
-        create: "Create a new project"
+        create: "Create project"
     error:
         invalidCodeValue: "Code can contain symbols a-zA-Z0-9-"

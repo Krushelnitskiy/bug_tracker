@@ -1,44 +1,32 @@
 {% import "TrackerHomeBundle::macros.html.twig" as UI %}
 
-<table class="table comment table-bordered">
-    <thead>
-    <tr>
-        <th>{{ "issue.comment.grid.body"|trans }}</th>
-        <th>{{ "issue.comment.grid.created"|trans }}</th>
-        <th>{{ "issue.comment.grid.author"|trans }}</th>
-        <th>{{ "issue.comment.grid.action"|trans }}</th>
-    </tr>
-    <thead>
-    <tbody>
+<ul class="list-comments">
     {% for comment in comments %}
-        <tr>
-            <td>{{ comment.body }}</td>
-            <td>{{ UI.formatDateAndTimeZone(comment.created) }}</td>
-            <td>
-	            {{ UI.renderLinkUserPage(comment.author) }}
-            </td>
-            <td>
-                {% if is_granted("delete", comment) %}
-	                {% if project is empty %}
-                        <a href="{{ path('issue_comment_delete', {"issue":entity.code, "comment":comment.id}) }}">{{ "issue.action.delete"|trans }}</a>
-	                {% else %}
-		                <a href="{{ path('project_issue_comment_delete', {"project":project.code, "issue":entity.code, "comment":comment.id}) }}">{{ "issue.action.delete"|trans }}</a>
-	                {% endif %}
-                {% endif %}
+        <li>
+            <p>
+                {{ UI.userAvatarFullName(comment.author, 24, 24) }}
+                {{ "issue.comment.message.added"|trans }} {{ UI.formatDateAndTimeZone(comment.created) }}
 
-                {% if is_granted("delete", comment) and is_granted("edit", comment) %}
-                    |
-                {% endif %}
+                <span class="actions">
+                    {% if is_granted("delete", comment) %}
+                        {% set route = path('issue_comment_delete', {"issue":entity.code, "comment":comment.id}) %}
+                        <a href="{{ route }}">{{ "issue.action.delete"|trans }}</a>
+                    {% endif %}
 
-                {% if is_granted("edit", comment) %}
-	                {% if project is empty %}
-                        <a href="{{ path('issue_comment_edit', {"issue":entity.code,"comment":comment.id}) }}">{{ "issue.action.edit"|trans }}</a>
-	                {% else %}
-		                <a href="{{ path('project_issue_comment_edit', {"project":project.code, "issue":entity.code, "comment":comment.id}) }}">{{ "issue.action.edit"|trans }}</a>
-		            {% endif %}
-                {% endif %}
-            </td>
-        </tr>
+                    {% if is_granted("delete", comment) and is_granted("edit", comment) %}
+                        |
+                    {% endif %}
+
+                    {% if is_granted("edit", comment) %}
+                        {% set route = path('issue_comment_edit', {"issue":entity.code,"comment":comment.id}) %}
+                        <a href="{{ route }}">{{ "issue.action.edit"|trans }}</a>
+                    {% endif %}
+                </span>
+            </p>
+
+            <p>
+                {{ comment.body }}
+            </p>
+        </li>
     {% endfor %}
-    </tbody>
-</table>
+</ul>

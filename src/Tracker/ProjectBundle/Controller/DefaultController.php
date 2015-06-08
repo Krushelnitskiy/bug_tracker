@@ -16,6 +16,7 @@ use Tracker\ProjectBundle\Entity\Project;
 use Tracker\ProjectBundle\Entity\ProjectRepository;
 use Tracker\ProjectBundle\Form\ProjectType;
 use Tracker\UserBundle\Entity\User;
+use Tracker\IssueBundle\Entity\Issue;
 
 /**
  * Project controller.
@@ -128,10 +129,13 @@ class DefaultController extends Controller
         }
 
         $activity = $em->getRepository('TrackerActivitiesBundle:Activity')->findByProject($project);
+        $issues = $em->getRepository('TrackerIssueBundle:Issue')->findByProject($project);
 
         return array(
             'entity' => $project,
-            'activity' => $activity
+            'issues'=>$issues,
+            'activity' => $activity,
+            'emptyEntity' => new Issue()
         );
     }
 
@@ -194,7 +198,7 @@ class DefaultController extends Controller
         }
 
         return array(
-            'entity' => $project,
+            'project' => $project,
             'edit_form' => $editForm->createView()
         );
     }

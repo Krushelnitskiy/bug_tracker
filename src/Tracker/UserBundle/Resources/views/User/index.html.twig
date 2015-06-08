@@ -5,16 +5,20 @@
     {{ "user.page.list.title"|trans }}
 {% endblock title %}
 
-{% block body -%}
-    <h3>{{ 'user.page.list.title'|trans }}</h3>
+{% block header %}
+    <header>
+        <h1>{{ 'user.page.list.title'|trans }}</h1>
+    </header>
+{% endblock header %}
 
-    <p>
-	    {% if is_granted('edit', entity) %}
-	        <a href="{{ path('user_new') }}">
-	            {{ "user.action.create"|trans }}
-	        </a>
-	    {% endif %}
-    </p>
+{% block content %}
+    <div class="actions">
+        {% if is_granted('edit', entity) %}
+            <a class="btn btn-default" href="{{ path('user_new') }}">
+                {{ "user.action.create"|trans }}
+            </a>
+        {% endif %}
+    </div>
 
     <table class="records_list table table-bordered grid-user">
         <thead>
@@ -43,19 +47,19 @@
 
             <tr>
                 <td>
-	                {% set pathShowUser = path('user_show', { 'user': entity.id }) %}
+                    {% set pathShowUser = path('user_show', { 'user': entity.id }) %}
 
-	                {% if entity.getWebPath() %}
-		                <a href="{{ pathShowUser }}" class="avatar">
-			                <img src="{{ entity.getWebPath() }}"  width="64"/>
-		                </a>
-	                {% endif %}
-	                <a href="{{ pathShowUser }}">{{ entity.username }}</a>
+                    {% if entity.getWebPath() %}
+                        <a href="{{ pathShowUser }}" class="avatar">
+                            <img src="{{ entity.getWebPath() }}" width="64"/>
+                        </a>
+                    {% endif %}
+                    <a href="{{ pathShowUser }}">{{ entity.username }}</a>
                 </td>
                 <td>{{ entity.fullName }}</td>
                 <td>{{ entity.email }}</td>
                 <td>{{ entity.roles[0]|trans }}</td>
-	            <td>{{ UI.formatDateAndTimeZone(entity.lastLogin) }}</td>
+                <td>{{ UI.formatDateAndTimeZone(entity.lastLogin) }}</td>
                 <td class="status {{ statusClass }}" title="{{ statusTitle }}">{{ statusValue }}</td>
             </tr>
         {% endfor %}

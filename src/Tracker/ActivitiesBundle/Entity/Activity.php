@@ -29,9 +29,17 @@ class Activity
     protected $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string")
      */
     protected $event;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $data;
 
     /**
      * @ORM\ManyToOne(targetEntity="\Tracker\UserBundle\Entity\User")
@@ -70,6 +78,7 @@ class Activity
      * Set event
      *
      * @param string $event
+     *
      * @return Activity
      */
     public function setEvent($event)
@@ -93,6 +102,7 @@ class Activity
      * Set user
      *
      * @param User $user
+     *
      * @return Activity
      */
     public function setUser(User $user = null)
@@ -139,6 +149,7 @@ class Activity
      * Set project
      *
      * @param Project $project
+     *
      * @return Activity
      */
     public function setProject(Project $project = null)
@@ -162,7 +173,8 @@ class Activity
      * Set created
      *
      * @param \DateTime $created
-     * @return Issue
+     *
+     * @return Activity
      */
     public function setCreated($created)
     {
@@ -179,5 +191,25 @@ class Activity
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return Activity
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

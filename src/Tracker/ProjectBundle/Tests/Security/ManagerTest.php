@@ -36,6 +36,6 @@ class ManagerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/project/'.$this->getReference('project.first')->getCode().'/edit');
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertContains('Edit this project', $crawler->html());
+        $this->assertContains('Edit project', $crawler->html());
     }
 }

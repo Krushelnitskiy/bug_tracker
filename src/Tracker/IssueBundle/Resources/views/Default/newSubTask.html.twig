@@ -2,18 +2,22 @@
 
 {% form_theme form 'TrackerProjectBundle:Form:fields.html.twig' %}
 
-{% block body -%}
-    <h3>{{ "issue.page.createSubTask.title"|trans }}</h3>
-    <p>
-	    {% if project is empty %}
-		    <a href="{{ path('issue') }}">
-			    {{ "issue.action.back"|trans }}
-		    </a>
-	    {% else %}
-		    <a href="{{ path('project_issues', { 'project': project.code}) }}">
-			    {{ "issue.action.backProject"|trans }}
-		    </a>
-	    {% endif %}
-    </p>
+{% block header %}
+    <header class="breadcrumbs">
+        <ul class="breadcrumbs">
+            <li>
+                <a href="{{ path('project_show', {project:parent.project.code}) }}">
+                    {{ parent.project.label }}
+                </a> /
+                <a href="{{ path('issue_show', {issue:parent.code}) }}">
+                    {{ parent.code }} {{ parent.summary }}
+                </a>
+            </li>
+        </ul>
+        <h1>{{ "issue.page.createSubTask.title"|trans }}</h1>
+    </header>
+{% endblock header %}
+
+{% block content %}
     {{ form(form, {'attr':{'class':"form-horizontal"}}) }}
 {% endblock %}

@@ -193,7 +193,6 @@ class CommentController extends Controller
             ));
         }
 
-
         return $form;
     }
 }

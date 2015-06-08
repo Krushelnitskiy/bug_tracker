@@ -96,7 +96,7 @@ class CommentVoter implements VoterInterface
      *
      * @return bool
      */
-    public function userHasAccess($user, $comment)
+    protected function userHasAccess($user, $comment)
     {
         if ($user->hasRole(User::ROLE_ADMIN)) {
             return true;

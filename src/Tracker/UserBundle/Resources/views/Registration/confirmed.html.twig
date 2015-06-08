@@ -2,8 +2,16 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
+{% block header %}
+    <header class="clear"></header>
+{% endblock header %}
+
 {% block content %}
-    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+    <div class="container">
+        <div class="flash-notice bg-success">
+            {{ 'registration.confirmed'|trans({'%username%': user.username}) }}
+        </div>
+    </div>
     {% if app.session is not empty %}
         {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
         {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>{% endif %}

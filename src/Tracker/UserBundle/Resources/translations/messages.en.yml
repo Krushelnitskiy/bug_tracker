@@ -1,11 +1,11 @@
 user:
     page:
         list:
-            title: "Users list"
+            title: "Users"
         create:
             title: "Create User"
         edit:
-            title: "Edit user"
+            title: "Edit Profile"
         view:
             title: "User"
             activity: "Activity"
@@ -13,6 +13,9 @@ user:
             registration: "Registration"
             forgotPssword: "Forgot password ?"
             login: "Sign in"
+    status:
+        enabled: "Enabled"
+        disabled: "Disabled"
     action:
         create: "Create new user"
         edit: "Edit"
@@ -20,9 +23,10 @@ user:
     grid:
         id: "Id"
         username: "User name"
+        avatar: "Avatar"
         email: "Email"
         lastLogin: "Last login"
-        enabled: "Enable"
+        enabled: "Enabled"
         role: "Role"
         status: "Status"
         fullName: "Full Name"

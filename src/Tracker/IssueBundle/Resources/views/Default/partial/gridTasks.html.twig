@@ -5,39 +5,22 @@
 	<tr>
 		<th>{{ "issue.grid.code"|trans }}</th>
 		<th>{{ "issue.grid.summary"|trans }}</th>
-		<th>{{ "issue.grid.description"|trans }}</th>
 		<th>{{ "issue.grid.type"|trans }}</th>
-		<th>{{ "issue.grid.created"|trans }}</th>
-		<th>{{ "issue.grid.updated"|trans }}</th>
-		<th>{{ "issue.grid.project"|trans }}</th>
+		<th>{{ "issue.grid.status"|trans }}</th>
+		<th>{{ "issue.grid.assignee"|trans }}</th>
 	</tr>
 	</thead>
 	<tbody>
 	{% for entity in entities %}
-		{% if project is empty %}
-			{% set pathIssueView = path('issue_show', { 'issue': entity.code }) %}
-		{% else %}
-			{% set pathIssueView = path('project_issue_show', { 'project': project.code, 'issue': entity.code }) %}
-		{% endif %}
+		{% set pathIssueView = path('issue_show', { 'issue': entity.code }) %}
 		{% set pathProjectView = path('project_show', { 'project': entity.project.code }) %}
-
 
 		<tr>
 			<td><a href="{{ pathIssueView }}">{{ entity.code }}</a></td>
 			<td><a href="{{ pathIssueView }}">{{ entity.summary }}</a></td>
-			<td>{{ entity.description }}</td>
 			<td>{{ entity.type.value }}</td>
-			<td>
-				{% if entity.created %}
-					{{ UI.formatDateAndTimeZone(entity.created) }}
-				{% endif %}
-			</td>
-			<td>
-				{% if entity.updated %}
-					{{ UI.formatDateAndTimeZone(entity.updated) }}
-				{% endif %}
-			</td>
-			<td><a href="{{ pathProjectView }}">{{ entity.project.label }}</a></td>
+            <td>{{ entity.status }}</td>
+            <td>{{ UI.renderLinkUserPage(entity.assignee, entity.assignee.fullName) }} </td>
 		</tr>
 	{% endfor %}
 	</tbody>
