@@ -103,7 +103,7 @@ class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
             ],
             [
                 'code' => 'task-3',
-                'summary' => 'Crete Entities in bundeles and add doctrine annotate'
+                'summary' => 'Crete Entities in bundles and add doctrine annotate'
             ],
             [
                 'code' => 'task-4',
