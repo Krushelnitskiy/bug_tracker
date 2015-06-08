@@ -16,7 +16,7 @@
 		{% set pathProjectView = path('project_show', { 'project': entity.project.code }) %}
 
 		<tr>
-			<td><a href="{{ pathIssueView }}">{{ entity.code }}</a></td>
+			<td class="code"><a href="{{ pathIssueView }}">{{ entity.code }}</a></td>
 			<td><a href="{{ pathIssueView }}">{{ entity.summary }}</a></td>
 			<td>{{ entity.type.value }}</td>
             <td>{{ entity.status }}</td>

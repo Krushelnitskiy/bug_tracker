@@ -281,3 +281,7 @@ dt{
 h1{
     font-size: 24px;
 }
+
+td.code {
+    white-space: nowrap;
+}
